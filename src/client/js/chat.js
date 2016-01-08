@@ -158,6 +158,7 @@ var c = document.getElementById('cvs');
 c.width = screenWidth; c.height = screenHeight;
 c.addEventListener('mousemove', gameInput, false);
 c.addEventListener('mouseout', outOfBounds, false);
+c.addEventListener('keypress', keyInput, false);
 c.addEventListener('keyup', function(event) {reenviar = true; directionUp(event);}, false);
 c.addEventListener('keydown', directionDown, false);
 c.addEventListener('touchstart', touchInput, false);
@@ -170,7 +171,147 @@ function outOfBounds() {
     }
 }
 
+/*var visibleBorderSetting = document.getElementById('visBord');
+visibleBorderSetting.onchange = toggleBorder;
+
+var showMassSetting = document.getElementById('showMass');
+showMassSetting.onchange = toggleMass;
+
+var continuitySetting = document.getElementById('continuity');
+continuitySetting.onchange = toggleContinuity;
+
+var continuitySetting = document.getElementById('roundFood');
+continuitySetting.onchange = toggleRoundFood;
+*/
+
 var graph = c.getContext('2d');
+
+
+function ChatClient(config) {
+    this.commands = {};
+    var input = document.getElementById('chatInput');
+    input.addEventListener('keypress', this.sendChat.bind(this));
+    input.addEventListener('keyup', function(key) {
+        input = document.getElementById('chatInput');
+
+        key = key.which || key.keyCode;
+        if (key === KEY_ESC) {
+            input.value = '';
+            c.focus();
+        }
+    });
+}
+/*
+// Chat box implementation for the users.
+ChatClient.prototype.addChatLine = function (name, message, me) {
+    if (mobile) {
+        return;
+    }
+    var newline = document.createElement('li');
+
+    // Colours the chat input correctly.
+    newline.className = (me) ? 'me' : 'friend';
+    newline.innerHTML = '<b>' + ((name.length < 1) ? 'An unnamed cell' : name) + '</b>: ' + message;
+
+    this.appendMessage(newline);
+};
+
+
+// Chat box implementation for the system.
+ChatClient.prototype.addSystemLine = function (message) {
+    if (mobile) {
+        return;
+    }
+    var newline = document.createElement('li');
+
+    // Colours the chat input correctly.
+    newline.className = 'system';
+    newline.innerHTML = message;
+
+    // Append messages to the logs.
+    this.appendMessage(newline);
+};
+
+// Places the message DOM node into the chat box.
+ChatClient.prototype.appendMessage = function (node) {
+    if (mobile) {
+        return;
+    }
+    var chatList = document.getElementById('chatList');
+    if (chatList.childNodes.length > 10) {
+        chatList.removeChild(chatList.childNodes[0]);
+    }
+    chatList.appendChild(node);
+};
+
+// Sends a message or executes a command on the click of enter.
+ChatClient.prototype.sendChat = function (key) {
+    var commands = this.commands,
+        input = document.getElementById('chatInput');
+
+    key = key.which || key.keyCode;
+
+    if (key === KEY_ENTER) {
+        var text = input.value.replace(/(<([^>]+)>)/ig,'');
+        if (text !== '') {
+
+            // Chat command.
+            if (text.indexOf('-') === 0) {
+                var args = text.substring(1).split(' ');
+                if (commands[args[0]]) {
+                    commands[args[0]].callback(args.slice(1));
+                } else {
+                    this.addSystemLine('Unrecognized Command: ' + text + ', type -help for more info.');
+                }
+
+            // Allows for regular messages to be sent to the server.
+            } else {
+                socket.emit('playerChat', { sender: player.name, message: text });
+                this.addChatLine(player.name, text, true);
+            }
+
+            // Resets input.
+            input.value = '';
+            c.focus();
+        }
+    }
+};
+
+// Allows for addition of commands.
+ChatClient.prototype.registerCommand = function (name, description, callback) {
+    this.commands[name] = {
+        description: description,
+        callback: callback
+    };
+};
+
+// Allows help to print the list of all the commands and their descriptions.
+ChatClient.prototype.printHelp = function () {
+    var commands = this.commands;
+    for (var cmd in commands) {
+        if (commands.hasOwnProperty(cmd)) {
+            this.addSystemLine('-' + cmd + ': ' + commands[cmd].description);
+        }
+    }
+};
+
+var chat = new ChatClient();
+*/
+// Chat command callback functions.
+function keyInput(event) {
+	var key = event.which || event.keyCode;
+	if (key === KEY_FIREFOOD && reenviar) {
+        socket.emit('1');
+        reenviar = false;
+    }
+    else if (key === KEY_SPLIT && reenviar) {
+        socket.emit('2');
+        reenviar = false;
+    }
+    /*else if (key === KEY_CHAT) {
+        document.getElementById('chatInput').focus();
+    }*/
+}
 
     $( "#feed" ).click(function() {
         socket.emit('1');
@@ -267,9 +408,112 @@ function checkLatency() {
     startPingTime = Date.now();
     socket.emit('ping');
 }
+/*
+
+function toggleDarkMode() {
+    var LIGHT = '#f2fbff',
+        DARK = '#181818';
+    var LINELIGHT = '#000000',
+        LINEDARK = '#ffffff';
+
+    if (backgroundColor === LIGHT) {
+        backgroundColor = DARK;
+        lineColor = LINEDARK;
+        chat.addSystemLine('Dark mode enabled.');
+    } else {
+        backgroundColor = LIGHT;
+        lineColor = LINELIGHT;
+        chat.addSystemLine('Dark mode disabled.');
+    }
+}
+
+function toggleBorder() {
+    if (!borderDraw) {
+        borderDraw = true;
+        chat.addSystemLine('Showing border.');
+    } else {
+        borderDraw = false;
+        chat.addSystemLine('Hiding border.');
+    }
+}
+
+function toggleMass() {
+    if (toggleMassState === 0) {
+        toggleMassState = 1;
+        chat.addSystemLine('Viewing mass enabled.');
+    } else {
+        toggleMassState = 0;
+        chat.addSystemLine('Viewing mass disabled.');
+    }
+}
+
+function toggleContinuity() {
+    if (!continuity) {
+        continuity = true;
+        chat.addSystemLine('Continuity enabled.');
+    } else {
+        continuity = false;
+        chat.addSystemLine('Continuity disabled.');
+    }
+}
+
+function toggleRoundFood(args) {
+    if (args || foodSides < 10) {
+        foodSides = (args && !isNaN(args[0]) && +args[0] >= 3) ? +args[0] : 10;
+        chat.addSystemLine('Food is now rounded!');
+    } else {
+        foodSides = 5;
+        chat.addSystemLine('Food is no longer rounded!');
+    }
+}
+*/
+// TODO: Break out many of these GameControls into separate classes.
+/*
+chat.registerCommand('ping', 'Check your latency.', function () {
+    checkLatency();
+});
+
+chat.registerCommand('dark', 'Toggle dark mode.', function () {
+    toggleDarkMode();
+});
+
+chat.registerCommand('border', 'Toggle visibility of border.', function () {
+    toggleBorder();
+});
+
+chat.registerCommand('mass', 'Toggle visibility of mass.', function () {
+    toggleMass();
+});
+
+chat.registerCommand('continuity', 'Toggle continuity.', function () {
+    toggleContinuity();
+});
+
+chat.registerCommand('roundfood', 'Toggle food drawing.', function (args) {
+    toggleRoundFood(args);
+});
+
+chat.registerCommand('help', 'Information about the chat commands.', function () {
+    chat.printHelp();
+});
+
+chat.registerCommand('login', 'Login as an admin.', function (args) {
+    socket.emit('pass', args);
+});
+
+chat.registerCommand('kick', 'Kick a player, for admins only.', function (args) {
+    socket.emit('kick', args);
+});
+*/
 
 // socket stuff.
 function setupSocket(socket) {
+    // Handle ping.
+   /* socket.on('pong', function () {
+        var latency = Date.now() - startPingTime;
+        debug('Latency: ' + latency + 'ms');
+        chat.addSystemLine('Ping: ' + latency + 'ms');
+    });*/
 
     // Handle error.
     socket.on('connect_failed', function () {
@@ -292,6 +536,8 @@ function setupSocket(socket) {
         socket.emit('gotit', player);
         gameStart = true;
         debug('Game started at: ' + gameStart);
+        //chat.addSystemLine('Connected to the game!');
+        //chat.addSystemLine('Type <b>-help</b> for a list of commands.');
         if (mobile) {
             document.getElementById('gameAreaWrapper').removeChild(document.getElementById('chatbox'));
         }
@@ -302,6 +548,18 @@ function setupSocket(socket) {
         gameWidth = data.gameWidth;
         gameHeight = data.gameHeight;
         resize();
+    });
+
+    socket.on('playerDied', function (data) {
+        //chat.addSystemLine('{GAME} - <b>' + (data.name.length < 1 ? 'An unnamed cell' : data.name) + '</b> was eaten.');
+    });
+
+    socket.on('playerDisconnect', function (data) {
+       // chat.addSystemLine('{GAME} - <b>' + (data.name.length < 1 ? 'An unnamed cell' : data.name) + '</b> disconnected.');
+    });
+
+    socket.on('playerJoin', function (data) {
+        //chat.addSystemLine('{GAME} - <b>' + (data.name.length < 1 ? 'An unnamed cell' : data.name) + '</b> joined.');
     });
 
     socket.on('leaderboard', function (data) {
@@ -323,6 +581,15 @@ function setupSocket(socket) {
         }
         //status += '<br />Players: ' + data.players;
         document.getElementById('status').innerHTML = status;
+    });
+
+    socket.on('serverMSG', function (data) {
+       // chat.addSystemLine(data);
+    });
+
+    // Chat.
+    socket.on('serverSendPlayerChat', function (data) {
+       // chat.addChatLine(data.sender, data.message, false);
     });
 
     // Handle movement.
@@ -613,6 +880,120 @@ function animloop() {
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var cats = {};
+
+    var i = true;
+
+
+Leap.loop(function(frame) {
+  frame.hands.forEach(function(hand, index) {
+   
+
+    console.log(hand.screenPosition());
+
+        /*if (!directionLock) {
+        var x = Math.floor((Math.random() * 2) + 1);
+        console.log(x);*/
+
+        if( hand.screenPosition()[0] >= 700 ) {
+            target.x = 900  - screenWidth / 2;
+            target.y = 900  - screenHeight / 2;
+        } else {
+            target.x = 100  - screenWidth / 2;
+            target.y = 100  - screenHeight / 2;
+        }
+
+    
+
+/*
+      var key = 0;
+      if(hand.screenPosition()[0] >= 700) {
+        key = 40;//event.which || event.keyCode;    
+      } else {
+        key = 38;
+      }
+    
+    console.log('ooooooooooooooooooooooooook : ' + key);
+    if (key && i) {
+        i = !i;
+        console.log('ooooooooooooooooooooooooook');
+        directionLock = true;
+        if (newDirection(key,directions, true)) {
+
+            updateTarget(directions);
+            socket.emit('0', target);
+        }
+    }*/
+
+  });
+  
+}).use('screenPosition', {scale: 0.25});
+
+
+var Cat = function() {
+  var cat = this;
+  var img = document.createElement('img');
+  img.src = 'vaisseaux.png';
+  img.style.position = 'absolute';
+  img.onload = function () {
+    cat.setTransform([window.innerWidth/2,window.innerHeight/2], 0);
+    document.body.appendChild(img);
+  };
+  
+  cat.setTransform = function(position, rotation) {
+
+    img.style.left = position[0] - img.width  / 2 + 'px';
+    img.style.top  = position[1] - img.height / 2 + 'px';
+
+    img.style.transform = 'rotate(' + -rotation + 'rad)';
+    
+    img.style.webkitTransform = img.style.MozTransform = img.style.msTransform =
+    img.style.OTransform = img.style.transform;
+
+  };
+
+};
+
+cats[0] = new Cat();
+
+// This allows us to move the cat even whilst in an iFrame.
+Leap.loopController.setBackground(true);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 function gameLoop() {
     if (died) {
         graph.fillStyle = '#333333';
@@ -710,59 +1091,15 @@ function resize() {
 
 
 
-var cats = {};
-
-    var i = true;
 
 
-Leap.loop(function(frame) {
-  frame.hands.forEach(function(hand, index) {
-   
-
-    console.log(hand.screenPosition());
-
-        /*if (!directionLock) {
-        var x = Math.floor((Math.random() * 2) + 1);
-        console.log(x);*/
-
-        if( hand.screenPosition()[0] >= 700 ) {
-            target.x = 900  - screenWidth / 2;
-            target.y = 900  - screenHeight / 2;
-        } else {
-            target.x = 100  - screenWidth / 2;
-            target.y = 100  - screenHeight / 2;
-        }
-
-  });
-  
-}).use('screenPosition', {scale: 0.25});
 
 
-var Cat = function() {
-  var cat = this;
-  var img = document.createElement('img');
-  img.src = 'vaisseaux.png';
-  img.style.position = 'absolute';
-  img.onload = function () {
-    cat.setTransform([window.innerWidth/2,window.innerHeight/2], 0);
-    document.body.appendChild(img);
-  };
-  
-  cat.setTransform = function(position, rotation) {
 
-    img.style.left = position[0] - img.width  / 2 + 'px';
-    img.style.top  = position[1] - img.height / 2 + 'px';
 
-    img.style.transform = 'rotate(' + -rotation + 'rad)';
-    
-    img.style.webkitTransform = img.style.MozTransform = img.style.msTransform =
-    img.style.OTransform = img.style.transform;
 
-  };
 
-};
 
-cats[0] = new Cat();
 
-// This allows us to move the cat even whilst in an iFrame.
-Leap.loopController.setBackground(true);
+
+
