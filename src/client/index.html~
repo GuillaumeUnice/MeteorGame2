@@ -1,0 +1,21 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <!-- Meta Properties -->
+    <meta charset="UTF-8">
+    <title>Agar.IO Clone</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/main.css" />
+</head>
+<body>
+
+    <!-- JS -->
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+    <script src="js/app.js"></script>
+    <script src="https://js.leapmotion.com/leap-0.6.3.js"></script>
+<script src="https://js.leapmotion.com/leap-plugins-0.1.8.js"></script>
+<script src="js/cat.js"></script>
+</body>
+</html>
