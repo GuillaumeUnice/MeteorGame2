@@ -218,6 +218,7 @@ function balanceMass() {
     }
 }
 
+//socket_Begin
 io.on('connection', function (socket) {
     console.log('A user connected!', socket.handshake.query.type);
 
@@ -422,6 +423,7 @@ io.on('connection', function (socket) {
             }
         }
     });
+
     socket.on('2', function() {
         //Split cells.
         if(currentPlayer.cells.length < c.limitSplit && currentPlayer.massTotal >= c.defaultPlayerMass*2) {
@@ -442,7 +444,9 @@ io.on('connection', function (socket) {
             currentPlayer.lastSplit = new Date().getTime();
         }
     });
+
 });
+//socket_End
 
 function tickPlayer(currentPlayer) {
     if(currentPlayer.lastHeartbeat < new Date().getTime() - c.maxHeartbeatInterval) {
@@ -559,7 +563,9 @@ function tickPlayer(currentPlayer) {
 
         playerCollisions.forEach(collisionCheck);
     }
+
 }
+
 
 function moveloop() {
     for (var i = 0; i < users.length; i++) {
@@ -699,7 +705,9 @@ setInterval(gameloop, 1000);
 setInterval(sendUpdates, 1000 / c.networkUpdateFactor);
 
 // Don't touch, IP configurations.
+    //Bind to this IP address in order to recieve traffic from the routing layer
 var ipaddress = process.env.OPENSHIFT_NODEJS_IP || process.env.IP || '127.0.0.1';
+    //Listen on this port to recieve traffic from the routing layer
 var serverport = process.env.OPENSHIFT_NODEJS_PORT || process.env.PORT || c.port;
 if (process.env.OPENSHIFT_NODEJS_IP !== undefined) {
     http.listen( serverport, ipaddress, function() {
