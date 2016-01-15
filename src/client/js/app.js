@@ -1,93 +1,97 @@
 var io = require('socket.io-client');
 
-if ( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) {
-	mobile = true;
+if (/Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent)) {
+    mobile = true;
 }
 
 function startGame(type) {
-	playerName = playerNameInput.value.replace(/(<([^>]+)>)/ig, '').substring(0,25);
-	playerType = type;
 
-	screenWidth = window.innerWidth;
-	screenHeight = window.innerHeight;
+    document.getElementById('vaisseau').style.visibility = 'visible';
 
-	document.getElementById('startMenuWrapper').style.maxHeight = '0px';
-	document.getElementById('gameAreaWrapper').style.opacity = 1;
-	if (!socket) {
-		socket = io({query:"type=" + type});
-		setupSocket(socket);
-	}
-	if (!animLoopHandle)
-		animloop();
-	socket.emit('respawn');
+    console.log('Should be visible');
+    playerName = playerNameInput.value.replace(/(<([^>]+)>)/ig, '').substring(0, 25);
+    playerType = type;
+
+    screenWidth = window.innerWidth;
+    screenHeight = window.innerHeight;
+
+    document.getElementById('startMenuWrapper').style.maxHeight = '0px';
+    document.getElementById('gameAreaWrapper').style.opacity = 1;
+    if (!socket) {
+        socket = io({query: "type=" + type});
+        setupSocket(socket);
+    }
+    if (!animLoopHandle)
+        animloop();
+    socket.emit('respawn');
 }
 
 // Checks if the nick chosen contains valid alphanumeric characters (and underscores).
 function validNick() {
-	var regex = /^\w*$/;
-	console.log('Regex Test', regex.exec(playerNameInput.value));
-	return regex.exec(playerNameInput.value) !== null;
+    var regex = /^\w*$/;
+    console.log('Regex Test', regex.exec(playerNameInput.value));
+    return regex.exec(playerNameInput.value) !== null;
 }
 
-window.onload = function() {
+window.onload = function () {
+    var vaisseau = document.getElementById('vaisseau');
 
-	var btn = document.getElementById('startButton'),
-		btnS = document.getElementById('spectateButton'),
-		nickErrorText = document.querySelector('#startMenu .input-error');
+    vaisseau.style.visibility = 'hidden';
+    var btn = document.getElementById('startButton');
+    /*,
+     btnS = document.getElementById('spectateButton'),*/
+    var nickErrorText = document.querySelector('#startMenu .input-error');
 
-	btnS.onclick = function () {
-		startGame('spectate');
-	};
-	btn.onclick = function () {
+    /*	btnS.onclick = function () {
+     startGame('spectate');
+     };*/
+    btn.onclick = function () {
 
-		// Checks if the nick is valid.
-		if (validNick()) {
-			nickErrorText.style.opacity = 0;
-			startGame('player');
-		} else {
-			nickErrorText.style.opacity = 1;
-		}
-	};
+        // Checks if the nick is valid.
+        if (validNick()) {
+            nickErrorText.style.opacity = 0;
+            startGame('player');
 
-	var settingsMenu = document.getElementById('settingsButton');
-	var settings = document.getElementById('settings');
-	var instructions = document.getElementById('instructions');
+        } else {
+            nickErrorText.style.opacity = 1;
+        }
+    };
 
-	settingsMenu.onclick = function () {
-		if (settings.style.maxHeight == '300px') {
-			settings.style.maxHeight = '0px';
-		} else {
-			settings.style.maxHeight = '300px';
-		}
-	};
+    /*	var settingsMenu = document.getElementById('settingsButton');
+     var settings = document.getElementById('settings');
+     var instructions = document.getElementById('instructions');
 
-	playerNameInput.addEventListener('keypress', function (e) {
-		var key = e.which || e.keyCode;
+     settingsMenu.onclick = function () {
+     if (settings.style.maxHeight == '300px') {
+     settings.style.maxHeight = '0px';
+     } else {
+     settings.style.maxHeight = '300px';
+     }
+     };*/
 
-		if (key === KEY_ENTER) {
-			if (validNick()) {
-				nickErrorText.style.opacity = 0;
-				startGame('player');
-			} else {
-				nickErrorText.style.opacity = 1;
-			}
-		}
-	});
+    playerNameInput.addEventListener('keypress', function (e) {
+        var key = e.which || e.keyCode;
+
+        if (key === KEY_ENTER) {
+            if (validNick()) {
+                nickErrorText.style.opacity = 0;
+                startGame('player');
+            } else {
+                nickErrorText.style.opacity = 1;
+            }
+        }
+    });
 };
 
 
-
-
-
-
-$( "#feed" ).click(function() {
-	socket.emit('1');
-	reenviar = false;
+$("#feed").click(function () {
+    socket.emit('1');
+    reenviar = false;
 });
 
-$( "#split" ).click(function() {
-	socket.emit('2');
-	reenviar = false;
+$("#split").click(function () {
+    socket.emit('2');
+    reenviar = false;
 });
 
 /*
@@ -111,18 +115,18 @@ $( "#split" ).click(function() {
  }*/
 
 function directional(key) {
-	return horizontal(key) || vertical(key);
+    return horizontal(key) || vertical(key);
 }
 
 function horizontal(key) {
-	return key == KEY_LEFT || key == KEY_RIGHT;
+    return key == KEY_LEFT || key == KEY_RIGHT;
 }
 
 function vertical(key) {
-	return key == KEY_DOWN || key == KEY_UP;
+    return key == KEY_DOWN || key == KEY_UP;
 }
 function checkLatency() {
-	// Ping.
-	startPingTime = Date.now();
-	socket.emit('ping');
+    // Ping.
+    startPingTime = Date.now();
+    socket.emit('ping');
 }
