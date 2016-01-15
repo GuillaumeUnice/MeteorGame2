@@ -16,7 +16,13 @@ var util = require('./lib/util');
 // Import quadtree.
 var quadtree = require('../../quadtree');
 
+<<<<<<< HEAD
 var args = { x: 0, y: 0, h: c.gameHeight, w: c.gameWidth, maxChildren: 1, maxDepth: 5 };
+=======
+//game attribute
+var args = {x : 0, y : 0, h : c.gameHeight, w : c.gameWidth, maxChildren : 1, maxDepth : 5};
+
+>>>>>>> 542b6801bdd8417cafbb67a2331f3748c9ae3c70
 console.log(args);
 
 var tree = quadtree.QUAD.init(args);
@@ -37,6 +43,7 @@ var initMassLog = util.log(c.defaultPlayerMass, c.slowBase);
 
 app.use(express['static'](__dirname + '/../client'));
 
+<<<<<<< HEAD
 function addFood(toAdd) {
     var radius = util.massToRadius(c.foodMass);
     while (toAdd--) {
@@ -216,7 +223,22 @@ function balanceMass() {
         addVirus(virusToAdd);
     }
 }
+=======
+>>>>>>> 542b6801bdd8417cafbb67a2331f3748c9ae3c70
 
+/***********************************************************************START SOCKET*************************************************************************/
+/************************************************************************************************************************************************/
+/*
+*All the socket functions.
+* - game global : start , disconnect ect
+* - windows configuration
+* - chat
+* - login autentification
+* - kick a normal player as admin player
+* - play : feed and split
+* - keyboard action
+* - check latency
+**/
 io.on('connection', function (socket) {
     console.log('A user connected!', socket.handshake.query.type);
 
@@ -251,6 +273,17 @@ io.on('connection', function (socket) {
         }
     };
 
+
+/*..........................................game global.................................................*/
+//if client start game
+    socket.on('respawn', function () {
+        if (util.findIndex(users, currentPlayer.id) > -1)
+            users.splice(util.findIndex(users, currentPlayer.id), 1);
+        socket.emit('welcome', currentPlayer);
+        console.log('[INFO] User ' + currentPlayer.name + ' respawned!');
+    });
+
+//if client listen on 'welcome' and send 'gotit' with object player
     socket.on('gotit', function (player) {
         console.log('[INFO] Player ' + player.name + ' connecting!');
 
@@ -298,6 +331,7 @@ io.on('connection', function (socket) {
         }
     });
 
+<<<<<<< HEAD
     socket.on('ping', function () {
         socket.emit('pong');
     });
@@ -313,6 +347,9 @@ io.on('connection', function (socket) {
         console.log('[INFO] User ' + currentPlayer.name + ' respawned!');
     });
 
+=======
+//if client disconnect
+>>>>>>> 542b6801bdd8417cafbb67a2331f3748c9ae3c70
     socket.on('disconnect', function () {
         if (util.findIndex(users, currentPlayer.id) > -1) users.splice(util.findIndex(users, currentPlayer.id), 1);
         console.log('[INFO] User ' + currentPlayer.name + ' disconnected!');
@@ -320,7 +357,19 @@ io.on('connection', function (socket) {
         socket.broadcast.emit('playerDisconnect', { name: currentPlayer.name });
     });
 
+<<<<<<< HEAD
     socket.on('playerChat', function (data) {
+=======
+
+/*.........................windows configuration..............................*/
+    socket.on('windowResized', function (data) {
+        currentPlayer.screenWidth = data.screenWidth;
+        currentPlayer.screenHeight = data.screenHeight;
+    });
+
+/*.................................chart......................................*/
+ socket.on('playerChat', function(data) {
+>>>>>>> 542b6801bdd8417cafbb67a2331f3748c9ae3c70
         var _sender = data.sender.replace(/(<([^>]+)>)/ig, '');
         var _message = data.message.replace(/(<([^>]+)>)/ig, '');
         if (c.logChat === 1) {
@@ -329,7 +378,13 @@ io.on('connection', function (socket) {
         socket.broadcast.emit('serverSendPlayerChat', { sender: _sender, message: _message.substring(0, 35) });
     });
 
+<<<<<<< HEAD
     socket.on('pass', function (data) {
+=======
+/*................................. login ......................................*/
+ socket.on('playerChat', function(data) {
+    socket.on('pass', function(data) {
+>>>>>>> 542b6801bdd8417cafbb67a2331f3748c9ae3c70
         if (data[0] === c.adminPass) {
             console.log('[ADMIN] ' + currentPlayer.name + ' just logged in as an admin!');
             socket.emit('serverMSG', 'Welcome back ' + currentPlayer.name);
@@ -342,7 +397,12 @@ io.on('connection', function (socket) {
         }
     });
 
+<<<<<<< HEAD
     socket.on('kick', function (data) {
+=======
+/*................................. admin palyer can kick a normal player ......................................*/
+     socket.on('kick', function(data) {
+>>>>>>> 542b6801bdd8417cafbb67a2331f3748c9ae3c70
         if (currentPlayer.admin) {
             var reason = '';
             var worked = false;
@@ -377,7 +437,9 @@ io.on('connection', function (socket) {
             socket.emit('serverMSG', 'You are not permitted to use this command.');
         }
     });
+/*................................. yeah! let's play together!.................................*/
 
+<<<<<<< HEAD
     // Heartbeat function, update everytime.
     socket.on('0', function (target) {
         currentPlayer.lastHeartbeat = new Date().getTime();
@@ -387,6 +449,10 @@ io.on('connection', function (socket) {
     });
 
     socket.on('1', function () {
+=======
+//feed, client call this in client/app.js
+    socket.on('1', function() {
+>>>>>>> 542b6801bdd8417cafbb67a2331f3748c9ae3c70
         // Fire food.
         for (var i = 0; i < currentPlayer.cells.length; i++) {
             if (currentPlayer.cells[i].mass >= c.defaultPlayerMass + c.fireFood && c.fireFood > 0 || currentPlayer.cells[i].mass >= 20 && c.fireFood === 0) {
@@ -411,7 +477,13 @@ io.on('connection', function (socket) {
             }
         }
     });
+<<<<<<< HEAD
     socket.on('2', function () {
+=======
+
+//split, client call this in client/app.js
+    socket.on('2', function() {
+>>>>>>> 542b6801bdd8417cafbb67a2331f3748c9ae3c70
         //Split cells.
         if (currentPlayer.cells.length < c.limitSplit && currentPlayer.massTotal >= c.defaultPlayerMass * 2) {
             var numMax = currentPlayer.cells.length;
@@ -431,8 +503,218 @@ io.on('connection', function (socket) {
             currentPlayer.lastSplit = new Date().getTime();
         }
     });
-});
 
+// keyboard action, to change direction, see also client/delete.js
+// Heartbeat function, update everytime.
+    socket.on('0', function(target) {
+        currentPlayer.lastHeartbeat = new Date().getTime();
+        if (target.x !== currentPlayer.x || target.y !== currentPlayer.y) {
+            currentPlayer.target = target;
+        }
+    });
+
+/*................................. to test the latency.................................*/
+
+//see also client/app.js (who send 'ping'), and client/chat.js(who receive 'pong')
+ socket.on('ping', function () {
+        socket.emit('pong');
+    });
+
+
+ });
+
+/***********************************************************************END SOCKET*************************************************************************/
+/************************************************************************************************************************************************/
+
+
+/*....................called in function balanceMass....................................;;;;;;;.........*/
+function addFood(toAdd) {
+    var radius = util.massToRadius(c.foodMass);
+    while (toAdd--) {
+        var position = c.foodUniformDisposition ? util.uniformPosition(food, radius) : util.randomPosition(radius);
+        food.push({
+            // Make IDs unique.
+            id: ((new Date()).getTime() + '' + food.length) >>> 0,
+            x: position.x,
+            y: position.y,
+            radius: radius,
+            mass: Math.random() + 2,
+            hue: Math.round(Math.random() * 360)
+        });
+    }
+}
+
+/*....................called in function balanceMass......................................................*/
+function addVirus(toAdd) {
+    while (toAdd--) {
+        var mass = util.randomInRange(c.virus.defaultMass.from, c.virus.defaultMass.to, true);
+        var radius = util.massToRadius(mass);
+        var position = c.virusUniformDisposition ? util.uniformPosition(virus, radius) : util.randomPosition(radius);
+        virus.push({
+            id: ((new Date()).getTime() + '' + virus.length) >>> 0,
+            x: position.x,
+            y: position.y,
+            radius: radius,
+            mass: mass,
+            fill: c.virus.fill,
+            stroke: c.virus.stroke,
+            strokeWidth: c.virus.strokeWidth
+        });
+    }
+}
+
+/*....................called in function balanceMass......................................................*/
+function removeFood(toRem) {
+    while (toRem--) {
+        food.pop();
+    }
+}
+
+/*.................................................balanceMass,called in gameloop......................................................*/
+function balanceMass() {
+    var totalMass = food.length * c.foodMass +
+        users
+            .map(function(u) {return u.massTotal; })
+            .reduce(function(pu,cu) { return pu+cu;}, 0);
+
+    var massDiff = c.gameMass - totalMass;
+    var maxFoodDiff = c.maxFood - food.length;
+    var foodDiff = parseInt(massDiff / c.foodMass) - maxFoodDiff;
+    var foodToAdd = Math.min(foodDiff, maxFoodDiff);
+    var foodToRemove = -Math.max(foodDiff, maxFoodDiff);
+
+    if (foodToAdd > 0) {
+        //console.log('[DEBUG] Adding ' + foodToAdd + ' food to level!');
+        addFood(foodToAdd);
+        //console.log('[DEBUG] Mass rebalanced!');
+    }
+    else if (foodToRemove > 0) {
+        //console.log('[DEBUG] Removing ' + foodToRemove + ' food from level!');
+        removeFood(foodToRemove);
+        //console.log('[DEBUG] Mass rebalanced!');
+    }
+
+    var virusToAdd = c.maxVirus - virus.length;
+
+    if (virusToAdd > 0) {
+        addVirus(virusToAdd);
+    }
+}
+/*................................called in function tickPlayer......................................................*/
+function movePlayer(player) {
+    var x =0,y =0;
+    for(var i=0; i<player.cells.length; i++)
+    {
+        var target = {
+            x: player.x - player.cells[i].x + player.target.x,
+            y: player.y - player.cells[i].y + player.target.y
+        };
+        var dist = Math.sqrt(Math.pow(target.y, 2) + Math.pow(target.x, 2));
+        var deg = Math.atan2(target.y, target.x);
+        var slowDown = 1;
+        if(player.cells[i].speed <= 6.25) {
+            slowDown = util.log(player.cells[i].mass, c.slowBase) - initMassLog + 1;
+        }
+
+        var deltaY = player.cells[i].speed * Math.sin(deg)/ slowDown;
+        var deltaX = player.cells[i].speed * Math.cos(deg)/ slowDown;
+
+        if(player.cells[i].speed > 6.25) {
+            player.cells[i].speed -= 0.5;
+        }
+        if (dist < (50 + player.cells[i].radius)) {
+            deltaY *= dist / (50 + player.cells[i].radius);
+            deltaX *= dist / (50 + player.cells[i].radius);
+        }
+        if (!isNaN(deltaY)) {
+            player.cells[i].y += deltaY;
+        }
+        if (!isNaN(deltaX)) {
+            player.cells[i].x += deltaX;
+        }
+        // Find best solution.
+        for(var j=0; j<player.cells.length; j++) {
+            if(j != i && player.cells[i] !== undefined) {
+                var distance = Math.sqrt(Math.pow(player.cells[j].y-player.cells[i].y,2) + Math.pow(player.cells[j].x-player.cells[i].x,2));
+                var radiusTotal = (player.cells[i].radius + player.cells[j].radius);
+                if(distance < radiusTotal) {
+                    if(player.lastSplit > new Date().getTime() - 1000 * c.mergeTimer) {
+                        if(player.cells[i].x < player.cells[j].x) {
+                            player.cells[i].x--;
+                        } else if(player.cells[i].x > player.cells[j].x) {
+                            player.cells[i].x++;
+                        }
+                        if(player.cells[i].y < player.cells[j].y) {
+                            player.cells[i].y--;
+                        } else if((player.cells[i].y > player.cells[j].y)) {
+                            player.cells[i].y++;
+                        }
+                    }
+                    else if(distance < radiusTotal / 1.75) {
+                        player.cells[i].mass += player.cells[j].mass;
+                        player.cells[i].radius = util.massToRadius(player.cells[i].mass);
+                        player.cells.splice(j, 1);
+                    }
+                }
+            }
+        }
+        if(player.cells.length > i) {
+            var borderCalc = player.cells[i].radius / 3;
+            if (player.cells[i].x > c.gameWidth - borderCalc) {
+                player.cells[i].x = c.gameWidth - borderCalc;
+            }
+            if (player.cells[i].y > c.gameHeight - borderCalc) {
+                player.cells[i].y = c.gameHeight - borderCalc;
+            }
+            if (player.cells[i].x < borderCalc) {
+                player.cells[i].x = borderCalc;
+            }
+            if (player.cells[i].y < borderCalc) {
+                player.cells[i].y = borderCalc;
+            }
+            x += player.cells[i].x;
+            y += player.cells[i].y;
+        }
+    }
+    player.x = x/player.cells.length;
+    player.y = y/player.cells.length;
+}
+
+/*...............................called if moveloop...............................................*/
+function moveMass(mass) {
+    var deg = Math.atan2(mass.target.y, mass.target.x);
+    var deltaY = mass.speed * Math.sin(deg);
+    var deltaX = mass.speed * Math.cos(deg);
+
+    mass.speed -= 0.5;
+    if(mass.speed < 0) {
+        mass.speed = 0;
+    }
+    if (!isNaN(deltaY)) {
+        mass.y += deltaY;
+    }
+    if (!isNaN(deltaX)) {
+        mass.x += deltaX;
+    }
+
+    var borderCalc = mass.radius + 5;
+
+    if (mass.x > c.gameWidth - borderCalc) {
+        mass.x = c.gameWidth - borderCalc;
+    }
+    if (mass.y > c.gameHeight - borderCalc) {
+        mass.y = c.gameHeight - borderCalc;
+    }
+    if (mass.x < borderCalc) {
+        mass.x = borderCalc;
+    }
+    if (mass.y < borderCalc) {
+        mass.y = borderCalc;
+    }
+}
+
+
+/*...................START OF TICK, this function is called in moveloop..................................................................................................*/
 function tickPlayer(currentPlayer) {
     if (currentPlayer.lastHeartbeat < new Date().getTime() - c.maxHeartbeatInterval) {
         sockets[currentPlayer.id].emit('kick', 'Last heartbeat received over ' + c.maxHeartbeatInterval + ' ago.');
@@ -479,8 +761,15 @@ function tickPlayer(currentPlayer) {
         }
     }
 
+/*....................collision logic..............................*/
     function collisionCheck(collision) {
+<<<<<<< HEAD
         if (collision.aUser.mass > collision.bUser.mass * 1.1 && collision.aUser.radius > Math.sqrt(Math.pow(collision.aUser.x - collision.bUser.x, 2) + Math.pow(collision.aUser.y - collision.bUser.y, 2)) * 1.75) {
+=======
+
+        //Kill result depends on the ball size of player
+        if (collision.aUser.mass > collision.bUser.mass * 1.1  && collision.aUser.radius > Math.sqrt(Math.pow(collision.aUser.x - collision.bUser.x, 2) + Math.pow(collision.aUser.y - collision.bUser.y, 2))*1.75) {
+>>>>>>> 542b6801bdd8417cafbb67a2331f3748c9ae3c70
             console.log('[DEBUG] Killing user: ' + collision.bUser.id);
             console.log('[DEBUG] Collision info:');
             console.log(collision);
@@ -542,8 +831,13 @@ function tickPlayer(currentPlayer) {
 
         playerCollisions.forEach(collisionCheck);
     }
-}
 
+}
+/*.................................END OF TICK ..................................................................................*/
+
+
+
+/*......................loopS.......................................................*/
 function moveloop() {
     for (var i = 0; i < users.length; i++) {
         tickPlayer(users[i]);
@@ -594,6 +888,7 @@ function gameloop() {
     balanceMass();
 }
 
+/*.................................................update canvas..............................................................*/
 function sendUpdates() {
     users.forEach(function (u) {
         // center the view if x/y is undefined, this will happen for spectators
@@ -664,13 +959,15 @@ function sendUpdates() {
     });
     leaderboardChanged = false;
 }
-
+/*.........................HERE WE CALL ALL THE FUNCTION ABOVE...........................................................................................*/
 setInterval(moveloop, 1000 / 60);
 setInterval(gameloop, 1000);
 setInterval(sendUpdates, 1000 / c.networkUpdateFactor);
 
-// Don't touch, IP configurations.
+/*........................................ Don't touch, IP configurations..........................................*/
+    //Bind to this IP address in order to recieve traffic from the routing layer
 var ipaddress = process.env.OPENSHIFT_NODEJS_IP || process.env.IP || '127.0.0.1';
+    //Listen on this port to recieve traffic from the routing layer
 var serverport = process.env.OPENSHIFT_NODEJS_PORT || process.env.PORT || c.port;
 if (process.env.OPENSHIFT_NODEJS_IP !== undefined) {
     http.listen(serverport, ipaddress, function () {

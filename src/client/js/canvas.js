@@ -1,6 +1,9 @@
 
 // Canvas.
 var screenWidth = window.innerWidth;
+console.log(window.innerWidth);
+console.log(window.innerHeight);
+
 var screenHeight = window.innerHeight;
 var gameWidth = 0;
 var gameHeight = 0;
@@ -16,8 +19,8 @@ var kicked = false;
 var continuity = false;
 var startPingTime = 0;
 var toggleMassState = 0;
-var backgroundColor = '#f2fbff';
-var lineColor = '#000000';
+var backgroundColor = '#000000';
+var lineColor = '#ffffff';
 
 var foodConfig = {
     border: 0,
