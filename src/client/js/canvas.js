@@ -17,11 +17,11 @@ var kicked = false;
 var continuity = false;
 var startPingTime = 0;
 var toggleMassState = 0;
-var backgroundColor = '#000000';
-var lineColor = '#ffffff';
+var backgroundColor = '#f9f9f9';
+var lineColor = '#000000';
 
 var foodConfig = {
-    border: 0,
+    border: 0
 };
 
 var playerConfig = {

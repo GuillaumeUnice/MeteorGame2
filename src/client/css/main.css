@@ -256,7 +256,7 @@ div {
     opacity: 0;
 }
 
-@media only screen  and (min-width : 1224px) {
+@media only screen  and (min-width : 768px) {
     #mobile {
         display: none;
     }
