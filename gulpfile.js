@@ -53,7 +53,7 @@ gulp.task('run', ['build'], function () {
     nodemon({
         delay: 10,
         script: './server/server.js',
-        cwd: "./src/",
+        cwd: "./bin/",
         args: ["config.json"],
         ext: 'html js css'
     })
@@ -66,7 +66,7 @@ gulp.task('run-only', function () {
     nodemon({
         delay: 10,
         script: './server/server.js',
-        cwd: "./src/",
+        cwd: "./bin/",
         args: ["config.json"],
         ext: 'html js css'
     })
