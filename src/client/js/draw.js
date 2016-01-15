@@ -76,21 +76,6 @@ function drawPlayers(order) {
         var userCurrent = users[order[z].nCell];
         var cellCurrent = users[order[z].nCell].cells[order[z].nDiv];
 
-        /* var x = 0;
-         var y = 0;
-
-         var points = 30 + ~~(cellCurrent.mass / 5);
-         var increase = Math.PI * 2 / points;
-
-         graph.strokeStyle = 'hsl(' + userCurrent.hue + ', 100%, 45%)';
-         graph.fillStyle = 'hsl(' + userCurrent.hue + ', 100%, 50%)';
-         graph.lineWidth = playerConfig.border;
-
-         var xstore = [];
-         var ystore = [];
-
-         spin += 0.0;
-         */
         var circle = {
             x: cellCurrent.x - start.x,
             y: cellCurrent.y - start.y
@@ -98,69 +83,7 @@ function drawPlayers(order) {
 
 
         graph.drawImage(img, circle.x, circle.y);
-
-        /*for (var i = 0; i < points; i++) {
-
-         x = cellCurrent.radius * Math.cos(spin) + circle.x;
-         y = cellCurrent.radius * Math.sin(spin) + circle.y;
-         if (typeof(userCurrent.id) == "undefined") {
-         x = valueInRange(-userCurrent.x + screenWidth / 2, gameWidth - userCurrent.x + screenWidth / 2, x);
-         y = valueInRange(-userCurrent.y + screenHeight / 2, gameHeight - userCurrent.y + screenHeight / 2, y);
-         } else {
-         x = valueInRange(-cellCurrent.x - player.x + screenWidth / 2 + (cellCurrent.radius / 3), gameWidth - cellCurrent.x + gameWidth - player.x + screenWidth / 2 - (cellCurrent.radius / 3), x);
-         y = valueInRange(-cellCurrent.y - player.y + screenHeight / 2 + (cellCurrent.radius / 3), gameHeight - cellCurrent.y + gameHeight - player.y + screenHeight / 2 - (cellCurrent.radius / 3), y);
-         }
-         spin += increase;
-         xstore[i] = x;
-         ystore[i] = y;
-         }
-
-         for (i = 0; i < points; ++i) {
-         if (i === 0) {
-         graph.beginPath();
-         graph.moveTo(xstore[i], ystore[i]);
-         } else if (i > 0 && i < points - 1) {
-         graph.lineTo(xstore[i], ystore[i]);
-         } else {
-         graph.lineTo(xstore[i], ystore[i]);
-         graph.lineTo(xstore[0], ystore[0]);
-         }
-
-         }
-
-
-         /*
-         graph.lineJoin = 'round';
-         graph.lineCap = 'round';
-         graph.fill();
-         graph.stroke();
-         var nameCell = "";
-         if (typeof(userCurrent.id) == "undefined")
-         nameCell = player.name;
-         else
-         nameCell = userCurrent.name;
-
-         var fontSize = Math.max(cellCurrent.radius / 3, 12);
-         graph.lineWidth = playerConfig.textBorderSize;
-         graph.fillStyle = playerConfig.textColor;
-         graph.strokeStyle = playerConfig.textBorder;
-         graph.miterLimit = 1;
-         graph.lineJoin = 'round';
-         graph.textAlign = 'center';
-         graph.textBaseline = 'middle';
-         graph.font = 'bold ' + fontSize + 'px sans-serif';
-
-         if (toggleMassState === 0) {
-         graph.strokeText(nameCell, circle.x, circle.y);
-         graph.fillText(nameCell, circle.x, circle.y);
-         } else {
-         graph.strokeText(nameCell, circle.x, circle.y);
-         graph.fillText(nameCell, circle.x, circle.y);
-         graph.font = 'bold ' + Math.max(fontSize / 3 * 2, 10) + 'px sans-serif';
-         if (nameCell.length === 0) fontSize = 0;
-         graph.strokeText(Math.round(cellCurrent.mass), circle.x, circle.y + fontSize);
-         graph.fillText(Math.round(cellCurrent.mass), circle.x, circle.y + fontSize);
-         }*/
+        
     }
 }
 
