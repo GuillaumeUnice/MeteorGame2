@@ -29,13 +29,11 @@
     "newPlayerInitialPosition": "farthest",
     "massLossRate": 1,
     "mergeTimer": 15,
-    // TODO ADD Config Object
     "objectMax" : 20,
     "object": {
         "fill": "#000000",
         "stroke": "#2ECC71",
         "strokeWidth": 20,
         "objectRadius" : 20
-    },
-
+    }
 }
