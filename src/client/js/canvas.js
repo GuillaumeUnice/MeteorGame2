@@ -17,7 +17,8 @@ var kicked = false;
 var continuity = false;
 var startPingTime = 0;
 var toggleMassState = 0;
-var backgroundColor = '#f9f9f9';
+var backgroundColor = '#ffffff';
+
 var lineColor = '#000000';
 
 var foodConfig = {

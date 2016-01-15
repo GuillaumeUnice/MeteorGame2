@@ -54,10 +54,17 @@ function drawVirus(virus) {
 }
 
 function drawFireFood(mass) {
-    graph.strokeStyle = 'hsl(' + mass.hue + ', 100%, 45%)';
-    graph.fillStyle = 'hsl(' + mass.hue + ', 100%, 50%)';
-    graph.lineWidth = playerConfig.border + 10;
-    drawCircle(mass.x - player.x + screenWidth / 2, mass.y - player.y + screenHeight / 2, mass.radius - 5, 18 + (~~(mass.masa / 5)));
+    //  graph.strokeStyle = 'hsl(' + mass.hue + ', 100%, 45%)';
+    //  graph.fillStyle = 'hsl(' + mass.hue + ', 100%, 50%)';
+    //  graph.lineWidth = playerConfig.border+10;
+    //  drawCircle(mass.x - player.x + screenWidth / 2, mass.y - player.y + screenHeight / 2, mass.radius-5, 18 + (~~(mass.masa/5)));
+
+    //test2    var img = new Image();
+    var img = new Image();
+    img.src = "../img/bullet.png";
+    graph.drawImage(img, mass.x - player.x + screenWidth / 2, mass.y - player.y + screenHeight / 2);
+    console.log("fire!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
 }
 
 function drawPlayers(order) {
@@ -83,7 +90,7 @@ function drawPlayers(order) {
 
 
         graph.drawImage(img, circle.x, circle.y);
-        
+
     }
 }
 
