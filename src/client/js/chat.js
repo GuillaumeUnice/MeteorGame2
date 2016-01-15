@@ -583,14 +583,14 @@ function setupSocket(socket) {
         document.getElementById('status').innerHTML = status;
     });
 
-    socket.on('serverMSG', function (data) {
+  //  socket.on('serverMSG', function (data) {
        // chat.addSystemLine(data);
-    });
+  //  });
 
     // Chat.
-    socket.on('serverSendPlayerChat', function (data) {
+  /*  socket.on('serverSendPlayerChat', function (data) {
        // chat.addChatLine(data.sender, data.message, false);
-    });
+    });*/
 
     // Handle movement.
     socket.on('serverTellPlayerMove', function (userData, foodsList, massList, virusList) {
@@ -634,13 +634,13 @@ function setupSocket(socket) {
         }, 2500);
     });
 
-    socket.on('kick', function (data) {
+ /*   socket.on('kick', function (data) {
         gameStart = false;
         reason = data;
         kicked = true;
         socket.close();
-    });
-}
+    });  */
+} 
 
 function drawCircle(centerX, centerY, radius, sides) {
     var theta = 0;
