@@ -1,3 +1,8 @@
+/**
+ * Main file of the application
+ * @type {lookup|exports|module.exports}
+ */
+
 var io = require('socket.io-client');
 
 if ( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) {
