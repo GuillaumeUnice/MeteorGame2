@@ -1,11 +1,11 @@
 {
-  "name": "agar-clone",
-  "description": "A simple Agar.io clone",
+  "name": "Vessel control",
+  "description": "A simple game for vessel control",
   "scripts": {
     "build": "gulp build",
     "start": "gulp run",
     "watch": "gulp watch",
     "test": "gulp test"
   },
-  "repository": "https://github.com/huytd/agar.io-clone"
+  "repository": "https://github.com/GuillaumeUnice/MeteorGame2.git"
 }

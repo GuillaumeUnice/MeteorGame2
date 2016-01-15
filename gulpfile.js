@@ -16,37 +16,37 @@ gulp.task('test', ['lint'], function () {
 });
 
 gulp.task('lint', function () {
-  return gulp.src(['**/*.js', '!node_modules/**/*.js', '!bin/**/*.js'])
-    .pipe(jshint({
-          esnext: true
-      }))
-    .pipe(jshint.reporter('default', { verbose: true}))
-    .pipe(jshint.reporter('fail'));
+    return gulp.src(['**/*.js', '!node_modules/**/*.js', '!bin/**/*.js'])
+        .pipe(jshint({
+            esnext: true
+        }))
+        .pipe(jshint.reporter('default', { verbose: true}))
+        .pipe(jshint.reporter('fail'));
 });
 
 gulp.task('build-client', ['lint', 'move-client'], function () {
-  return gulp.src(['src/client/js/app.js'])
-    .pipe(webpack(require('./webpack.config.js')))
-    //.pipe(uglify())
-    .pipe(gulp.dest('bin/client/js/'));
+    return gulp.src(['src/client/js/app.js'])
+        .pipe(webpack(require('./webpack.config.js')))
+        //.pipe(uglify())
+        .pipe(gulp.dest('bin/client/js/'));
 });
 
 gulp.task('move-client', function () {
-  return gulp.src(['src/client/**/*.*', '!client/js/*.js'])
-    .pipe(gulp.dest('./bin/client/'));
+    return gulp.src(['src/client/**/*.*', '!client/js/*.js'])
+        .pipe(gulp.dest('./bin/client/'));
 });
 
 
 gulp.task('build-server', ['lint'], function () {
-  return gulp.src(['src/server/**/*.*', 'src/server/**/*.js'])
-    .pipe(babel())
-    .pipe(gulp.dest('bin/server/'));
+    return gulp.src(['src/server/**/*.*', 'src/server/**/*.js'])
+        .pipe(babel())
+        .pipe(gulp.dest('bin/server/'));
 });
 
 gulp.task('watch', ['build'], function () {
-  gulp.watch(['src/client/**/*.*'], ['build-client', 'move-client']);
-  gulp.watch(['src/server/*.*', 'src/server/**/*.js'], ['build-server']);
-  gulp.start('run-only');
+    gulp.watch(['src/client/**/*.*'], ['build-client', 'move-client']);
+    gulp.watch(['src/server/*.*', 'src/server/**/*.js'], ['build-server']);
+    gulp.start('run-only');
 });
 
 gulp.task('run', ['build'], function () {
@@ -57,9 +57,9 @@ gulp.task('run', ['build'], function () {
         args: ["config.json"],
         ext: 'html js css'
     })
-    .on('restart', function () {
-        util.log('server restarted!');
-    });
+        .on('restart', function () {
+            util.log('server restarted!');
+        });
 });
 
 gulp.task('run-only', function () {
@@ -70,9 +70,9 @@ gulp.task('run-only', function () {
         args: ["config.json"],
         ext: 'html js css'
     })
-    .on('restart', function () {
-        util.log('server restarted!');
-    });
+        .on('restart', function () {
+            util.log('server restarted!');
+        });
 });
 
 gulp.task('default', ['run']);

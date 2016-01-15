@@ -55,7 +55,7 @@ app.use(express.static(__dirname + '/../client'));
 **/
 io.on('connection', function (socket) {
     console.log('A user connected!', socket.handshake.query.type);
-//initialize a player cell
+//initialize a player
     var type = socket.handshake.query.type;
     var radius = util.massToRadius(c.defaultPlayerMass);
     var position = c.newPlayerInitialPosition == 'farthest' ? util.uniformPosition(users, radius) : util.randomPosition(radius);
@@ -165,17 +165,17 @@ io.on('connection', function (socket) {
     });
 
 /*.................................chart......................................*/
-/* socket.on('playerChat', function(data) {
+ socket.on('playerChat', function(data) {
         var _sender = data.sender.replace(/(<([^>]+)>)/ig, '');
         var _message = data.message.replace(/(<([^>]+)>)/ig, '');
         if (c.logChat === 1) {
             console.log('[CHAT] [' + (new Date()).getHours() + ':' + (new Date()).getMinutes() + '] ' + _sender + ': ' + _message);
         }
         socket.broadcast.emit('serverSendPlayerChat', {sender: _sender, message: _message.substring(0,35)});
-    });  */
+    });
 
-/*................................. identification ......................................*/
- /*   socket.on('pass', function(data) {
+/*................................. login ......................................*/
+    socket.on('pass', function(data) {
         if (data[0] === c.adminPass) {
             console.log('[ADMIN] ' + currentPlayer.name + ' just logged in as an admin!');
             socket.emit('serverMSG', 'Welcome back ' + currentPlayer.name);
@@ -187,9 +187,9 @@ io.on('connection', function (socket) {
             // TODO: Actually log incorrect passwords.
         }
     });
-*/
+
 /*................................. admin palyer can kick a normal player ......................................*/
-/*.     socket.on('kick', function(data) {
+     socket.on('kick', function(data) {
         if (currentPlayer.admin) {
             var reason = '';
             var worked = false;
@@ -225,7 +225,7 @@ io.on('connection', function (socket) {
             console.log('[ADMIN] ' + currentPlayer.name + ' is trying to use -kick but isn\'t an admin.');
             socket.emit('serverMSG', 'You are not permitted to use this command.');
         }
-    }); */
+    });
 /*................................. yeah! let's play together!.................................*/
 
 //feed, client call this in client/app.js

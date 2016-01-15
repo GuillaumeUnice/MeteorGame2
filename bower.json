@@ -1,0 +1,37 @@
+{
+  "name": "Vessel",
+  "description": "A simple game designed for vessel fighting",
+  "main": "server/server.js",
+  "authors": [
+    "Guillaume Borg",
+    "Audric Chabert",
+    "Ying JIANG",
+    "Falou SECK"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "Vessels",
+    "Game",
+    "Borg",
+    "Chabert",
+    "Jiang",
+    "Seck"
+  ],
+  "homepage": "https://github.com/GuillaumeUnice/MeteorGame2",
+  "moduleType": [
+    "amd",
+    "globals"
+  ],
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "www/lib",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.6"
+  }
+}
