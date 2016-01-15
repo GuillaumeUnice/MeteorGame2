@@ -306,7 +306,7 @@ io.on('connection', function (socket) {
 
 /*....................called in function balanceMass....................................;;;;;;;.........*/
 function addFood(toAdd) {
-    var radius = util.massToRadius(c.foodMass);
+    /*var radius = util.massToRadius(c.foodMass);
     while (toAdd--) {
         var position = c.foodUniformDisposition ? util.uniformPosition(food, radius) : util.randomPosition(radius);
         food.push({
@@ -318,12 +318,12 @@ function addFood(toAdd) {
             mass: Math.random() + 2,
             hue: Math.round(Math.random() * 360)
         });
-    }
+    }*/
 }
 
 /*....................called in function balanceMass......................................................*/
 function addVirus(toAdd) {
-    while (toAdd--) {
+    /*while (toAdd--) {
         var mass = util.randomInRange(c.virus.defaultMass.from, c.virus.defaultMass.to, true);
         var radius = util.massToRadius(mass);
         var position = c.virusUniformDisposition ? util.uniformPosition(virus, radius) : util.randomPosition(radius);
@@ -337,19 +337,19 @@ function addVirus(toAdd) {
             stroke: c.virus.stroke,
             strokeWidth: c.virus.strokeWidth
         });
-    }
+    }*/
 }
 
 /*....................called in function balanceMass......................................................*/
 function removeFood(toRem) {
-    while (toRem--) {
+    /*while (toRem--) {
         food.pop();
-    }
+    }*/
 }
 
 /*.................................................balanceMass,called in gameloop......................................................*/
 function balanceMass() {
-    var totalMass = food.length * c.foodMass +
+ /*   var totalMass = food.length * c.foodMass +
         users
             .map(function(u) {return u.massTotal; })
             .reduce(function(pu,cu) { return pu+cu;}, 0);
@@ -375,7 +375,7 @@ function balanceMass() {
 
     if (virusToAdd > 0) {
         addVirus(virusToAdd);
-    }
+    }*/
 }
 /*................................called in function tickPlayer......................................................*/
 function movePlayer(player) {

@@ -1,6 +1,4 @@
 
-
-
 // socket stuff.
 function setupSocket(socket) {
 
@@ -39,7 +37,7 @@ function setupSocket(socket) {
 
     socket.on('leaderboard', function (data) {
         leaderboard = data.leaderboard;
-        var status = '<span class="title">Leaderboard</span>';
+        var status = '<span class="title">Connected</span>';
         for (var i = 0; i < leaderboard.length; i++) {
             status += '<br />';
             if (leaderboard[i].id == player.id){
@@ -107,9 +105,6 @@ function setupSocket(socket) {
         socket.close();
     }); */
 }
-
-
-
 
 function resize() {
     player.screenWidth = c.width = screenWidth = playerType == 'player' ? window.innerWidth : gameWidth;
