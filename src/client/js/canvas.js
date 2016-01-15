@@ -1,8 +1,6 @@
 
 // Canvas.
 var screenWidth = window.innerWidth;
-console.log(window.innerWidth);
-console.log(window.innerHeight);
 
 var screenHeight = window.innerHeight;
 var gameWidth = 0;
@@ -78,7 +76,8 @@ function gameInput(mouse) {
 
         target.x = mouse.clientX - screenWidth / 2;
         target.y = mouse.clientY - screenHeight / 2;
-                console.log(target);
+        //TODO : ne pas supprimer
+        //console.log(target);
     }
 }
 
