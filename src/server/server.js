@@ -173,7 +173,7 @@ io.on('connection', function (socket) {
         currentPlayer.screenWidth = data.screenWidth;
         currentPlayer.screenHeight = data.screenHeight;
     });
-    
+
 //feed, client call this in client/app.js
     socket.on('1', function () {
         // Fire food.
@@ -251,76 +251,80 @@ io.on('connection', function (socket) {
 
  /*....................called in function balanceMass....................................;;;;;;;.........*/
 function addFood(toAdd) {
-    /*var radius = util.massToRadius(c.foodMass);
-     while (toAdd--) {
-     var position = c.foodUniformDisposition ? util.uniformPosition(food, radius) : util.randomPosition(radius);
-     food.push({
-     // Make IDs unique.
-     id: ((new Date()).getTime() + '' + food.length) >>> 0,
-     x: position.x,
-     y: position.y,
-     radius: radius,
-     mass: Math.random() + 2,
-     hue: Math.round(Math.random() * 360)
-     });
-     }*/
+    var radius = util.massToRadius(c.foodMass);
+    while (toAdd--) {
+        var position = c.foodUniformDisposition ? util.uniformPosition(food, radius) : util.randomPosition(radius);
+        food.push({
+            // Make IDs unique.
+            id: ((new Date()).getTime() + '' + food.length) >>> 0,
+            x: position.x,
+            y: position.y,
+            radius: radius,
+            mass: Math.random() + 2,
+            hue: Math.round(Math.random() * 360)
+        });
+    }
 }
 
 /*....................called in function balanceMass......................................................*/
 function addVirus(toAdd) {
-    /*while (toAdd--) {
-     var mass = util.randomInRange(c.virus.defaultMass.from, c.virus.defaultMass.to, true);
-     var radius = util.massToRadius(mass);
-     var position = c.virusUniformDisposition ? util.uniformPosition(virus, radius) : util.randomPosition(radius);
-     virus.push({
-     id: ((new Date()).getTime() + '' + virus.length) >>> 0,
-     x: position.x,
-     y: position.y,
-     radius: radius,
-     mass: mass,
-     fill: c.virus.fill,
-     stroke: c.virus.stroke,
-     strokeWidth: c.virus.strokeWidth
-     });
-     }*/
+    while (toAdd--) {
+        var mass = util.randomInRange(c.virus.defaultMass.from, c.virus.defaultMass.to, true);
+        var radius = util.massToRadius(mass);
+        var position = c.virusUniformDisposition ? util.uniformPosition(virus, radius) : util.randomPosition(radius);
+        virus.push({
+            id: ((new Date()).getTime() + '' + virus.length) >>> 0,
+            x: position.x,
+            y: position.y,
+            radius: radius,
+            mass: mass,
+            fill: c.virus.fill,
+            stroke: c.virus.stroke,
+            strokeWidth: c.virus.strokeWidth
+        });
+    }
 }
 
 /*....................called in function balanceMass......................................................*/
 function removeFood(toRem) {
-    /*while (toRem--) {
-     food.pop();
-     }*/
+    while (toRem--) {
+        food.pop();
+    }
 }
 
 /*.................................................balanceMass,called in gameloop......................................................*/
 function balanceMass() {
-    /*   var totalMass = food.length * c.foodMass +
-     users
-     .map(function(u) {return u.massTotal; })
-     .reduce(function(pu,cu) { return pu+cu;}, 0);
+    var totalMass = food.length * c.foodMass +
+        users
+            .map(function (u) {
+                return u.massTotal;
+            })
+            .reduce(function (pu, cu) {
+                return pu + cu;
+            }, 0);
 
-     var massDiff = c.gameMass - totalMass;     //gameMass = 20000
-     var maxFoodDiff = c.maxFood - food.length; //maxFood = 20
-     var foodDiff = parseInt(massDiff / c.foodMass) - maxFoodDiff;
-     var foodToAdd = Math.min(foodDiff, maxFoodDiff);
-     var foodToRemove = -Math.max(foodDiff, maxFoodDiff);
+    var massDiff = c.gameMass - totalMass;     //gameMass = 20000
+    var maxFoodDiff = c.maxFood - food.length; //maxFood = 20
+    var foodDiff = parseInt(massDiff / c.foodMass) - maxFoodDiff;
+    var foodToAdd = Math.min(foodDiff, maxFoodDiff);
+    var foodToRemove = -Math.max(foodDiff, maxFoodDiff);
 
-     if (foodToAdd > 0) {
-     //console.log('[DEBUG] Adding ' + foodToAdd + ' food to level!');
-     addFood(foodToAdd);
-     //console.log('[DEBUG] Mass rebalanced!');
-     }
-     else if (foodToRemove > 0) {
-     //console.log('[DEBUG] Removing ' + foodToRemove + ' food from level!');
-     removeFood(foodToRemove);
-     //console.log('[DEBUG] Mass rebalanced!');
-     }
+    if (foodToAdd > 0) {
+        //console.log('[DEBUG] Adding ' + foodToAdd + ' food to level!');
+        addFood(foodToAdd);
+        //console.log('[DEBUG] Mass rebalanced!');
+    }
+    else if (foodToRemove > 0) {
+        //console.log('[DEBUG] Removing ' + foodToRemove + ' food from level!');
+        removeFood(foodToRemove);
+        //console.log('[DEBUG] Mass rebalanced!');
+    }
 
-     var virusToAdd = c.maxVirus - virus.length;
+    var virusToAdd = c.maxVirus - virus.length;
 
-     if (virusToAdd > 0) {
-     addVirus(virusToAdd);
-     }*/
+    if (virusToAdd > 0) {
+        addVirus(virusToAdd);
+    }
 }
 /*................................called in function tickPlayer......................................................*/
 function movePlayer(player) {
