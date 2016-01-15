@@ -16,6 +16,15 @@ var util = require('./lib/util');
 // Import quadtree.
 var quadtree= require('../../quadtree');
 
+
+var moveImport = require("./move.js");
+
+/* My imports */
+var moveImport = require("./move.js");
+var socketImport = require("./socket.js");
+
+
+
 //game attribute
 var args = {x : 0, y : 0, h : c.gameHeight, w : c.gameWidth, maxChildren : 1, maxDepth : 5};
 
@@ -40,19 +49,23 @@ var initMassLog = util.log(c.defaultPlayerMass, c.slowBase);
 app.use(express.static(__dirname + '/../client'));
 
 
+//SOCKET IMPORT ATTEMPT
+//io.on('connection', function (socket) {socketImport.ioon(socket,c,users,sockets);});
+
+
 /***********************************************************************START SOCKET*************************************************************************/
 /************************************************************************************************************************************************/
 /*
-*All the socket functions.
-* - game global : start , disconnect ect
-* - windows configuration
-* - chat
-* - login autentification
-* - kick a normal player as admin player
-* - play : feed and split
-* - keyboard action
-* - check latency
-**/
+ *All the socket functions.
+ * - game global : start , disconnect ect
+ * - windows configuration
+ * - chat
+ * - login autentification
+ * - kick a normal player as admin player
+ * - play : feed and split
+ * - keyboard action
+ * - check latency
+ **/
 io.on('connection', function (socket) {
     console.log('A user connected!', socket.handshake.query.type);
 //initialize a player
@@ -88,7 +101,7 @@ io.on('connection', function (socket) {
     };
 
 
-/*..........................................game global.................................................*/
+    /*..........................................game global.................................................*/
 //if client start game
     socket.on('respawn', function () {
         if (util.findIndex(users, currentPlayer.id) > -1)
@@ -128,8 +141,8 @@ io.on('connection', function (socket) {
                 player.massTotal = c.defaultPlayerMass;
             }
             else {
-                 player.cells = [];
-                 player.massTotal = 0;
+                player.cells = [];
+                player.massTotal = 0;
             }
             player.hue = Math.round(Math.random() * 360);
             currentPlayer = player;
@@ -158,75 +171,75 @@ io.on('connection', function (socket) {
     });
 
 
-/*.........................windows configuration..............................*/
+    /*.........................windows configuration..............................*/
     socket.on('windowResized', function (data) {
         currentPlayer.screenWidth = data.screenWidth;
         currentPlayer.screenHeight = data.screenHeight;
     });
 
-/*.................................chart......................................*/
-/* socket.on('playerChat', function(data) {
-        var _sender = data.sender.replace(/(<([^>]+)>)/ig, '');
-        var _message = data.message.replace(/(<([^>]+)>)/ig, '');
-        if (c.logChat === 1) {
-            console.log('[CHAT] [' + (new Date()).getHours() + ':' + (new Date()).getMinutes() + '] ' + _sender + ': ' + _message);
-        }
-        socket.broadcast.emit('serverSendPlayerChat', {sender: _sender, message: _message.substring(0,35)});
-    });
-*/
-/*................................. login ......................................*/
-/*    socket.on('pass', function(data) {
-        if (data[0] === c.adminPass) {
-            console.log('[ADMIN] ' + currentPlayer.name + ' just logged in as an admin!');
-            socket.emit('serverMSG', 'Welcome back ' + currentPlayer.name);
-            socket.broadcast.emit('serverMSG', currentPlayer.name + ' just logged in as admin!');
-            currentPlayer.admin = true;
-        } else {
-            console.log('[ADMIN] ' + currentPlayer.name + ' attempted to log in with incorrect password.');
-            socket.emit('serverMSG', 'Password incorrect, attempt logged.');
-            // TODO: Actually log incorrect passwords.
-        }
-    });*/
+    /*.................................chart......................................*/
+    /* socket.on('playerChat', function(data) {
+     var _sender = data.sender.replace(/(<([^>]+)>)/ig, '');
+     var _message = data.message.replace(/(<([^>]+)>)/ig, '');
+     if (c.logChat === 1) {
+     console.log('[CHAT] [' + (new Date()).getHours() + ':' + (new Date()).getMinutes() + '] ' + _sender + ': ' + _message);
+     }
+     socket.broadcast.emit('serverSendPlayerChat', {sender: _sender, message: _message.substring(0,35)});
+     });
+     */
+    /*................................. login ......................................*/
+    /*    socket.on('pass', function(data) {
+     if (data[0] === c.adminPass) {
+     console.log('[ADMIN] ' + currentPlayer.name + ' just logged in as an admin!');
+     socket.emit('serverMSG', 'Welcome back ' + currentPlayer.name);
+     socket.broadcast.emit('serverMSG', currentPlayer.name + ' just logged in as admin!');
+     currentPlayer.admin = true;
+     } else {
+     console.log('[ADMIN] ' + currentPlayer.name + ' attempted to log in with incorrect password.');
+     socket.emit('serverMSG', 'Password incorrect, attempt logged.');
+     // TODO: Actually log incorrect passwords.
+     }
+     });*/
 
-/*................................. admin palyer can kick a normal player ......................................*/
-/*     socket.on('kick', function(data) {
-        if (currentPlayer.admin) {
-            var reason = '';
-            var worked = false;
-            for (var e = 0; e < users.length; e++) {
-                if (users[e].name === data[0] && !users[e].admin && !worked) {
-                    if (data.length > 1) {
-                        for (var f = 1; f < data.length; f++) {
-                            if (f === data.length) {
-                                reason = reason + data[f];
-                            }
-                            else {
-                                reason = reason + data[f] + ' ';
-                            }
-                        }
-                    }
-                    if (reason !== '') {
-                       console.log('[ADMIN] User ' + users[e].name + ' kicked successfully by ' + currentPlayer.name + ' for reason ' + reason);
-                    }
-                    else {
-                       console.log('[ADMIN] User ' + users[e].name + ' kicked successfully by ' + currentPlayer.name);
-                    }
-                    socket.emit('serverMSG', 'User ' + users[e].name + ' was kicked by ' + currentPlayer.name);
-                    sockets[users[e].id].emit('kick', reason);
-                    sockets[users[e].id].disconnect();
-                    users.splice(e, 1);
-                    worked = true;
-                }
-            }
-            if (!worked) {
-                socket.emit('serverMSG', 'Could not locate user or user is an admin.');
-            }
-        } else {
-            console.log('[ADMIN] ' + currentPlayer.name + ' is trying to use -kick but isn\'t an admin.');
-            socket.emit('serverMSG', 'You are not permitted to use this command.');
-        }
-    });  */
-/*................................. yeah! let's play together!.................................*/
+    /*................................. admin palyer can kick a normal player ......................................*/
+    /*     socket.on('kick', function(data) {
+     if (currentPlayer.admin) {
+     var reason = '';
+     var worked = false;
+     for (var e = 0; e < users.length; e++) {
+     if (users[e].name === data[0] && !users[e].admin && !worked) {
+     if (data.length > 1) {
+     for (var f = 1; f < data.length; f++) {
+     if (f === data.length) {
+     reason = reason + data[f];
+     }
+     else {
+     reason = reason + data[f] + ' ';
+     }
+     }
+     }
+     if (reason !== '') {
+     console.log('[ADMIN] User ' + users[e].name + ' kicked successfully by ' + currentPlayer.name + ' for reason ' + reason);
+     }
+     else {
+     console.log('[ADMIN] User ' + users[e].name + ' kicked successfully by ' + currentPlayer.name);
+     }
+     socket.emit('serverMSG', 'User ' + users[e].name + ' was kicked by ' + currentPlayer.name);
+     sockets[users[e].id].emit('kick', reason);
+     sockets[users[e].id].disconnect();
+     users.splice(e, 1);
+     worked = true;
+     }
+     }
+     if (!worked) {
+     socket.emit('serverMSG', 'Could not locate user or user is an admin.');
+     }
+     } else {
+     console.log('[ADMIN] ' + currentPlayer.name + ' is trying to use -kick but isn\'t an admin.');
+     socket.emit('serverMSG', 'You are not permitted to use this command.');
+     }
+     });  */
+    /*................................. yeah! let's play together!.................................*/
 
 //feed, client call this in client/app.js
     socket.on('1', function() {
@@ -290,18 +303,18 @@ io.on('connection', function (socket) {
         }
     });
 
-/*................................. to test the latency.................................*/
+    /*................................. to test the latency.................................*/
 
 //see also client/app.js (who send 'ping'), and client/chat.js(who receive 'pong')
- socket.on('ping', function () {
+    socket.on('ping', function () {
         socket.emit('pong');
     });
 
 
- });
+});
 
 /***********************************************************************END SOCKET*************************************************************************/
-/************************************************************************************************************************************************/
+/******
 
 
 /*....................called in function balanceMass....................................;;;;;;;.........*/
@@ -457,40 +470,6 @@ function movePlayer(player) {
     player.y = y/player.cells.length;
 }
 
-/*...............................called if moveloop...............................................*/
-function moveMass(mass) {
-    var deg = Math.atan2(mass.target.y, mass.target.x);
-    var deltaY = mass.speed * Math.sin(deg);
-    var deltaX = mass.speed * Math.cos(deg);
-
-    mass.speed -= 0.5;
-    if(mass.speed < 0) {
-        mass.speed = 0;
-    }
-    if (!isNaN(deltaY)) {
-        mass.y += deltaY;
-    }
-    if (!isNaN(deltaX)) {
-        mass.x += deltaX;
-    }
-
-    var borderCalc = mass.radius + 5;
-
-    if (mass.x > c.gameWidth - borderCalc) {
-        mass.x = c.gameWidth - borderCalc;
-    }
-    if (mass.y > c.gameHeight - borderCalc) {
-        mass.y = c.gameHeight - borderCalc;
-    }
-    if (mass.x < borderCalc) {
-        mass.x = borderCalc;
-    }
-    if (mass.y < borderCalc) {
-        mass.y = borderCalc;
-    }
-}
-
-
 /*...................START OF TICK, this function is called in moveloop..................................................................................................*/
 function tickPlayer(currentPlayer) {
     if(currentPlayer.lastHeartbeat < new Date().getTime() - c.maxHeartbeatInterval) {
@@ -622,7 +601,7 @@ function moveloop() {
         tickPlayer(users[i]);
     }
     for (i=0; i < massFood.length; i++) {
-        if(massFood[i].speed > 0) moveMass(massFood[i]);
+        if(massFood[i].speed > 0) moveImport.moveMass(massFood[i]);
     }
 }
 

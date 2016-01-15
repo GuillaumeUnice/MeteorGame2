@@ -1,4 +1,4 @@
-function drawTriangle(centerX, centerY, radius, sides) {
+function drawCircle(centerX, centerY, radius, sides) {
     var theta = 0;
     var x = 0;
     var y = 0;
@@ -17,7 +17,7 @@ function drawTriangle(centerX, centerY, radius, sides) {
     graph.fill();
 }
 
-function drawCircle(centerX, centerY, radius, sides) {
+function drawTriangle(centerX, centerY, radius, sides) {
     
     size=5;
 
@@ -46,7 +46,7 @@ function drawVirus(virus) {
     graph.strokeStyle = virus.stroke;
     graph.fillStyle = virus.fill;
     graph.lineWidth = virus.strokeWidth;
-    drawCircle(virus.x - player.x + screenWidth / 2, virus.y - player.y + screenHeight / 2, virus.radius, virusSides);
+    drawTriangle(virus.x - player.x + screenWidth / 2, virus.y - player.y + screenHeight / 2, virus.radius, virusSides);
 }
 
 function drawFireFood(mass) {
