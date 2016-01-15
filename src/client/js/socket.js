@@ -100,12 +100,12 @@ function setupSocket(socket) {
         }, 2500);
     });
 
-    socket.on('kick', function (data) {
+/*    socket.on('kick', function (data) {
         gameStart = false;
         reason = data;
         kicked = true;
         socket.close();
-    });
+    }); */
 }
 
 

@@ -1,4 +1,4 @@
-function drawCircle(centerX, centerY, radius, sides) {
+function drawTriangle(centerX, centerY, radius, sides) {
     var theta = 0;
     var x = 0;
     var y = 0;
@@ -16,6 +16,24 @@ function drawCircle(centerX, centerY, radius, sides) {
     graph.stroke();
     graph.fill();
 }
+
+function drawCircle(centerX, centerY, radius, sides) {
+    
+    size=5;
+
+    graph.beginPath();
+
+    graph.lineTo(centerX+30*size, centerY+0*size);
+
+    graph.lineTo(centerX+15*size, centerY+40*size);
+
+    graph.lineTo(centerX+45*size, centerY+40*size);
+
+    graph.closePath();
+    graph.fill();
+}
+
+
 
 function drawFood(food) {
     graph.strokeStyle = 'hsl(' + food.hue + ', 100%, 45%)';

@@ -22,13 +22,6 @@ function animloop() {
 //var stopDeplacement = true;
 function gameLoop() {
 
-  /*  if(stopDeplacement) {
-        target.x = 0;
-        target.y = 0;
-
-    }*/
-
-
     if (died) {
         graph.fillStyle = '#333333';
         graph.fillRect(0, 0, screenWidth, screenHeight);
@@ -92,6 +85,7 @@ function gameLoop() {
             else {
                 graph.fillText('You were kicked!', screenWidth / 2, screenHeight / 2);
             }
+
         }
         else {
               graph.fillText('Disconnected!', screenWidth / 2, screenHeight / 2);
