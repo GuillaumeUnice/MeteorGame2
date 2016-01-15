@@ -1,5 +1,5 @@
 {
-  "name": "Vessel control",
+  "name": "Vessel",
   "version": "1.0.0",
   "description": "A simple vessel control game",
   "main": "server/server.js",
