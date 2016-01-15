@@ -588,9 +588,9 @@ function setupSocket(socket) {
   //  });
 
     // Chat.
-    socket.on('serverSendPlayerChat', function (data) {
+  /*  socket.on('serverSendPlayerChat', function (data) {
        // chat.addChatLine(data.sender, data.message, false);
-    });
+    });*/
 
     // Handle movement.
     socket.on('serverTellPlayerMove', function (userData, foodsList, massList, virusList) {
