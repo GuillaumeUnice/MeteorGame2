@@ -28,7 +28,7 @@ gulp.task('build-client', ['lint', 'move-client'], function () {
   return gulp.src(['src/client/js/app.js'])
     .pipe(webpack(require('./webpack.config.js')))
     //.pipe(uglify())
-    .pipe(gulp.dest('bin/client/js/'));
+    .pipe(gulp.dest('src/client/js/'));
 });
 
 gulp.task('move-client', function () {
@@ -40,7 +40,7 @@ gulp.task('move-client', function () {
 gulp.task('build-server', ['lint'], function () {
   return gulp.src(['src/server/**/*.*', 'src/server/**/*.js'])
     .pipe(babel())
-    .pipe(gulp.dest('bin/server/'));
+    .pipe(gulp.dest('src/server/'));
 });
 
 gulp.task('watch', ['build'], function () {
@@ -53,7 +53,7 @@ gulp.task('run', ['build'], function () {
     nodemon({
         delay: 10,
         script: './server/server.js',
-        cwd: "./bin/",
+        cwd: "./src/",
         args: ["config.json"],
         ext: 'html js css'
     })
@@ -66,7 +66,7 @@ gulp.task('run-only', function () {
     nodemon({
         delay: 10,
         script: './server/server.js',
-        cwd: "./bin/",
+        cwd: "./src/",
         args: ["config.json"],
         ext: 'html js css'
     })

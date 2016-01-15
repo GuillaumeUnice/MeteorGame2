@@ -1,7 +1,7 @@
 module.exports = {
     entry: "./src/client/js/app.js",
     output: {
-        path: require("path").resolve("./src/bin/client/js"),
+        path: require("path").resolve("./src/client/js"),
         library: "app",
         filename: "app.js"
     },

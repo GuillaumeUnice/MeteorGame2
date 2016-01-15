@@ -4,7 +4,7 @@
 
 var cfg = require('../../../config.json');
 
-exports.validNick = function(nickname) {
+exports.validNick = function (nickname) {
     var regex = /^\w*$/;
     return regex.exec(nickname) !== null;
 };
@@ -13,7 +13,6 @@ exports.validNick = function(nickname) {
 exports.massToRadius = function (mass) {
     return 4 + Math.sqrt(mass) * 6;
 };
-
 
 // overwrite Math.log function
 exports.log = (function () {
@@ -40,8 +39,9 @@ exports.randomPosition = function (radius) {
     };
 };
 
-exports.uniformPosition = function(points, radius) {
-    var bestCandidate, maxDistance = 0;
+exports.uniformPosition = function (points, radius) {
+    var bestCandidate,
+        maxDistance = 0;
     var numberOfCandidates = 10;
 
     if (points.length === 0) {
@@ -72,7 +72,7 @@ exports.uniformPosition = function(points, radius) {
     return bestCandidate;
 };
 
-exports.findIndex = function(arr, id) {
+exports.findIndex = function (arr, id) {
     var len = arr.length;
 
     while (len--) {
@@ -84,12 +84,12 @@ exports.findIndex = function(arr, id) {
     return -1;
 };
 
-exports.randomColor = function() {
+exports.randomColor = function () {
     var color = '#' + ('00000' + (Math.random() * (1 << 24) | 0).toString(16)).slice(-6);
     var c = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(color);
-    var r = (parseInt(c[1], 16) - 32) > 0 ? (parseInt(c[1], 16) - 32) : 0;
-    var g = (parseInt(c[2], 16) - 32) > 0 ? (parseInt(c[2], 16) - 32) : 0;
-    var b = (parseInt(c[3], 16) - 32) > 0 ? (parseInt(c[3], 16) - 32) : 0;
+    var r = parseInt(c[1], 16) - 32 > 0 ? parseInt(c[1], 16) - 32 : 0;
+    var g = parseInt(c[2], 16) - 32 > 0 ? parseInt(c[2], 16) - 32 : 0;
+    var b = parseInt(c[3], 16) - 32 > 0 ? parseInt(c[3], 16) - 32 : 0;
 
     return {
         fill: color,
