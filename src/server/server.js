@@ -228,7 +228,7 @@ io.on('connection', function (socket) {
     });  */
 /*................................. yeah! let's play together!.................................*/
 
-//feed, client call this in client/app.js
+//shoot, client call this in client/app.js
     socket.on('1', function() {
         // Fire food.
         for(var i=0; i<currentPlayer.cells.length; i++)
@@ -253,7 +253,7 @@ io.on('connection', function (socket) {
                     x: currentPlayer.cells[i].x,
                     y: currentPlayer.cells[i].y,
                     radius: util.massToRadius(masa),
-                    speed: 25
+                    speed: 30
                 });
             }
         }
