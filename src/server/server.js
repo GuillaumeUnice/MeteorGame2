@@ -16,7 +16,9 @@ var util = require('./lib/util');
 // Import quadtree.
 var quadtree= require('../../quadtree');
 
+//game attribute
 var args = {x : 0, y : 0, h : c.gameHeight, w : c.gameWidth, maxChildren : 1, maxDepth : 5};
+
 console.log(args);
 
 var tree = quadtree.QUAD.init(args);
@@ -37,6 +39,272 @@ var initMassLog = util.log(c.defaultPlayerMass, c.slowBase);
 
 app.use(express.static(__dirname + '/../client'));
 
+
+/***********************************************************************START SOCKET*************************************************************************/
+/************************************************************************************************************************************************/
+/*
+*All the socket functions.
+* - game global : start , disconnect ect
+* - windows configuration
+* - chat
+* - login autentification
+* - kick a normal player as admin player
+* - play : feed and split
+* - keyboard action
+* - check latency
+**/
+io.on('connection', function (socket) {
+    console.log('A user connected!', socket.handshake.query.type);
+
+    var type = socket.handshake.query.type;
+    var radius = util.massToRadius(c.defaultPlayerMass);
+    var position = c.newPlayerInitialPosition == 'farthest' ? util.uniformPosition(users, radius) : util.randomPosition(radius);
+
+    var cells = [];
+    var massTotal = 0;
+    if(type === 'player') {
+        cells = [{
+            mass: c.defaultPlayerMass,
+            x: position.x,
+            y: position.y,
+            radius: radius
+        }];
+        massTotal = c.defaultPlayerMass;
+    }
+
+    var currentPlayer = {
+        id: socket.id,
+        x: position.x,
+        y: position.y,
+        cells: cells,
+        massTotal: massTotal,
+        hue: Math.round(Math.random() * 360),
+        type: type,
+        lastHeartbeat: new Date().getTime(),
+        target: {
+            x: 0,
+            y: 0
+        }
+    };
+
+
+/*..........................................game global.................................................*/
+//if client start game
+    socket.on('respawn', function () {
+        if (util.findIndex(users, currentPlayer.id) > -1)
+            users.splice(util.findIndex(users, currentPlayer.id), 1);
+        socket.emit('welcome', currentPlayer);
+        console.log('[INFO] User ' + currentPlayer.name + ' respawned!');
+    });
+
+//if client listen on 'welcome' and send 'gotit' with object player
+    socket.on('gotit', function (player) {
+        console.log('[INFO] Player ' + player.name + ' connecting!');
+
+        if (util.findIndex(users, player.id) > -1) {
+            console.log('[INFO] Player ID is already connected, kicking.');
+            socket.disconnect();
+        } else if (!util.validNick(player.name)) {
+            socket.emit('kick', 'Invalid username.');
+            socket.disconnect();
+        } else {
+            console.log('[INFO] Player ' + player.name + ' connected!');
+            sockets[player.id] = socket;
+
+            var radius = util.massToRadius(c.defaultPlayerMass);
+            var position = c.newPlayerInitialPosition == 'farthest' ? util.uniformPosition(users, radius) : util.randomPosition(radius);
+
+            player.x = position.x;
+            player.y = position.y;
+            player.target.x = 0;
+            player.target.y = 0;
+            if(type === 'player') {
+                player.cells = [{
+                    mass: c.defaultPlayerMass,
+                    x: position.x,
+                    y: position.y,
+                    radius: radius
+                }];
+                player.massTotal = c.defaultPlayerMass;
+            }
+            else {
+                 player.cells = [];
+                 player.massTotal = 0;
+            }
+            player.hue = Math.round(Math.random() * 360);
+            currentPlayer = player;
+            currentPlayer.lastHeartbeat = new Date().getTime();
+            users.push(currentPlayer);
+
+            io.emit('playerJoin', { name: currentPlayer.name });
+
+            socket.emit('gameSetup', {
+                gameWidth: c.gameWidth,
+                gameHeight: c.gameHeight
+            });
+            console.log('Total players: ' + users.length);
+        }
+
+    });
+
+//if client disconnect
+    socket.on('disconnect', function () {
+        if (util.findIndex(users, currentPlayer.id) > -1)
+            users.splice(util.findIndex(users, currentPlayer.id), 1);
+        console.log('[INFO] User ' + currentPlayer.name + ' disconnected!');
+
+        socket.broadcast.emit('playerDisconnect', { name: currentPlayer.name });
+    });
+
+
+/*.........................windows configuration..............................*/
+    socket.on('windowResized', function (data) {
+        currentPlayer.screenWidth = data.screenWidth;
+        currentPlayer.screenHeight = data.screenHeight;
+    });
+
+/*.................................chart......................................*/
+ socket.on('playerChat', function(data) {
+        var _sender = data.sender.replace(/(<([^>]+)>)/ig, '');
+        var _message = data.message.replace(/(<([^>]+)>)/ig, '');
+        if (c.logChat === 1) {
+            console.log('[CHAT] [' + (new Date()).getHours() + ':' + (new Date()).getMinutes() + '] ' + _sender + ': ' + _message);
+        }
+        socket.broadcast.emit('serverSendPlayerChat', {sender: _sender, message: _message.substring(0,35)});
+    });
+
+/*................................. login ......................................*/
+ socket.on('playerChat', function(data) {
+    socket.on('pass', function(data) {
+        if (data[0] === c.adminPass) {
+            console.log('[ADMIN] ' + currentPlayer.name + ' just logged in as an admin!');
+            socket.emit('serverMSG', 'Welcome back ' + currentPlayer.name);
+            socket.broadcast.emit('serverMSG', currentPlayer.name + ' just logged in as admin!');
+            currentPlayer.admin = true;
+        } else {
+            console.log('[ADMIN] ' + currentPlayer.name + ' attempted to log in with incorrect password.');
+            socket.emit('serverMSG', 'Password incorrect, attempt logged.');
+            // TODO: Actually log incorrect passwords.
+        }
+    });
+
+/*................................. admin palyer can kick a normal player ......................................*/
+     socket.on('kick', function(data) {
+        if (currentPlayer.admin) {
+            var reason = '';
+            var worked = false;
+            for (var e = 0; e < users.length; e++) {
+                if (users[e].name === data[0] && !users[e].admin && !worked) {
+                    if (data.length > 1) {
+                        for (var f = 1; f < data.length; f++) {
+                            if (f === data.length) {
+                                reason = reason + data[f];
+                            }
+                            else {
+                                reason = reason + data[f] + ' ';
+                            }
+                        }
+                    }
+                    if (reason !== '') {
+                       console.log('[ADMIN] User ' + users[e].name + ' kicked successfully by ' + currentPlayer.name + ' for reason ' + reason);
+                    }
+                    else {
+                       console.log('[ADMIN] User ' + users[e].name + ' kicked successfully by ' + currentPlayer.name);
+                    }
+                    socket.emit('serverMSG', 'User ' + users[e].name + ' was kicked by ' + currentPlayer.name);
+                    sockets[users[e].id].emit('kick', reason);
+                    sockets[users[e].id].disconnect();
+                    users.splice(e, 1);
+                    worked = true;
+                }
+            }
+            if (!worked) {
+                socket.emit('serverMSG', 'Could not locate user or user is an admin.');
+            }
+        } else {
+            console.log('[ADMIN] ' + currentPlayer.name + ' is trying to use -kick but isn\'t an admin.');
+            socket.emit('serverMSG', 'You are not permitted to use this command.');
+        }
+    });
+/*................................. yeah! let's play together!.................................*/
+
+//feed, client call this in client/app.js
+    socket.on('1', function() {
+        // Fire food.
+        for(var i=0; i<currentPlayer.cells.length; i++)
+        {
+            if(((currentPlayer.cells[i].mass >= c.defaultPlayerMass + c.fireFood) && c.fireFood > 0) || (currentPlayer.cells[i].mass >= 20 && c.fireFood === 0)){
+                var masa = 1;
+                if(c.fireFood > 0)
+                    masa = c.fireFood;
+                else
+                    masa = currentPlayer.cells[i].mass*0.1;
+                currentPlayer.cells[i].mass -= masa;
+                currentPlayer.massTotal -=masa;
+                massFood.push({
+                    id: currentPlayer.id,
+                    num: i,
+                    masa: masa,
+                    hue: currentPlayer.hue,
+                    target: {
+                        x: currentPlayer.x - currentPlayer.cells[i].x + currentPlayer.target.x,
+                        y: currentPlayer.y - currentPlayer.cells[i].y + currentPlayer.target.y
+                    },
+                    x: currentPlayer.cells[i].x,
+                    y: currentPlayer.cells[i].y,
+                    radius: util.massToRadius(masa),
+                    speed: 25
+                });
+            }
+        }
+    });
+
+//split, client call this in client/app.js
+    socket.on('2', function() {
+        //Split cells.
+        if(currentPlayer.cells.length < c.limitSplit && currentPlayer.massTotal >= c.defaultPlayerMass*2) {
+            var numMax = currentPlayer.cells.length;
+            for(var d=0; d<numMax; d++) {
+                if(currentPlayer.cells[d].mass >= c.defaultPlayerMass*2) {
+                    currentPlayer.cells[d].mass = currentPlayer.cells[d].mass/2;
+                    currentPlayer.cells[d].radius = util.massToRadius(currentPlayer.cells[d].mass);
+                    currentPlayer.cells.push({
+                        mass: currentPlayer.cells[d].mass,
+                        x: currentPlayer.cells[d].x,
+                        y: currentPlayer.cells[d].y,
+                        radius: currentPlayer.cells[d].radius,
+                        speed: 25
+                    });
+                }
+            }
+            currentPlayer.lastSplit = new Date().getTime();
+        }
+    });
+
+// keyboard action, to change direction, see also client/delete.js
+// Heartbeat function, update everytime.
+    socket.on('0', function(target) {
+        currentPlayer.lastHeartbeat = new Date().getTime();
+        if (target.x !== currentPlayer.x || target.y !== currentPlayer.y) {
+            currentPlayer.target = target;
+        }
+    });
+
+/*................................. to test the latency.................................*/
+
+//see also client/app.js (who send 'ping'), and client/chat.js(who receive 'pong')
+ socket.on('ping', function () {
+        socket.emit('pong');
+    });
+
+
+ });
+
+/***********************************************************************END SOCKET*************************************************************************/
+/************************************************************************************************************************************************/
+
+
+/*....................called in function balanceMass....................................;;;;;;;.........*/
 function addFood(toAdd) {
     var radius = util.massToRadius(c.foodMass);
     while (toAdd--) {
@@ -53,6 +321,7 @@ function addFood(toAdd) {
     }
 }
 
+/*....................called in function balanceMass......................................................*/
 function addVirus(toAdd) {
     while (toAdd--) {
         var mass = util.randomInRange(c.virus.defaultMass.from, c.virus.defaultMass.to, true);
@@ -71,12 +340,44 @@ function addVirus(toAdd) {
     }
 }
 
+/*....................called in function balanceMass......................................................*/
 function removeFood(toRem) {
     while (toRem--) {
         food.pop();
     }
 }
 
+/*.................................................balanceMass,called in gameloop......................................................*/
+function balanceMass() {
+    var totalMass = food.length * c.foodMass +
+        users
+            .map(function(u) {return u.massTotal; })
+            .reduce(function(pu,cu) { return pu+cu;}, 0);
+
+    var massDiff = c.gameMass - totalMass;
+    var maxFoodDiff = c.maxFood - food.length;
+    var foodDiff = parseInt(massDiff / c.foodMass) - maxFoodDiff;
+    var foodToAdd = Math.min(foodDiff, maxFoodDiff);
+    var foodToRemove = -Math.max(foodDiff, maxFoodDiff);
+
+    if (foodToAdd > 0) {
+        //console.log('[DEBUG] Adding ' + foodToAdd + ' food to level!');
+        addFood(foodToAdd);
+        //console.log('[DEBUG] Mass rebalanced!');
+    }
+    else if (foodToRemove > 0) {
+        //console.log('[DEBUG] Removing ' + foodToRemove + ' food from level!');
+        removeFood(foodToRemove);
+        //console.log('[DEBUG] Mass rebalanced!');
+    }
+
+    var virusToAdd = c.maxVirus - virus.length;
+
+    if (virusToAdd > 0) {
+        addVirus(virusToAdd);
+    }
+}
+/*................................called in function tickPlayer......................................................*/
 function movePlayer(player) {
     var x =0,y =0;
     for(var i=0; i<player.cells.length; i++)
@@ -156,6 +457,7 @@ function movePlayer(player) {
     player.y = y/player.cells.length;
 }
 
+/*...............................called if moveloop...............................................*/
 function moveMass(mass) {
     var deg = Math.atan2(mass.target.y, mass.target.x);
     var deltaY = mass.speed * Math.sin(deg);
@@ -188,266 +490,8 @@ function moveMass(mass) {
     }
 }
 
-function balanceMass() {
-    var totalMass = food.length * c.foodMass +
-        users
-            .map(function(u) {return u.massTotal; })
-            .reduce(function(pu,cu) { return pu+cu;}, 0);
 
-    var massDiff = c.gameMass - totalMass;
-    var maxFoodDiff = c.maxFood - food.length;
-    var foodDiff = parseInt(massDiff / c.foodMass) - maxFoodDiff;
-    var foodToAdd = Math.min(foodDiff, maxFoodDiff);
-    var foodToRemove = -Math.max(foodDiff, maxFoodDiff);
-
-    if (foodToAdd > 0) {
-        //console.log('[DEBUG] Adding ' + foodToAdd + ' food to level!');
-        addFood(foodToAdd);
-        //console.log('[DEBUG] Mass rebalanced!');
-    }
-    else if (foodToRemove > 0) {
-        //console.log('[DEBUG] Removing ' + foodToRemove + ' food from level!');
-        removeFood(foodToRemove);
-        //console.log('[DEBUG] Mass rebalanced!');
-    }
-
-    var virusToAdd = c.maxVirus - virus.length;
-
-    if (virusToAdd > 0) {
-        addVirus(virusToAdd);
-    }
-}
-
-//socket_Begin
-io.on('connection', function (socket) {
-    console.log('A user connected!', socket.handshake.query.type);
-
-    var type = socket.handshake.query.type;
-    var radius = util.massToRadius(c.defaultPlayerMass);
-    var position = c.newPlayerInitialPosition == 'farthest' ? util.uniformPosition(users, radius) : util.randomPosition(radius);
-
-    var cells = [];
-    var massTotal = 0;
-    if(type === 'player') {
-        cells = [{
-            mass: c.defaultPlayerMass,
-            x: position.x,
-            y: position.y,
-            radius: radius
-        }];
-        massTotal = c.defaultPlayerMass;
-    }
-
-    var currentPlayer = {
-        id: socket.id,
-        x: position.x,
-        y: position.y,
-        cells: cells,
-        massTotal: massTotal,
-        hue: Math.round(Math.random() * 360),
-        type: type,
-        lastHeartbeat: new Date().getTime(),
-        target: {
-            x: 0,
-            y: 0
-        }
-    };
-
-    socket.on('gotit', function (player) {
-        console.log('[INFO] Player ' + player.name + ' connecting!');
-
-        if (util.findIndex(users, player.id) > -1) {
-            console.log('[INFO] Player ID is already connected, kicking.');
-            socket.disconnect();
-        } else if (!util.validNick(player.name)) {
-            socket.emit('kick', 'Invalid username.');
-            socket.disconnect();
-        } else {
-            console.log('[INFO] Player ' + player.name + ' connected!');
-            sockets[player.id] = socket;
-
-            var radius = util.massToRadius(c.defaultPlayerMass);
-            var position = c.newPlayerInitialPosition == 'farthest' ? util.uniformPosition(users, radius) : util.randomPosition(radius);
-
-            player.x = position.x;
-            player.y = position.y;
-            player.target.x = 0;
-            player.target.y = 0;
-            if(type === 'player') {
-                player.cells = [{
-                    mass: c.defaultPlayerMass,
-                    x: position.x,
-                    y: position.y,
-                    radius: radius
-                }];
-                player.massTotal = c.defaultPlayerMass;
-            }
-            else {
-                 player.cells = [];
-                 player.massTotal = 0;
-            }
-            player.hue = Math.round(Math.random() * 360);
-            currentPlayer = player;
-            currentPlayer.lastHeartbeat = new Date().getTime();
-            users.push(currentPlayer);
-
-            io.emit('playerJoin', { name: currentPlayer.name });
-
-            socket.emit('gameSetup', {
-                gameWidth: c.gameWidth,
-                gameHeight: c.gameHeight
-            });
-            console.log('Total players: ' + users.length);
-        }
-
-    });
-
-    socket.on('ping', function () {
-        socket.emit('pong');
-    });
-
-    socket.on('windowResized', function (data) {
-        currentPlayer.screenWidth = data.screenWidth;
-        currentPlayer.screenHeight = data.screenHeight;
-    });
-
-    socket.on('respawn', function () {
-        if (util.findIndex(users, currentPlayer.id) > -1)
-            users.splice(util.findIndex(users, currentPlayer.id), 1);
-        socket.emit('welcome', currentPlayer);
-        console.log('[INFO] User ' + currentPlayer.name + ' respawned!');
-    });
-
-    socket.on('disconnect', function () {
-        if (util.findIndex(users, currentPlayer.id) > -1)
-            users.splice(util.findIndex(users, currentPlayer.id), 1);
-        console.log('[INFO] User ' + currentPlayer.name + ' disconnected!');
-
-        socket.broadcast.emit('playerDisconnect', { name: currentPlayer.name });
-    });
-
-    socket.on('playerChat', function(data) {
-        var _sender = data.sender.replace(/(<([^>]+)>)/ig, '');
-        var _message = data.message.replace(/(<([^>]+)>)/ig, '');
-        if (c.logChat === 1) {
-            console.log('[CHAT] [' + (new Date()).getHours() + ':' + (new Date()).getMinutes() + '] ' + _sender + ': ' + _message);
-        }
-        socket.broadcast.emit('serverSendPlayerChat', {sender: _sender, message: _message.substring(0,35)});
-    });
-
-    socket.on('pass', function(data) {
-        if (data[0] === c.adminPass) {
-            console.log('[ADMIN] ' + currentPlayer.name + ' just logged in as an admin!');
-            socket.emit('serverMSG', 'Welcome back ' + currentPlayer.name);
-            socket.broadcast.emit('serverMSG', currentPlayer.name + ' just logged in as admin!');
-            currentPlayer.admin = true;
-        } else {
-            console.log('[ADMIN] ' + currentPlayer.name + ' attempted to log in with incorrect password.');
-            socket.emit('serverMSG', 'Password incorrect, attempt logged.');
-            // TODO: Actually log incorrect passwords.
-        }
-    });
-
-    socket.on('kick', function(data) {
-        if (currentPlayer.admin) {
-            var reason = '';
-            var worked = false;
-            for (var e = 0; e < users.length; e++) {
-                if (users[e].name === data[0] && !users[e].admin && !worked) {
-                    if (data.length > 1) {
-                        for (var f = 1; f < data.length; f++) {
-                            if (f === data.length) {
-                                reason = reason + data[f];
-                            }
-                            else {
-                                reason = reason + data[f] + ' ';
-                            }
-                        }
-                    }
-                    if (reason !== '') {
-                       console.log('[ADMIN] User ' + users[e].name + ' kicked successfully by ' + currentPlayer.name + ' for reason ' + reason);
-                    }
-                    else {
-                       console.log('[ADMIN] User ' + users[e].name + ' kicked successfully by ' + currentPlayer.name);
-                    }
-                    socket.emit('serverMSG', 'User ' + users[e].name + ' was kicked by ' + currentPlayer.name);
-                    sockets[users[e].id].emit('kick', reason);
-                    sockets[users[e].id].disconnect();
-                    users.splice(e, 1);
-                    worked = true;
-                }
-            }
-            if (!worked) {
-                socket.emit('serverMSG', 'Could not locate user or user is an admin.');
-            }
-        } else {
-            console.log('[ADMIN] ' + currentPlayer.name + ' is trying to use -kick but isn\'t an admin.');
-            socket.emit('serverMSG', 'You are not permitted to use this command.');
-        }
-    });
-
-    // Heartbeat function, update everytime.
-    socket.on('0', function(target) {
-        currentPlayer.lastHeartbeat = new Date().getTime();
-        if (target.x !== currentPlayer.x || target.y !== currentPlayer.y) {
-            currentPlayer.target = target;
-        }
-    });
-
-    socket.on('1', function() {
-        // Fire food.
-        for(var i=0; i<currentPlayer.cells.length; i++)
-        {
-            if(((currentPlayer.cells[i].mass >= c.defaultPlayerMass + c.fireFood) && c.fireFood > 0) || (currentPlayer.cells[i].mass >= 20 && c.fireFood === 0)){
-                var masa = 1;
-                if(c.fireFood > 0)
-                    masa = c.fireFood;
-                else
-                    masa = currentPlayer.cells[i].mass*0.1;
-                currentPlayer.cells[i].mass -= masa;
-                currentPlayer.massTotal -=masa;
-                massFood.push({
-                    id: currentPlayer.id,
-                    num: i,
-                    masa: masa,
-                    hue: currentPlayer.hue,
-                    target: {
-                        x: currentPlayer.x - currentPlayer.cells[i].x + currentPlayer.target.x,
-                        y: currentPlayer.y - currentPlayer.cells[i].y + currentPlayer.target.y
-                    },
-                    x: currentPlayer.cells[i].x,
-                    y: currentPlayer.cells[i].y,
-                    radius: util.massToRadius(masa),
-                    speed: 25
-                });
-            }
-        }
-    });
-
-    socket.on('2', function() {
-        //Split cells.
-        if(currentPlayer.cells.length < c.limitSplit && currentPlayer.massTotal >= c.defaultPlayerMass*2) {
-            var numMax = currentPlayer.cells.length;
-            for(var d=0; d<numMax; d++) {
-                if(currentPlayer.cells[d].mass >= c.defaultPlayerMass*2) {
-                    currentPlayer.cells[d].mass = currentPlayer.cells[d].mass/2;
-                    currentPlayer.cells[d].radius = util.massToRadius(currentPlayer.cells[d].mass);
-                    currentPlayer.cells.push({
-                        mass: currentPlayer.cells[d].mass,
-                        x: currentPlayer.cells[d].x,
-                        y: currentPlayer.cells[d].y,
-                        radius: currentPlayer.cells[d].radius,
-                        speed: 25
-                    });
-                }
-            }
-            currentPlayer.lastSplit = new Date().getTime();
-        }
-    });
-
-});
-//socket_End
-
+/*...................START OF TICK, this function is called in moveloop..................................................................................................*/
 function tickPlayer(currentPlayer) {
     if(currentPlayer.lastHeartbeat < new Date().getTime() - c.maxHeartbeatInterval) {
         sockets[currentPlayer.id].emit('kick', 'Last heartbeat received over ' + c.maxHeartbeatInterval + ' ago.');
@@ -498,7 +542,10 @@ function tickPlayer(currentPlayer) {
         }
     }
 
+/*....................collision logic..............................*/
     function collisionCheck(collision) {
+
+        //Kill result depends on the ball size of player
         if (collision.aUser.mass > collision.bUser.mass * 1.1  && collision.aUser.radius > Math.sqrt(Math.pow(collision.aUser.x - collision.bUser.x, 2) + Math.pow(collision.aUser.y - collision.bUser.y, 2))*1.75) {
             console.log('[DEBUG] Killing user: ' + collision.bUser.id);
             console.log('[DEBUG] Collision info:');
@@ -565,8 +612,11 @@ function tickPlayer(currentPlayer) {
     }
 
 }
+/*.................................END OF TICK ..................................................................................*/
 
 
+
+/*......................loopS.......................................................*/
 function moveloop() {
     for (var i = 0; i < users.length; i++) {
         tickPlayer(users[i]);
@@ -616,6 +666,7 @@ function gameloop() {
     balanceMass();
 }
 
+/*.................................................update canvas..............................................................*/
 function sendUpdates() {
     users.forEach( function(u) {
         // center the view if x/y is undefined, this will happen for spectators
@@ -699,12 +750,12 @@ function sendUpdates() {
     });
     leaderboardChanged = false;
 }
-
+/*.........................HERE WE CALL ALL THE FUNCTION ABOVE...........................................................................................*/
 setInterval(moveloop, 1000 / 60);
 setInterval(gameloop, 1000);
 setInterval(sendUpdates, 1000 / c.networkUpdateFactor);
 
-// Don't touch, IP configurations.
+/*........................................ Don't touch, IP configurations..........................................*/
     //Bind to this IP address in order to recieve traffic from the routing layer
 var ipaddress = process.env.OPENSHIFT_NODEJS_IP || process.env.IP || '127.0.0.1';
     //Listen on this port to recieve traffic from the routing layer
