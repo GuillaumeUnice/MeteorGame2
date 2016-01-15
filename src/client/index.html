@@ -3,7 +3,7 @@
 <head>
 	<!-- Meta Properties -->
 	<meta charset="UTF-8">
-	<title>VEssel</title>
+	<title>Vesssel</title>
 	<meta name="viewport"
 	      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
 	<!-- CSS -->
@@ -12,6 +12,60 @@
 	<link rel="stylesheet" href="css/main.css"/>
 </head>
 <body>
+
+<div id="gameAreaWrapper">
+	<div id="status"><span class="title">Connected</span></div>
+	<div class="chatbox" id="chatbox" style="visibility:hidden">
+		<ul id="chatList" class="chat-list"></ul>
+		<input id="chatInput" type="text" class="chat-input" placeholder="Chat here..." maxlength="35"/>
+	</div>
+
+	<div id="mobile" style="visibility: hidden">
+		<input type="image" id="split" class="split" src="img/split.png" alt="splitBtn">
+		<input type="image" id="feed" class="feed" src="img/feed.png" alt="feedBtn">
+	</div>
+	<canvas tabindex="1" id="cvs"></canvas>
+</div>
+
+<div id="startMenuWrapper">
+	<div class="row">
+		<div class="col-lg-12">
+			<h1 class="page-header text-center">Vessel</h1>
+		</div>
+	</div>
+	<div id="startMenu">
+		<div class="row text-center">
+			<input type="text" tabindex="0" autofocus placeholder="Enter your name here" id="playerNameInput"
+			       maxlength="25"/>
+		</div>
+
+		<b class="input-error">Make sure you have only entered valid characters</b>
+		<br/>
+		<button id="startButton">Play</button>
+		<button id="spectateButton" style="visibility: hidden">Spectate</button>
+		<button id="settingsButton" style="visibility: hidden">Settings</button>
+		<br/>
+		<div id="settings">
+			<h3>Settings</h3>
+			<ul>
+				<label><input id="visBord" type="checkbox">Show border</label>
+				<label><input id="showMass" type="checkbox">Show mass</label>
+				<br/>
+				<label><input id="continuity" type="checkbox">Continue moving when mouse is off-screen</label>
+				<br/>
+				<label><input id="roundFood" type="checkbox" checked>Rounded food</label>
+			</ul>
+		</div>
+		<div id="instructions" style="visibility: hidden;">
+			<h3>Gameplay</h3>
+			<ul>
+
+			</ul>
+		</div>
+	</div>
+</div>
+
+<!--
 <div id="gameAreaWrapper">
 	<div id="status"><span class="title">Highest score</span></div>
 
@@ -21,21 +75,27 @@
 	</div>
 	<canvas tabindex="1" id="cvs"></canvas>
 </div>
+
+<div class="row">
+	<div class="col-lg-12">
+		<h1 class="page-header text-center">Vessel control</h1>
+	</div>
+</div>
 <div id="startMenuWrapper">
 	<div id="startMenu">
+
 		<div class="row">
-			<div class="col-lg-12">
-				<h1 class="text-center">Vessel control</h1>
+			<div class="col-xs-9">
+				<input type="text" tabindex="0" autofocus placeholder="Enter your name here" id="playerNameInput"
+				       maxlength="25"/>
+				<b class="input-error">Nick must be alphanumeric characters only!</b>
+
+				<button id="startButton" class="btn btn-success">Play</button>
+
 			</div>
 		</div>
 
-		<input type="text" tabindex="0" autofocus placeholder="Enter your name here" id="playerNameInput"
-		       maxlength="25"/>
-		<b class="input-error">Nick must be alphanumeric characters only!</b>
-		<br/>
-		<button id="startButton">Play</button>
-		<button id="spectateButton">Spectate</button>
-		<button id="settingsButton">Settings</button>
+
 		<br/>
 		<div id="settings">
 			<h3>Settings</h3>
@@ -49,15 +109,7 @@
 			</ul>
 		</div>
 		<div id="instructions">
-			<h3>Gameplay</h3>
-			<ul>
-				<li>Move your mouse on the screen to move your character.</li>
-				<li>Eat food and other players in order to grow your character (food respawns every time a player eats
-					it).
-				</li>
-				<li>A player's mass is the number of food particles eaten.</li>
-				<li>Objective: Try to get fat and eat other players.</li>
-			</ul>
+
 		</div>
 	</div>
 </div>
@@ -78,6 +130,8 @@
 <script src="js/anim.js"></script>
 
 <script src="js/leap.js"></script>
+
+<script src="js/minimap.js"></script>
 
 </body>
 </html>

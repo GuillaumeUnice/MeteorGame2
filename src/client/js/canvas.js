@@ -1,8 +1,6 @@
 
 // Canvas.
 var screenWidth = window.innerWidth;
-console.log(window.innerWidth);
-console.log(window.innerHeight);
 
 var screenHeight = window.innerHeight;
 var gameWidth = 0;
@@ -20,10 +18,11 @@ var continuity = false;
 var startPingTime = 0;
 var toggleMassState = 0;
 var backgroundColor = '#ffffff';
+
 var lineColor = '#000000';
 
 var foodConfig = {
-    border: 0,
+    border: 0
 };
 
 var playerConfig = {
@@ -78,7 +77,8 @@ function gameInput(mouse) {
 
         target.x = mouse.clientX - screenWidth / 2;
         target.y = mouse.clientY - screenHeight / 2;
-                console.log(target);
+        //TODO : ne pas supprimer
+        //console.log(target);
     }
 }
 

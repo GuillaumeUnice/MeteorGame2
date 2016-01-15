@@ -17,6 +17,24 @@ function drawCircle(centerX, centerY, radius, sides) {
     graph.fill();
 }
 
+function drawTriangle(centerX, centerY, radius, sides) {
+    
+    size=5;
+
+    graph.beginPath();
+
+    graph.lineTo(centerX+30*size, centerY+0*size);
+
+    graph.lineTo(centerX+15*size, centerY+40*size);
+
+    graph.lineTo(centerX+45*size, centerY+40*size);
+
+    graph.closePath();
+    graph.fill();
+}
+
+
+
 function drawFood(food) {
     graph.strokeStyle = 'hsl(' + food.hue + ', 100%, 45%)';
     graph.fillStyle = 'hsl(' + food.hue + ', 100%, 50%)';
@@ -28,7 +46,7 @@ function drawVirus(virus) {
     graph.strokeStyle = virus.stroke;
     graph.fillStyle = virus.fill;
     graph.lineWidth = virus.strokeWidth;
-    drawCircle(virus.x - player.x + screenWidth / 2, virus.y - player.y + screenHeight / 2, virus.radius, virusSides);
+    drawTriangle(virus.x - player.x + screenWidth / 2, virus.y - player.y + screenHeight / 2, virus.radius, virusSides);
 }
 
 function drawFireFood(mass) {
