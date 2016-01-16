@@ -1,4 +1,3 @@
-
 // socket stuff.
 function setupSocket(socket) {
 

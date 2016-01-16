@@ -16,12 +16,10 @@ var util = require('./lib/util');
 // Import quadtree.
 var quadtree = require('../../quadtree');
 
-
 /* My imports */
 var moveImport = require("./move.js");
 var socketImport = require("./socket.js");
 var mapElemImport = require("./mapElements.js");
-
 
 //game attribute
 var args = {x: 0, y: 0, h: c.gameHeight, w: c.gameWidth, maxChildren: 1, maxDepth: 5};
@@ -65,12 +63,11 @@ app.use(express.static(__dirname + '/../client'));
  * - check latency
  **/
 io.on('connection', function (socket) {
-    console.log('A user connected!', socket.handshake.query.type);
-//initialize a player
+    console.log('A user connected is !', socket.handshake.query.type);
+    //initialize a player
     var type = socket.handshake.query.type;
     var radius = util.massToRadius(c.defaultPlayerMass);
     var position = c.newPlayerInitialPosition == 'farthest' ? util.uniformPosition(users, radius) : util.randomPosition(radius);
-
     var cells = [];
     var massTotal = 0;
     if (type === 'player') {
@@ -174,72 +171,11 @@ io.on('connection', function (socket) {
         currentPlayer.screenWidth = data.screenWidth;
         currentPlayer.screenHeight = data.screenHeight;
     });
-    /*.................................chart......................................*/
-    /* socket.on('playerChat', function(data) {
-     var _sender = data.sender.replace(/(<([^>]+)>)/ig, '');
-     var _message = data.message.replace(/(<([^>]+)>)/ig, '');
-     if (c.logChat === 1) {
-     console.log('[CHAT] [' + (new Date()).getHours() + ':' + (new Date()).getMinutes() + '] ' + _sender + ': ' + _message);
-     }
-     socket.broadcast.emit('serverSendPlayerChat', {sender: _sender, message: _message.substring(0,35)});
-     });
-     */
-    /*................................. login ......................................*/
-    /*    socket.on('pass', function(data) {
-     if (data[0] === c.adminPass) {
-     console.log('[ADMIN] ' + currentPlayer.name + ' just logged in as an admin!');
-     socket.emit('serverMSG', 'Welcome back ' + currentPlayer.name);
-     socket.broadcast.emit('serverMSG', currentPlayer.name + ' just logged in as admin!');
-     currentPlayer.admin = true;
-     } else {
-     console.log('[ADMIN] ' + currentPlayer.name + ' attempted to log in with incorrect password.');
-     socket.emit('serverMSG', 'Password incorrect, attempt logged.');
-     // TODO: Actually log incorrect passwords.
-     }
-     });*/
 
-    /*................................. admin palyer can kick a normal player ......................................*/
-    /*     socket.on('kick', function(data) {
-     if (currentPlayer.admin) {
-     var reason = '';
-     var worked = false;
-     for (var e = 0; e < users.length; e++) {
-     if (users[e].name === data[0] && !users[e].admin && !worked) {
-     if (data.length > 1) {
-     for (var f = 1; f < data.length; f++) {
-     if (f === data.length) {
-     reason = reason + data[f];
-     }
-     else {
-     reason = reason + data[f] + ' ';
-     }
-     }
-     }
-     if (reason !== '') {
-     console.log('[ADMIN] User ' + users[e].name + ' kicked successfully by ' + currentPlayer.name + ' for reason ' + reason);
-     }
-     else {
-     console.log('[ADMIN] User ' + users[e].name + ' kicked successfully by ' + currentPlayer.name);
-     }
-     socket.emit('serverMSG', 'User ' + users[e].name + ' was kicked by ' + currentPlayer.name);
-     sockets[users[e].id].emit('kick', reason);
-     sockets[users[e].id].disconnect();
-     users.splice(e, 1);
-     worked = true;
-     }
-     }
-     if (!worked) {
-     socket.emit('serverMSG', 'Could not locate user or user is an admin.');
-     }
-     } else {
-     console.log('[ADMIN] ' + currentPlayer.name + ' is trying to use -kick but isn\'t an admin.');
-     socket.emit('serverMSG', 'You are not permitted to use this command.');
-     }
-     });  */
     /*................................. yeah! let's play together!.................................*/
 
 //shoot, client call this in client/app.js
-    socket.on('1', function() {
+    socket.on('1', function () {
         // Fire food.
         for (var i = 0; i < currentPlayer.cells.length; i++) {
             if (((currentPlayer.cells[i].mass >= c.defaultPlayerMass + c.fireFood) && c.fireFood > 0) || (currentPlayer.cells[i].mass >= 20 && c.fireFood === 0)) {
@@ -310,41 +246,10 @@ io.on('connection', function (socket) {
 });
 
 /***********************************************************************END SOCKET*************************************************************************/
+//noinspection JSDuplicatedDeclaration
 /******
-
-
-
- /*.................................................balanceMass,called in gameloop......................................................*/
-function balanceMass() {
-    /*   var totalMass = food.length * c.foodMass +
-     users
-     .map(function(u) {return u.massTotal; })
-     .reduce(function(pu,cu) { return pu+cu;}, 0);
-
-     var massDiff = c.gameMass - totalMass;     //gameMass = 20000
-     var maxFoodDiff = c.maxFood - food.length; //maxFood = 20
-     var foodDiff = parseInt(massDiff / c.foodMass) - maxFoodDiff;
-     var foodToAdd = Math.min(foodDiff, maxFoodDiff);
-     var foodToRemove = -Math.max(foodDiff, maxFoodDiff);
-
-     if (foodToAdd > 0) {
-     //console.log('[DEBUG] Adding ' + foodToAdd + ' food to level!');
-     addFood(foodToAdd);
-     //console.log('[DEBUG] Mass rebalanced!');
-     }
-     else if (foodToRemove > 0) {
-     //console.log('[DEBUG] Removing ' + foodToRemove + ' food from level!');
-     removeFood(foodToRemove);
-     //console.log('[DEBUG] Mass rebalanced!');
-     }
-
-     var virusToAdd = c.maxVirus - virus.length;
-
-     if (virusToAdd > 0) {
-     addVirus(virusToAdd);
-     }*/
-}
-/*................................called in function tickPlayer......................................................*/
+ 
+ /*................................called in function tickPlayer......................................................*/
 function movePlayer(player) {
     var x = 0, y = 0;
     for (var i = 0; i < player.cells.length; i++) {
@@ -601,16 +506,20 @@ function gameloop() {
             }
         }
     }
-    balanceMass(c,food,users);
+    balanceMass(c, food, users);
 }
 
 /* TODO : exporter cette fonction dans un autre fichier, mais pas dans mapElements car cela ferai une "dépendance circulaire"*/
 /*.................................................balanceMass,called in gameloop......................................................*/
-function balanceMass (c,food,users) {
+function balanceMass(c, food, users) {
     var totalMass = food.length * c.foodMass +
         users
-            .map(function(u) {return u.massTotal; })
-            .reduce(function(pu,cu) { return pu+cu;}, 0);
+            .map(function (u) {
+                return u.massTotal;
+            })
+            .reduce(function (pu, cu) {
+                return pu + cu;
+            }, 0);
 
     var massDiff = c.gameMass - totalMass;     //gameMass = 20000
     var maxFoodDiff = c.maxFood - food.length; //maxFood = 20
@@ -620,19 +529,19 @@ function balanceMass (c,food,users) {
 
     if (foodToAdd > 0) {
         //console.log('[DEBUG] Adding ' + foodToAdd + ' food to level!');
-        mapElemImport.addFood(foodToAdd,c,food);
+        mapElemImport.addFood(foodToAdd, c, food);
         //console.log('[DEBUG] Mass rebalanced!');
     }
     else if (foodToRemove > 0) {
         //console.log('[DEBUG] Removing ' + foodToRemove + ' food from level!');
-        mapElemImport.removeFood(foodToRemove,food);
+        mapElemImport.removeFood(foodToRemove, food);
         //console.log('[DEBUG] Mass rebalanced!');
     }
 
     var virusToAdd = c.maxVirus - virus.length;
 
     if (virusToAdd > 0) {
-        mapElemImport.addVirus(virusToAdd,c,virus);
+        mapElemImport.addVirus(virusToAdd, c, virus);
     }
 }
 
