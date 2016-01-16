@@ -6,6 +6,13 @@ if (/Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent)) {
 
 function startGame(type) {
 
+    var canvas = document.getElementById('mini_cvs');
+    canvas.width = screenWidth / 4; canvas.height = screenHeight / 4;
+
+    var destCtx = canvas.getContext('2d');
+
+    destCtx.drawImage(c, 0, 0);
+
     document.getElementById('vaisseau').style.visibility = 'visible';
 
     console.log('Should be visible');
@@ -38,13 +45,9 @@ window.onload = function () {
 
     vaisseau.style.visibility = 'hidden';
     var btn = document.getElementById('startButton');
-    /*,
-     btnS = document.getElementById('spectateButton'),*/
+
     var nickErrorText = document.querySelector('#startMenu .input-error');
 
-    /*	btnS.onclick = function () {
-     startGame('spectate');
-     };*/
     btn.onclick = function () {
 
         // Checks if the nick is valid.
@@ -56,18 +59,6 @@ window.onload = function () {
             nickErrorText.style.opacity = 1;
         }
     };
-
-    /*	var settingsMenu = document.getElementById('settingsButton');
-     var settings = document.getElementById('settings');
-     var instructions = document.getElementById('instructions');
-
-     settingsMenu.onclick = function () {
-     if (settings.style.maxHeight == '300px') {
-     settings.style.maxHeight = '0px';
-     } else {
-     settings.style.maxHeight = '300px';
-     }
-     };*/
 
     playerNameInput.addEventListener('keypress', function (e) {
         var key = e.which || e.keyCode;
@@ -93,26 +84,6 @@ $("#split").click(function () {
     socket.emit('2');
     reenviar = false;
 });
-
-/*
- // Updates the target according to the directions in the directions array.
- function updateTarget(list) {
- target = { x : 0, y: 0 };
- var directionHorizontal = 0;
- var directionVertical = 0;
- for (var i = 0, len = list.length; i < len; i++) {
- if (directionHorizontal === 0) {
- if (list[i] == KEY_LEFT) directionHorizontal -= Number.MAX_VALUE;
- else if (list[i] == KEY_RIGHT) directionHorizontal += Number.MAX_VALUE;
- }
- if (directionVertical === 0) {
- if (list[i] == KEY_UP) directionVertical -= Number.MAX_VALUE;
- else if (list[i] == KEY_DOWN) directionVertical += Number.MAX_VALUE;
- }
- }
- target.x += directionHorizontal;
- target.y += directionVertical;
- }*/
 
 function directional(key) {
     return horizontal(key) || vertical(key);

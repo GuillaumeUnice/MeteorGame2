@@ -6,13 +6,9 @@ var i = true;
 Leap.loop(function (frame) {
     frame.hands.forEach(function (hand, index) {
 
-        // stopDeplacement = false;
-
         console.log(hand.screenPosition());
 
-        /*if (!directionLock) {
-         var x = Math.floor((Math.random() * 2) + 1);
-         console.log(x);*/
+
 
         if (hand.screenPosition()[0] >= 700) {
             target.x = 200;
@@ -22,7 +18,7 @@ Leap.loop(function (frame) {
             target.y = 0;
         }
 
-        // setTimeout(function(){ stopDeplacement = true; }, 200);
+
 
     });
 
