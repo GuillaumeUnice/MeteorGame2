@@ -1,6 +1,6 @@
 {
   "name": "Vessel",
-  "description": "A simple game designed for vessel fighting",
+  "description": "A simple game designed for vessel fighting based on Agar.Io",
   "main": "server/server.js",
   "authors": [
     "Guillaume Borg",

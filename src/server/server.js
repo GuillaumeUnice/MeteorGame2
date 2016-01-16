@@ -248,7 +248,7 @@ io.on('connection', function (socket) {
 /***********************************************************************END SOCKET*************************************************************************/
 //noinspection JSDuplicatedDeclaration
 /******
- 
+
  /*................................called in function tickPlayer......................................................*/
 function movePlayer(player) {
     var x = 0, y = 0;
@@ -643,7 +643,7 @@ setInterval(gameloop, 1000);
 setInterval(sendUpdates, 1000 / c.networkUpdateFactor);
 
 /*........................................ Don't touch, IP configurations..........................................*/
-//Bind to this IP address in order to recieve traffic from the routing layer
+//Bind to this IP address in order to receive traffic from the routing layer
 var ipaddress = process.env.OPENSHIFT_NODEJS_IP || process.env.IP || '127.0.0.1';
 //Listen on this port to recieve traffic from the routing layer
 var serverport = process.env.OPENSHIFT_NODEJS_PORT || process.env.PORT || c.port;

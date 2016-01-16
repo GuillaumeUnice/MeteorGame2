@@ -77,8 +77,25 @@ function drawPlayers(order) {
             y: cellCurrent.y - start.y
         };
 
+        var nameCell = "NoName";
+        if (typeof userCurrent.id == "undefined") nameCell = player.name; else nameCell = userCurrent.name;
+
+        var fontSize = Math.max(cellCurrent.radius / 3, 12);
+
+        graph.font = 'bold ' + fontSize + 'px sans-serif';
 
         graph.drawImage(img, circle.x, circle.y);
+
+        if (toggleMassState === 0) {
+            graph.fillText(nameCell, circle.x + img.width / 2, circle.y - img.height / 4);
+        } else {
+            graph.fillText(nameCell, circle.x + img.width / 2, circle.y - img.height / 4);
+
+            graph.font = 'bold ' + Math.max(fontSize / 3 * 2, 10) + 'px sans-serif';
+            if (nameCell.length === 0) fontSize = 0;
+            graph.fillText(Math.round(cellCurrent.mass), circle.x + img.width / 2, circle.y - img.height / 4 + fontSize);
+        }
+
 
     }
 }

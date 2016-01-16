@@ -1,27 +1,24 @@
 var io = require('socket.io-client');
 
+/**
+ * This will be removed. We will use bootstrap and media queries to resolve mobile issues
+ */
+
 if (/Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent)) {
     mobile = true;
 }
 
 function startGame(type) {
 
-    var canvas = document.getElementById('mini_cvs');
-    canvas.width = screenWidth / 4; canvas.height = screenHeight / 4;
-
-    var destCtx = canvas.getContext('2d');
-
-    destCtx.drawImage(c, 0, 0);
-
     document.getElementById('vaisseau').style.visibility = 'visible';
-
-    console.log('Should be visible');
     playerName = playerNameInput.value.replace(/(<([^>]+)>)/ig, '').substring(0, 25);
     playerType = type;
-
     screenWidth = window.innerWidth;
     screenHeight = window.innerHeight;
-
+    /**
+     * When the game starts, the start menu disappears
+     * @type {string}
+     */
     document.getElementById('startMenuWrapper').style.maxHeight = '0px';
     document.getElementById('gameAreaWrapper').style.opacity = 1;
     if (!socket) {
@@ -36,7 +33,6 @@ function startGame(type) {
 // Checks if the nick chosen contains valid alphanumeric characters (and underscores).
 function validNick() {
     var regex = /^\w*$/;
-    console.log('Regex Test', regex.exec(playerNameInput.value));
     return regex.exec(playerNameInput.value) !== null;
 }
 
@@ -75,6 +71,9 @@ window.onload = function () {
 };
 
 
+/**
+ * We will use this as gunshots
+ */
 $("#feed").click(function () {
     socket.emit('1');
     reenviar = false;

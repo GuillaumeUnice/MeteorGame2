@@ -1,4 +1,3 @@
-
 window.requestAnimFrame = (function() {
     return  window.requestAnimationFrame       ||
             window.webkitRequestAnimationFrame ||
@@ -19,9 +18,14 @@ function animloop() {
     gameLoop();
 }
 
-//var stopDeplacement = true;
+/**
+ * The game loop
+ */
 function gameLoop() {
 
+    /**
+     * This message is displayed when the player dies
+     */
     if (died) {
         graph.fillStyle = '#333333';
         graph.fillRect(0, 0, screenWidth, screenHeight);
@@ -31,6 +35,7 @@ function gameLoop() {
         graph.font = 'bold 30px sans-serif';
         graph.fillText('You died!', screenWidth / 2, screenHeight / 2);
     }
+
     else if (!disconnected) {
         if (gameStart) {
             graph.fillStyle = backgroundColor;

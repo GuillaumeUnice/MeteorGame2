@@ -1,4 +1,7 @@
-
+/**
+ *
+ * @type {Number}
+ */
 // Canvas.
 var screenWidth = window.innerWidth;
 
@@ -69,8 +72,6 @@ function outOfBounds() {
 }
 
 var graph = c.getContext('2d');
-
-
 
 function gameInput(mouse) {
     if (!directionLock) {
