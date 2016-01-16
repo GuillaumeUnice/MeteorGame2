@@ -20,10 +20,9 @@
 		<input id="chatInput" type="text" class="chat-input" placeholder="Chat here..." maxlength="35"/>
 	</div>
 
-	<div id="mobile" style="visibility: hidden">
-		<input type="image" id="split" class="split" src="img/split.png" alt="splitBtn">
-		<input type="image" id="feed" class="feed" src="img/feed.png" alt="feedBtn">
-	</div>
+	<input type="image" id="split" class="split" src="img/split.png" alt="splitBtn">
+	<input type="image" id="feed" class="feed" src="img/feed.png" alt="feedBtn">
+	
 	<canvas tabindex="1" id="cvs"></canvas>
 </div>
 
@@ -65,58 +64,9 @@
 	</div>
 </div>
 
-<!--
-<div id="gameAreaWrapper">
-	<div id="status"><span class="title">Highest score</span></div>
-
-	<div id="mobile">
-		<input type="image" id="split" class="split" src="img/split.png" alt="splitBtn">
-		<input type="image" id="feed" class="feed" src="img/feed.png" alt="feedBtn">
-	</div>
-	<canvas tabindex="1" id="cvs"></canvas>
-</div>
-
-<div class="row">
-	<div class="col-lg-12">
-		<h1 class="page-header text-center">Vessel control</h1>
-	</div>
-</div>
-<div id="startMenuWrapper">
-	<div id="startMenu">
-
-		<div class="row">
-			<div class="col-xs-9">
-				<input type="text" tabindex="0" autofocus placeholder="Enter your name here" id="playerNameInput"
-				       maxlength="25"/>
-				<b class="input-error">Nick must be alphanumeric characters only!</b>
-
-				<button id="startButton" class="btn btn-success">Play</button>
-
-			</div>
-		</div>
-
-
-		<br/>
-		<div id="settings">
-			<h3>Settings</h3>
-			<ul>
-				<label><input id="visBord" type="checkbox">Show border</label>
-				<label><input id="showMass" type="checkbox">Show mass</label>
-				<br/>
-				<label><input id="continuity" type="checkbox">Continue moving when mouse is off-screen</label>
-				<br/>
-				<label><input id="roundFood" type="checkbox" checked>Rounded food</label>
-			</ul>
-		</div>
-		<div id="instructions">
-
-		</div>
-	</div>
-</div>
 <!-- JS -->
 <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
-
 <script src="https://js.leapmotion.com/leap-0.6.3.js"></script>
 <script src="https://js.leapmotion.com/leap-plugins-0.1.8.js"></script>
 
@@ -128,9 +78,7 @@
 <script src="js/app.js"></script>
 <script src="js/draw.js"></script>
 <script src="js/anim.js"></script>
-
 <script src="js/leap.js"></script>
-
 <script src="js/minimap.js"></script>
 
 </body>
