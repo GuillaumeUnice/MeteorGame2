@@ -45,7 +45,7 @@ function drawVirus(virus) {
     graph.strokeStyle = virus.stroke;
     graph.fillStyle = virus.fill;
     graph.lineWidth = virus.strokeWidth;
-    drawTriangle(virus.x - player.x + screenWidth / 2, virus.y - player.y + screenHeight / 2, virus.radius, virusSides);
+
 }
 
 function drawFireFood(mass) {
@@ -62,10 +62,10 @@ function drawPlayers(order) {
         y: player.y - (screenHeight / 2)
     };
 
-    var playerImg = new Image();
+    // var playerImg = new Image();
+    var playerImg = document.createElement("img");
+
     playerImg.src = "../vaisseaux.png";
-
-
     var spin = 0;
     for (var z = 0; z < order.length; z++) {
         var userCurrent = users[order[z].nCell];
@@ -73,7 +73,7 @@ function drawPlayers(order) {
 
         var circle = {
             x: cellCurrent.x - start.x,
-            y: cellCurrent.y - start.y
+            y: cellCurrent.y - start .y
         };
 
         var nameCell = "NoName";
@@ -84,7 +84,7 @@ function drawPlayers(order) {
         graph.font = 'bold ' + fontSize + 'px sans-serif';
 
         graph.drawImage(playerImg, circle.x, circle.y);
-        graph.fillText(nameCell, circle.x + playerImg.width / 2, circle.y - playerImg.height / 4);
+        graph.fillText(nameCell, circle.x + playerImg.width / 2, circle.y);
 
     }
 }
