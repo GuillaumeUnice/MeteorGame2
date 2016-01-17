@@ -56,10 +56,14 @@ var directionLock = false;
 var directions = [];
 
 var c = document.getElementById('cvs');
-c.width = screenWidth; c.height = screenHeight;
+c.width = screenWidth;
+c.height = screenHeight;
 //c.addEventListener('mousemove', gameInput, false);
 c.addEventListener('mouseout', outOfBounds, false);
-c.addEventListener('keyup', function(event) {reenviar = true; directionUp(event);}, false);
+c.addEventListener('keyup', function (event) {
+    reenviar = true;
+    directionUp(event);
+}, false);
 c.addEventListener('keydown', directionDown, false);
 c.addEventListener('touchstart', touchInput, false);
 c.addEventListener('touchmove', touchInput, false);
@@ -67,11 +71,16 @@ c.addEventListener('touchmove', touchInput, false);
 // Register when the mouse goes off the canvas.
 function outOfBounds() {
     if (!continuity) {
-        target = { x : 0, y: 0 };
+        target = {x: 0, y: 0};
     }
 }
 
 var graph = c.getContext('2d');
+
+var minimap = document.getElementById("minimap");
+
+var destCnvs = minimap.getContext("2d");
+
 
 function gameInput(mouse) {
     if (!directionLock) {
