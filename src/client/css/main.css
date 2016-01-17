@@ -39,6 +39,15 @@ div {
     /*padding: 5px;*/
 }
 
+#lifeBar {
+    position: absolute;
+    left: 20%;
+    right: 20%;
+    bottom: 10px;
+    background-color: #00FF00;
+    border: 5px solid #00FF00;
+}
+
 #status {
     position: absolute;
     padding: 10px;
@@ -255,7 +264,7 @@ div {
 }
 
 @media only screen  and (max-width: 768px) {
-    #split, #feed {
+    #split, #feed, #lifeBar {
         display: none;
     }
 }
