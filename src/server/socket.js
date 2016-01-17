@@ -16,7 +16,7 @@ var util = require('./lib/util');
  **/
 
 
-exports.ioon = function (socket,c,users,sockets) {
+exports.ioon = function (socket, c, users, sockets) {
     console.log('A user connected!', socket.handshake.query.type);
 //initialize a player
     var type = socket.handshake.query.type;
@@ -25,7 +25,7 @@ exports.ioon = function (socket,c,users,sockets) {
 
     var cells = [];
     var massTotal = 0;
-    if(type === 'player') {
+    if (type === 'player') {
         cells = [{
             mass: c.defaultPlayerMass,
             x: position.x,
@@ -81,7 +81,7 @@ exports.ioon = function (socket,c,users,sockets) {
             player.y = position.y;
             player.target.x = 0;
             player.target.y = 0;
-            if(type === 'player') {
+            if (type === 'player') {
                 player.cells = [{
                     mass: c.defaultPlayerMass,
                     x: position.x,
@@ -100,7 +100,7 @@ exports.ioon = function (socket,c,users,sockets) {
             //add a player
             users.push(currentPlayer);
 
-            io.emit('playerJoin', { name: currentPlayer.name });
+            io.emit('playerJoin', {name: currentPlayer.name});
 
             socket.emit('gameSetup', {
                 gameWidth: c.gameWidth,
@@ -117,7 +117,7 @@ exports.ioon = function (socket,c,users,sockets) {
             users.splice(util.findIndex(users, currentPlayer.id), 1);
         console.log('[INFO] User ' + currentPlayer.name + ' disconnected!');
 
-        socket.broadcast.emit('playerDisconnect', { name: currentPlayer.name });
+        socket.broadcast.emit('playerDisconnect', {name: currentPlayer.name});
     });
 
 
@@ -150,60 +150,20 @@ exports.ioon = function (socket,c,users,sockets) {
      // TODO: Actually log incorrect passwords.
      }
      });*/
-
-    /*................................. admin palyer can kick a normal player ......................................*/
-    /*     socket.on('kick', function(data) {
-     if (currentPlayer.admin) {
-     var reason = '';
-     var worked = false;
-     for (var e = 0; e < users.length; e++) {
-     if (users[e].name === data[0] && !users[e].admin && !worked) {
-     if (data.length > 1) {
-     for (var f = 1; f < data.length; f++) {
-     if (f === data.length) {
-     reason = reason + data[f];
-     }
-     else {
-     reason = reason + data[f] + ' ';
-     }
-     }
-     }
-     if (reason !== '') {
-     console.log('[ADMIN] User ' + users[e].name + ' kicked successfully by ' + currentPlayer.name + ' for reason ' + reason);
-     }
-     else {
-     console.log('[ADMIN] User ' + users[e].name + ' kicked successfully by ' + currentPlayer.name);
-     }
-     socket.emit('serverMSG', 'User ' + users[e].name + ' was kicked by ' + currentPlayer.name);
-     sockets[users[e].id].emit('kick', reason);
-     sockets[users[e].id].disconnect();
-     users.splice(e, 1);
-     worked = true;
-     }
-     }
-     if (!worked) {
-     socket.emit('serverMSG', 'Could not locate user or user is an admin.');
-     }
-     } else {
-     console.log('[ADMIN] ' + currentPlayer.name + ' is trying to use -kick but isn\'t an admin.');
-     socket.emit('serverMSG', 'You are not permitted to use this command.');
-     }
-     });  */
     /*................................. yeah! let's play together!.................................*/
 
 //feed, client call this in client/app.js
-    socket.on('1', function() {
+    socket.on('1', function () {
         // Fire food.
-        for(var i=0; i<currentPlayer.cells.length; i++)
-        {
-            if(((currentPlayer.cells[i].mass >= c.defaultPlayerMass + c.fireFood) && c.fireFood > 0) || (currentPlayer.cells[i].mass >= 20 && c.fireFood === 0)){
+        for (var i = 0; i < currentPlayer.cells.length; i++) {
+            if (((currentPlayer.cells[i].mass >= c.defaultPlayerMass + c.fireFood) && c.fireFood > 0) || (currentPlayer.cells[i].mass >= 20 && c.fireFood === 0)) {
                 var masa = 1;
-                if(c.fireFood > 0)
+                if (c.fireFood > 0)
                     masa = c.fireFood;
                 else
-                    masa = currentPlayer.cells[i].mass*0.1;
+                    masa = currentPlayer.cells[i].mass * 0.1;
                 currentPlayer.cells[i].mass -= masa;
-                currentPlayer.massTotal -=masa;
+                currentPlayer.massTotal -= masa;
                 massFood.push({
                     id: currentPlayer.id,
                     num: i,
@@ -223,13 +183,13 @@ exports.ioon = function (socket,c,users,sockets) {
     });
 
 //split, client call this in client/app.js
-    socket.on('2', function() {
+    socket.on('2', function () {
         //Split cells.
-        if(currentPlayer.cells.length < c.limitSplit && currentPlayer.massTotal >= c.defaultPlayerMass*2) {
+        if (currentPlayer.cells.length < c.limitSplit && currentPlayer.massTotal >= c.defaultPlayerMass * 2) {
             var numMax = currentPlayer.cells.length;
-            for(var d=0; d<numMax; d++) {
-                if(currentPlayer.cells[d].mass >= c.defaultPlayerMass*2) {
-                    currentPlayer.cells[d].mass = currentPlayer.cells[d].mass/2;
+            for (var d = 0; d < numMax; d++) {
+                if (currentPlayer.cells[d].mass >= c.defaultPlayerMass * 2) {
+                    currentPlayer.cells[d].mass = currentPlayer.cells[d].mass / 2;
                     currentPlayer.cells[d].radius = util.massToRadius(currentPlayer.cells[d].mass);
                     currentPlayer.cells.push({
                         mass: currentPlayer.cells[d].mass,
@@ -246,7 +206,7 @@ exports.ioon = function (socket,c,users,sockets) {
 
 // keyboard action, to change direction, see also client/delete.js
 // Heartbeat function, update everytime.
-    socket.on('0', function(target) {
+    socket.on('0', function (target) {
         currentPlayer.lastHeartbeat = new Date().getTime();
         if (target.x !== currentPlayer.x || target.y !== currentPlayer.y) {
             currentPlayer.target = target;

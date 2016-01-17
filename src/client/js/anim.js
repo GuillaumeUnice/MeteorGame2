@@ -1,3 +1,7 @@
+/**
+ * All the topics related to the game animation
+ */
+
 window.requestAnimFrame = (function() {
     return  window.requestAnimationFrame       ||
             window.webkitRequestAnimationFrame ||

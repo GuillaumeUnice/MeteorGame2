@@ -57,7 +57,7 @@ var directions = [];
 
 var c = document.getElementById('cvs');
 c.width = screenWidth; c.height = screenHeight;
-c.addEventListener('mousemove', gameInput, false);
+//c.addEventListener('mousemove', gameInput, false);
 c.addEventListener('mouseout', outOfBounds, false);
 c.addEventListener('keyup', function(event) {reenviar = true; directionUp(event);}, false);
 c.addEventListener('keydown', directionDown, false);
