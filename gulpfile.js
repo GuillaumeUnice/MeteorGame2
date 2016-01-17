@@ -8,7 +8,7 @@ var mocha = require('gulp-mocha');
 var webpack = require('webpack-stream');
 
 
-gulp.task('build', ['build-client', 'build-server', 'test']);
+gulp.task('build', ['build-client', 'build-server']);
 
 gulp.task('test', ['lint'], function () {
     gulp.src(['test/**/*.js'])

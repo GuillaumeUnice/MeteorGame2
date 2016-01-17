@@ -62,10 +62,9 @@ function drawPlayers(order) {
         y: player.y - (screenHeight / 2)
     };
 
-    var img = new Image();
+    var playerImg = new Image();
+    playerImg.src = "../vaisseaux.png";
 
-
-    img.src = "../ship.svg";
 
     var spin = 0;
     for (var z = 0; z < order.length; z++) {
@@ -84,8 +83,8 @@ function drawPlayers(order) {
 
         graph.font = 'bold ' + fontSize + 'px sans-serif';
 
-        graph.drawImage(img, circle.x, circle.y);
-        graph.fillText(nameCell, circle.x + img.width / 2, circle.y - img.height / 4);
+        graph.drawImage(playerImg, circle.x, circle.y);
+        graph.fillText(nameCell, circle.x + playerImg.width / 2, circle.y - playerImg.height / 4);
 
     }
 }

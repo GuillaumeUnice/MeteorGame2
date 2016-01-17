@@ -8,8 +8,6 @@ Leap.loop(function (frame) {
 
         console.log(hand.screenPosition());
 
-
-
         if (hand.screenPosition()[0] >= 700) {
             target.x = 200;
             target.y = 0;
@@ -17,7 +15,6 @@ Leap.loop(function (frame) {
             target.x = -200;
             target.y = 0;
         }
-
 
 
     });
@@ -30,6 +27,8 @@ var Cat = function () {
     var img = document.createElement('img');
     img.src = 'vaisseaux.png';
     img.style.position = 'absolute';
+    img.style.display = 'none';
+
     img.id ='vaisseau';
 
     img.onload = function () {
