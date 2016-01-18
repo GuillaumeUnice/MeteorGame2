@@ -57,19 +57,21 @@ function drawFireFood(mass) {
 }
 
 function drawPlayers(order) {
+
+
     var start = {
         x: player.x - (screenWidth / 2),
         y: player.y - (screenHeight / 2)
     };
 
 
-
-    var destCnvs = minimap.getContext("2d");
-
     // var playerImg = new Image();
     var playerImg = document.createElement("img");
     playerImg.src = "../vaisseaux.png";
     var spin = 0;
+
+    destCnvs.clearRect(0, 0, gameWidth, gameHeight);
+
     for (var z = 0; z < order.length; z++) {
         var userCurrent = users[order[z].nCell];
         var cellCurrent = users[order[z].nCell].cells[order[z].nDiv];
@@ -91,15 +93,7 @@ function drawPlayers(order) {
         graph.fillText(nameCell, circle.x + playerImg.width / 2, circle.y);
 
 
-        destCnvs.fillRect(200 * userCurrent.x / gameWidth, 200 * userCurrent.y / gameHeight, 2, 2);
-
-
-
-        /**
-         * ######### From Agar.io
-         */
-
-
+        destCnvs.fillRect(300 * userCurrent.x / gameHeight, 300 * userCurrent.y / gameWidth, 5, 5);
     }
 
 
