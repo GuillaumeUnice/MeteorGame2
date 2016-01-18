@@ -93,7 +93,7 @@ function drawPlayers(order) {
         graph.fillText(nameCell, circle.x + playerImg.width / 2, circle.y);
 
 
-        destCnvs.fillRect(300 * userCurrent.x / gameHeight, 300 * userCurrent.y / gameWidth, 5, 5);
+        destCnvs.fillRect(300 * userCurrent.x / gameWidth, 300 * userCurrent.y / gameHeight, 3, 3);
     }
 
 
@@ -163,7 +163,3 @@ function drawborder() {
         graph.stroke();
     }
 }
-
-
-
-
