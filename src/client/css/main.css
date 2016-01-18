@@ -55,8 +55,7 @@ div {
 
 #minimap {
     position: fixed;
-    /*   background-color: #333333;
-       */
+    background-color: #e7e7e7;
     left: 10px;
     top: 10px;
     width: 200px;

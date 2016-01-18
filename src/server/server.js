@@ -152,6 +152,7 @@ io.on('connection', function (socket) {
                 gameHeight: c.gameHeight
             });
             console.log('Total players: ' + users.length);
+            console.log(users);
         }
 
     });

@@ -79,9 +79,6 @@ var graph = c.getContext('2d');
 
 var minimap = document.getElementById("minimap");
 
-var destCnvs = minimap.getContext("2d");
-
-
 function gameInput(mouse) {
     if (!directionLock) {
 

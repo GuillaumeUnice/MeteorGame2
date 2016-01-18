@@ -62,12 +62,12 @@ function drawPlayers(order) {
         y: player.y - (screenHeight / 2)
     };
 
+
+
+    var destCnvs = minimap.getContext("2d");
+
     // var playerImg = new Image();
     var playerImg = document.createElement("img");
-    playerImg.className = "vaisseau";
-
-    c.appendChild(playerImg);
-
     playerImg.src = "../vaisseaux.png";
     var spin = 0;
     for (var z = 0; z < order.length; z++) {
@@ -79,6 +79,7 @@ function drawPlayers(order) {
             y: cellCurrent.y - start.y
         };
 
+
         var nameCell = "NoName";
         if (typeof userCurrent.id == "undefined") nameCell = player.name; else nameCell = userCurrent.name;
 
@@ -89,9 +90,18 @@ function drawPlayers(order) {
         graph.drawImage(playerImg, circle.x, circle.y);
         graph.fillText(nameCell, circle.x + playerImg.width / 2, circle.y);
 
+
+        destCnvs.fillRect(200 * userCurrent.x / gameWidth, 200 * userCurrent.y / gameHeight, 2, 2);
+
+
+
+        /**
+         * ######### From Agar.io
+         */
+
+
     }
 
-    destCnvs.drawImage(c, 0, 0,300, 200);
 
 }
 
