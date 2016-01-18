@@ -51,10 +51,11 @@ div {
 #minimap {
     position: fixed;
     background-color: #e7e7e7;
-    left: 10px;
-    top: 10px;
-    width: 300px;
-    height: 300px;
+    left: 0;
+    top: 0;
+    width: 20%;
+    height: 30%;
+
     border: 2px solid #000000;
 }
 

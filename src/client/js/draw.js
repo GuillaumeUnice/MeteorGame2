@@ -67,10 +67,7 @@ function drawPlayers(order) {
 
     // var playerImg = new Image();
     var playerImg = document.createElement("img");
-    playerImg.src = "../vaisseaux.png";
-    var spin = 0;
-
-    destCnvs.clearRect(0, 0, gameWidth, gameHeight);
+    playerImg.src = "../img/vaisseaux.png";
 
     for (var z = 0; z < order.length; z++) {
         var userCurrent = users[order[z].nCell];
@@ -83,7 +80,11 @@ function drawPlayers(order) {
 
 
         var nameCell = "NoName";
-        if (typeof userCurrent.id == "undefined") nameCell = player.name; else nameCell = userCurrent.name;
+        if (typeof userCurrent.id == "undefined") {
+            nameCell = player.name;
+        } else {
+            nameCell = userCurrent.name;
+        }
 
         var fontSize = Math.max(cellCurrent.radius / 3, 12);
 
@@ -93,7 +94,9 @@ function drawPlayers(order) {
         graph.fillText(nameCell, circle.x + playerImg.width / 2, circle.y);
 
 
-        destCnvs.fillRect(300 * userCurrent.x / gameWidth, 300 * userCurrent.y / gameHeight, 3, 3);
+        //destCnvs.fillRect(minimap.width * userCurrent.x / gameWidth, minimap.height * userCurrent.y / gameHeight, 3, 3);
+
+
     }
 
 

@@ -25,31 +25,40 @@ function setupSocket(socket) {
         if (mobile) {
             document.getElementById('gameAreaWrapper').removeChild(document.getElementById('chatbox'));
         }
-		c.focus();
+        c.focus();
     });
 
-    socket.on('gameSetup', function(data) {
+    socket.on('gameSetup', function (data) {
         gameWidth = data.gameWidth;
         gameHeight = data.gameHeight;
+        mame = data.doul;
         resize();
     });
 
     socket.on('leaderboard', function (data) {
         leaderboard = data.leaderboard;
         var status = '<span class="title">Connected</span>';
+        destCnvs.clearRect(0, 0, gameWidth, gameHeight);
+
         for (var i = 0; i < leaderboard.length; i++) {
             status += '<br />';
-            if (leaderboard[i].id == player.id){
-                if(leaderboard[i].name.length !== 0)
+            if (leaderboard[i].id == player.id) {
+                if (leaderboard[i].name.length !== 0) {
                     status += '<span class="me">' + (i + 1) + '. ' + leaderboard[i].name + "</span>";
-                else
+                    destCnvs.fillStyle = "#00FF00";
+
+                } else
                     status += '<span class="me">' + (i + 1) + ". An unnamed cell</span>";
             } else {
-                if(leaderboard[i].name.length !== 0)
+                if (leaderboard[i].name.length !== 0) {
                     status += (i + 1) + '. ' + leaderboard[i].name;
-                else
+                    destCnvs.fillStyle = "#FF0000";
+
+                } else
                     status += (i + 1) + '. An unnamed cell';
             }
+
+            destCnvs.fillRect(minimap.width * leaderboard[i].x / gameWidth, minimap.height * leaderboard[i].y / gameHeight, 3, 3);
         }
         //status += '<br />Players: ' + data.players;
         document.getElementById('status').innerHTML = status;
@@ -58,13 +67,13 @@ function setupSocket(socket) {
     // Handle movement.
     socket.on('serverTellPlayerMove', function (userData, foodsList, massList, virusList) {
         var playerData;
-        for(var i =0; i< userData.length; i++) {
-            if(typeof(userData[i].id) == "undefined") {
+        for (var i = 0; i < userData.length; i++) {
+            if (typeof(userData[i].id) == "undefined") {
                 playerData = userData[i];
                 i = userData.length;
             }
         }
-        if(playerType == 'player') {
+        if (playerType == 'player') {
             var xoffset = player.x - playerData.x;
             var yoffset = player.y - playerData.y;
 
@@ -86,7 +95,7 @@ function setupSocket(socket) {
     socket.on('RIP', function () {
         gameStart = false;
         died = true;
-        window.setTimeout(function() {
+        window.setTimeout(function () {
             document.getElementById('gameAreaWrapper').style.opacity = 0;
             document.getElementById('startMenuWrapper').style.maxHeight = '1000px';
             died = false;
@@ -97,17 +106,17 @@ function setupSocket(socket) {
         }, 2500);
     });
 
-/*    socket.on('kick', function (data) {
-        gameStart = false;
-        reason = data;
-        kicked = true;
-        socket.close();
-    }); */
+    /*    socket.on('kick', function (data) {
+     gameStart = false;
+     reason = data;
+     kicked = true;
+     socket.close();
+     }); */
 }
 
 function resize() {
     player.screenWidth = c.width = screenWidth = playerType == 'player' ? window.innerWidth : gameWidth;
     player.screenHeight = c.height = screenHeight = playerType == 'player' ? window.innerHeight : gameHeight;
-    socket.emit('windowResized', { screenWidth: screenWidth, screenHeight: screenHeight });
+    socket.emit('windowResized', {screenWidth: screenWidth, screenHeight: screenHeight});
 }
 

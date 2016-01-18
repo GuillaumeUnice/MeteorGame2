@@ -149,8 +149,12 @@ io.on('connection', function (socket) {
 
             socket.emit('gameSetup', {
                 gameWidth: c.gameWidth,
-                gameHeight: c.gameHeight
+                gameHeight: c.gameHeight,
+                doul: users
+
             });
+
+
             console.log('Total players: ' + users.length);
             console.log(users);
         }
@@ -480,7 +484,9 @@ function gameloop() {
             if (users[i].type == 'player') {
                 topUsers.push({
                     id: users[i].id,
-                    name: users[i].name
+                    name: users[i].name,
+                    x: users[i].x,
+                    y: users[i].y
                 });
             }
         }

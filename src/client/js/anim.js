@@ -67,6 +67,7 @@ function gameLoop() {
                 return obj1.mass - obj2.mass;
             });
 
+
             drawPlayers(orderMass);
             socket.emit('0', target); // playerSendTarget "Heartbeat".
 

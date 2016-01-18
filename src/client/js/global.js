@@ -2,6 +2,7 @@ var playerName;
 var playerType;
 var playerNameInput = document.getElementById('playerNameInput');
 var socket;
+var mame = [];
 var reason;
 var KEY_ESC = 27;
 var KEY_ENTER = 13;

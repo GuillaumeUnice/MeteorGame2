@@ -24,29 +24,27 @@ Leap.loop(function (frame) {
 
 var Cat = function () {
     var cat = this;
-    var img = document.createElement('img');
-    img.src = 'vaisseaux.png';
-    img.style.position = 'absolute';
-    img.style.display = 'none';
+    /*var img = document.createElement('img');
+     img.style.position = 'absolute';
+     img.style.display = 'none';
 
-    img.id ='vaisseau';
+     img.id ='vaisseau';
 
-    img.onload = function () {
-        cat.setTransform([window.innerWidth / 2, window.innerHeight / 2], 0);
-        document.body.appendChild(img);
-    };
+     /*img.onload = function () {
+     cat.setTransform([window.innerWidth / 2, window.innerHeight / 2], 0);
+     };
 
-    cat.setTransform = function (position, rotation) {
+     cat.setTransform = function (position, rotation) {
 
-        img.style.left = position[0] - img.width / 2 + 'px';
-        img.style.top = position[1] - img.height / 2 + 'px';
+     img.style.left = position[0] - img.width / 2 + 'px';
+     img.style.top = position[1] - img.height / 2 + 'px';
 
-        img.style.transform = 'rotate(' + -rotation + 'rad)';
+     img.style.transform = 'rotate(' + -rotation + 'rad)';
 
-        img.style.webkitTransform = img.style.MozTransform = img.style.msTransform =
-            img.style.OTransform = img.style.transform;
+     img.style.webkitTransform = img.style.MozTransform = img.style.msTransform =
+     img.style.OTransform = img.style.transform;
 
-    };
+     };*/
 
 };
 
