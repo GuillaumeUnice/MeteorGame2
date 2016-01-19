@@ -17,7 +17,6 @@ var util = require('./lib/util');
 var quadtree = require('../../quadtree');
 
 /* My imports */
-var moveImport = require("./move.js");
 var socketImport = require("./socket.js");
 var mapElemImport = require("./mapElements.js");
 
