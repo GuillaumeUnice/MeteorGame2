@@ -181,31 +181,32 @@ io.on('connection', function (socket) {
 
 //shoot, client call this in client/app.js
     socket.on('1', function () {
+        console.log('Fire called');
         // Fire food.
         for (var i = 0; i < currentPlayer.cells.length; i++) {
-            if (((currentPlayer.cells[i].mass >= c.defaultPlayerMass + c.fireFood) && c.fireFood > 0) || (currentPlayer.cells[i].mass >= 20 && c.fireFood === 0)) {
-                var masa = 1;
-                if (c.fireFood > 0)
-                    masa = c.fireFood;
-                else
-                    masa = currentPlayer.cells[i].mass * 0.1;
-                currentPlayer.cells[i].mass -= masa;
-                currentPlayer.massTotal -= masa;
-                massFood.push({
-                    id: currentPlayer.id,
-                    num: i,
-                    masa: masa,
-                    hue: currentPlayer.hue,
-                    target: {
-                        x: currentPlayer.x - currentPlayer.cells[i].x + currentPlayer.target.x,
-                        y: currentPlayer.y - currentPlayer.cells[i].y + currentPlayer.target.y
-                    },
-                    x: currentPlayer.cells[i].x,
-                    y: currentPlayer.cells[i].y,
-                    radius: util.massToRadius(masa),
-                    speed: 30
-                });
-            }
+            //if (((currentPlayer.cells[i].mass >= c.defaultPlayerMass + c.fireFood) && c.fireFood > 0) || (currentPlayer.cells[i].mass >= 20 && c.fireFood === 0)) {
+            var masa = 1;
+            if (c.fireFood > 0)
+                masa = c.fireFood;
+            else
+                masa = currentPlayer.cells[i].mass * 0.1;
+            /*currentPlayer.cells[i].mass -= masa;
+             currentPlayer.massTotal -= masa;*/
+            massFood.push({
+                id: currentPlayer.id,
+                num: i,
+                masa: masa,
+                hue: currentPlayer.hue,
+                target: {
+                    x: currentPlayer.x - currentPlayer.cells[i].x + currentPlayer.target.x,
+                    y: currentPlayer.y - currentPlayer.cells[i].y + currentPlayer.target.y
+                },
+                x: currentPlayer.cells[i].x,
+                y: currentPlayer.cells[i].y,
+                radius: util.massToRadius(masa),
+                speed: 30
+            });
+            //}
         }
     });
 
@@ -252,9 +253,45 @@ io.on('connection', function (socket) {
 
 /***********************************************************************END SOCKET*************************************************************************/
 //noinspection JSDuplicatedDeclaration
-/******
+/******/
 
- /*................................called in function tickPlayer......................................................*/
+
+function moveMass(mass) {
+    var deg = Math.atan2(mass.target.y, mass.target.x);
+    var deltaY = mass.speed * Math.sin(deg);
+    var deltaX = mass.speed * Math.cos(deg);
+
+    mass.speed -= 0.5;
+    if (mass.speed < 0) {
+        mass.speed = 0;
+    }
+    if (!isNaN(deltaY)) {
+        mass.y += deltaY;
+    }
+    if (!isNaN(deltaX)) {
+        mass.x += deltaX;
+    }
+
+    var borderCalc = mass.radius + 5;
+
+    if (mass.x > c.gameWidth - borderCalc) {
+        mass.x = c.gameWidth - borderCalc;
+    }
+    if (mass.y > c.gameHeight - borderCalc) {
+        mass.y = c.gameHeight - borderCalc;
+    }
+    if (mass.x < borderCalc) {
+        mass.x = borderCalc;
+    }
+    if (mass.y < borderCalc) {
+        mass.y = borderCalc;
+    }
+}
+
+
+/*................................called in function tickPlayer......................................................*/
+
+
 function movePlayer(player) {
     var x = 0, y = 0;
     for (var i = 0; i < player.cells.length; i++) {
@@ -468,7 +505,7 @@ function moveloop() {
         tickPlayer(users[i]);
     }
     for (i = 0; i < massFood.length; i++) {
-        if (massFood[i].speed > 0) moveImport.moveMass(massFood[i]);
+        if (massFood[i].speed > 0) moveMass(massFood[i]);
     }
 }
 

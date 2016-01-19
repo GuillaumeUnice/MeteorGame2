@@ -51,8 +51,7 @@ function drawVirus(virus) {
 function drawFireFood(mass) {
     var img = new Image();
     img.src = "../img/bullet.png";
-    graph.drawImage(img, mass.x - player.x + screenWidth / 2, mass.y - player.y + screenHeight / 2);
-    console.log("fire!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+    graph.drawImage(img, mass.x - player.x + screenWidth / 2, mass.y - player.y + screenHeight / 2, 50, 50);
 
 }
 
@@ -92,9 +91,6 @@ function drawPlayers(order) {
 
         graph.drawImage(playerImg, circle.x, circle.y);
         graph.fillText(nameCell, circle.x + playerImg.width / 2, circle.y);
-
-
-        //destCnvs.fillRect(minimap.width * userCurrent.x / gameWidth, minimap.height * userCurrent.y / gameHeight, 3, 3);
 
 
     }

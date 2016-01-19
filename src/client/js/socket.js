@@ -31,34 +31,33 @@ function setupSocket(socket) {
     socket.on('gameSetup', function (data) {
         gameWidth = data.gameWidth;
         gameHeight = data.gameHeight;
-        mame = data.doul;
         resize();
     });
 
     socket.on('leaderboard', function (data) {
         leaderboard = data.leaderboard;
         var status = '<span class="title">Connected</span>';
-        destCnvs.clearRect(0, 0, gameWidth, gameHeight);
+        miniMapFrame.clearRect(0, 0, gameWidth, gameHeight);
 
         for (var i = 0; i < leaderboard.length; i++) {
             status += '<br />';
             if (leaderboard[i].id == player.id) {
                 if (leaderboard[i].name.length !== 0) {
                     status += '<span class="me">' + (i + 1) + '. ' + leaderboard[i].name + "</span>";
-                    destCnvs.fillStyle = "#00FF00";
+                    miniMapFrame.fillStyle = "#00FF00";
 
                 } else
                     status += '<span class="me">' + (i + 1) + ". An unnamed cell</span>";
             } else {
                 if (leaderboard[i].name.length !== 0) {
                     status += (i + 1) + '. ' + leaderboard[i].name;
-                    destCnvs.fillStyle = "#FF0000";
+                    miniMapFrame.fillStyle = "#FF0000";
 
                 } else
                     status += (i + 1) + '. An unnamed cell';
             }
 
-            destCnvs.fillRect(minimap.width * leaderboard[i].x / gameWidth, minimap.height * leaderboard[i].y / gameHeight, 3, 3);
+            miniMapFrame.fillRect(miniMap.width * leaderboard[i].x / gameWidth, miniMap.height * leaderboard[i].y / gameHeight, 4, 4);
         }
         //status += '<br />Players: ' + data.players;
         document.getElementById('status').innerHTML = status;

@@ -51,7 +51,6 @@ var fireFood = [];
 var users = [];
 var leaderboard = [];
 var target = {x: player.x, y: player.y};
-var reenviar = true;
 var directionLock = false;
 var directions = [];
 
@@ -64,6 +63,7 @@ c.addEventListener('keyup', function (event) {
     reenviar = true;
     directionUp(event);
 }, false);
+c.addEventListener('keypress', keyInput, false);
 c.addEventListener('keydown', directionDown, false);
 c.addEventListener('touchstart', touchInput, false);
 c.addEventListener('touchmove', touchInput, false);
@@ -77,8 +77,8 @@ function outOfBounds() {
 
 var graph = c.getContext('2d');
 
-var minimap = document.getElementById("minimap");
-var destCnvs = minimap.getContext("2d");
+var miniMap = document.getElementById("minimap");
+var miniMapFrame = miniMap.getContext("2d");
 
 
 function gameInput(mouse) {
@@ -88,6 +88,14 @@ function gameInput(mouse) {
         target.y = mouse.clientY - screenHeight / 2;
         //TODO : ne pas supprimer
         //console.log(target);
+    }
+}
+
+function keyInput(event) {
+    var key = event.which || event.keyCode;
+    if (key === KEY_FIREFOOD && reenviar) {
+        socket.emit('1');
+        reenviar = false;
     }
 }
 

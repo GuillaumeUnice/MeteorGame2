@@ -71,6 +71,7 @@ function updateTarget(list) {
 }
 
 
+
 function directional(key) {
     return horizontal(key) || vertical(key);
 }
