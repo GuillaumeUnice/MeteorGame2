@@ -23,6 +23,9 @@ function startGame(type) {
      */
     document.getElementById('startMenuWrapper').style.maxHeight = '0px';
     document.getElementById('gameAreaWrapper').style.opacity = 1;
+    document.getElementById('munitionPoint').innerHTML = 10;
+    document.getElementById('lifePoint').innerHTML = 100;
+
     if (!socket) {
         socket = io({query: "type=" + type});
         setupSocket(socket);

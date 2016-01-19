@@ -49,8 +49,13 @@ function drawVirus(virus) {
 }
 
 function drawFireFood(mass) {
+
     var img = new Image();
     img.src = "../img/bullet.png";
+
+    document.getElementById('munitionsBar').style.width = (mass.munitions * 500 / 10) + 'px';
+    document.getElementById('munitionPoint').innerHTML = mass.munitions;
+
     graph.drawImage(img, mass.x - player.x + screenWidth / 2, mass.y - player.y + screenHeight / 2, 50, 50);
 
 }

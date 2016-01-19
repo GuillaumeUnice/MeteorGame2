@@ -1,39 +1,41 @@
 {
-    "port": 3000,
-    "foodMass": 1,
-    "fireFood": 20,
-    "limitSplit": 16,
-    "defaultPlayerMass": 10,
-	"virus": {
-		"fill": "#33ff33",
-		"stroke": "#47ff47",
-		"strokeWidth": 20,
-		"defaultMass": {
-            "from": 100,
-            "to": 150
-        },
-		"splitMass": 180
-	},
-    "gameWidth": 5000,
-    "gameHeight": 5000,
-    "adminPass": "DEFAULT",
-    "gameMass": 20000,
-    "maxFood": 0,
-    "maxVirus": 50,
-    "slowBase": 4.5,
-    "logChat": 0,
-    "networkUpdateFactor": 40,
-    "maxHeartbeatInterval": 5000,
-    "foodUniformDisposition": true,
-    "virusUniformDisposition": false,
-    "newPlayerInitialPosition": "farthest",
-    "massLossRate": 1,
-    "mergeTimer": 15,
-    "objectMax" : 20,
-    "object": {
-        "fill": "#000000",
-        "stroke": "#2ECC71",
-        "strokeWidth": 20,
-        "objectRadius" : 20
-    }
+  "port": 3000,
+  "life": 100,
+  "munition": 10,
+  "foodMass": 1,
+  "fireFood": 20,
+  "limitSplit": 16,
+  "defaultPlayerMass": 10,
+  "virus": {
+    "fill": "#33ff33",
+    "stroke": "#47ff47",
+    "strokeWidth": 20,
+    "defaultMass": {
+      "from": 100,
+      "to": 150
+    },
+    "splitMass": 180
+  },
+  "gameWidth": 5000,
+  "gameHeight": 5000,
+  "adminPass": "DEFAULT",
+  "gameMass": 20000,
+  "maxFood": 0,
+  "maxVirus": 50,
+  "slowBase": 4.5,
+  "logChat": 0,
+  "networkUpdateFactor": 40,
+  "maxHeartbeatInterval": 5000,
+  "foodUniformDisposition": true,
+  "virusUniformDisposition": false,
+  "newPlayerInitialPosition": "farthest",
+  "massLossRate": 1,
+  "mergeTimer": 15,
+  "objectMax": 20,
+  "object": {
+    "fill": "#000000",
+    "stroke": "#2ECC71",
+    "strokeWidth": 20,
+    "objectRadius": 20
+  }
 }
