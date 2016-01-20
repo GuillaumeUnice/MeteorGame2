@@ -1,4 +1,4 @@
-// socket stuff.
+/// / socket stuff.
 function setupSocket(socket) {
 
     // Handle error.
@@ -31,6 +31,15 @@ function setupSocket(socket) {
     socket.on('gameSetup', function (data) {
         gameWidth = data.gameWidth;
         gameHeight = data.gameHeight;
+        munitions = data.munitions;
+        life = data.life;
+        if (!gameTop) {
+
+            console.log('Douuul ', munitions);
+            document.getElementById('munitionPoint').innerHTML = munitions;
+            document.getElementById('lifePoint').innerHTML = life;
+            gameTop = true;
+        }
         resize();
     });
 

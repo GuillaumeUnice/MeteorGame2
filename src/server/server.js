@@ -149,7 +149,8 @@ io.on('connection', function (socket) {
             socket.emit('gameSetup', {
                 gameWidth: c.gameWidth,
                 gameHeight: c.gameHeight,
-                doul: users
+                munitions: c.munition,
+                life: c.life
 
             });
 

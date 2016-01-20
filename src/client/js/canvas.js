@@ -8,6 +8,9 @@ var screenWidth = window.innerWidth;
 var screenHeight = window.innerHeight;
 var gameWidth = 0;
 var gameHeight = 0;
+var munitions = 0;
+var life = 0;
+var gameTop = false;
 var xoffset = -gameWidth;
 var yoffset = -gameHeight;
 

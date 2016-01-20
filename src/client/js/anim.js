@@ -1,25 +1,28 @@
 /**
  * All the topics related to the game animation
  */
-
-window.requestAnimFrame = (function() {
-    return  window.requestAnimationFrame       ||
-            window.webkitRequestAnimationFrame ||
-            window.mozRequestAnimationFrame    ||
-            window.msRequestAnimationFrame     ||
-            function( callback ) {
-                window.setTimeout(callback, 1000 / 60);
-            };
+window.requestAnimFrame = (function () {
+    return window.requestAnimationFrame ||
+        window.webkitRequestAnimationFrame ||
+        window.mozRequestAnimationFrame ||
+        window.msRequestAnimationFrame ||
+        function (callback) {
+            window.setTimeout(callback, 1000 / 60);
+        };
 })();
 
-window.cancelAnimFrame = (function(handle) {
-    return  window.cancelAnimationFrame     ||
-            window.mozCancelAnimationFrame;
+window.cancelAnimFrame = (function (handle) {
+    return window.cancelAnimationFrame ||
+        window.mozCancelAnimationFrame;
 })();
 
 function animloop() {
+
     animLoopHandle = window.requestAnimFrame(animloop);
+
+
     gameLoop();
+
 }
 
 /**
@@ -54,8 +57,8 @@ function gameLoop() {
                 drawborder();
             }
             var orderMass = [];
-            for(var i=0; i<users.length; i++) {
-                for(var j=0; j<users[i].cells.length; j++) {
+            for (var i = 0; i < users.length; i++) {
+                for (var j = 0; j < users[i].cells.length; j++) {
                     orderMass.push({
                         nCell: i,
                         nDiv: j,
@@ -63,12 +66,13 @@ function gameLoop() {
                     });
                 }
             }
-            orderMass.sort(function(obj1,obj2) {
+            orderMass.sort(function (obj1, obj2) {
                 return obj1.mass - obj2.mass;
             });
 
 
             drawPlayers(orderMass);
+
             socket.emit('0', target); // playerSendTarget "Heartbeat".
 
         } else {
@@ -98,7 +102,7 @@ function gameLoop() {
 
         }
         else {
-              graph.fillText('Disconnected!', screenWidth / 2, screenHeight / 2);
+            graph.fillText('Disconnected!', screenWidth / 2, screenHeight / 2);
         }
     }
 }

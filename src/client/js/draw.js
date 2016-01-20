@@ -63,11 +63,11 @@ function drawFireFood(mass) {
 function drawPlayers(order) {
 
 
+
     var start = {
         x: player.x - (screenWidth / 2),
         y: player.y - (screenHeight / 2)
     };
-
 
     // var playerImg = new Image();
     var playerImg = document.createElement("img");
