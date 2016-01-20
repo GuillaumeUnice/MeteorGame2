@@ -49,8 +49,8 @@ function gameLoop() {
             graph.fillRect(0, 0, screenWidth, screenHeight);
 
             drawgrid();
-            foods.forEach(drawFood);
-            viruses.forEach(drawVirus);
+            //foods.forEach(drawFood);
+            //viruses.forEach(drawVirus);
             fireFood.forEach(drawFireFood);
 
             if (borderDraw) {

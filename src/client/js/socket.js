@@ -21,7 +21,8 @@ function setupSocket(socket) {
         player.screenWidth = screenWidth;
         player.screenHeight = screenHeight;
         player.target = target;
-
+        console.log('Player');
+        console.log(player);
         document.getElementById('munitionPoint').innerHTML = player.munitions;
         document.getElementById('lifePoint').innerHTML = player.life;
         socket.emit('gotit', player);
@@ -98,6 +99,7 @@ function setupSocket(socket) {
         fireFood = massList;
     });
 
+
     // Death.
     socket.on('RIP', function () {
         gameStart = false;
@@ -114,18 +116,19 @@ function setupSocket(socket) {
     });
 
 
-    socket.on ('fire', function(player){
+    socket.on('fire', function (player) {
         document.getElementById('munitionsBar').style.width = (player.munitions * 500 / 10) + 'px';
         document.getElementById('munitionPoint').innerHTML = player.munitions;
     });
 
-    /*    socket.on('kick', function (data) {
-     gameStart = false;
-     reason = data;
-     kicked = true;
-     socket.close();
-     }); */
+    socket.on('proposeJoin', function () {
+
+        $('#regroup').css("display", "none");
+        $("#joinDiv").css("visibility", "visible")
+
+    });
 }
+
 
 function resize() {
     player.screenWidth = c.width = screenWidth = playerType == 'player' ? window.innerWidth : gameWidth;

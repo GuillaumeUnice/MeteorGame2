@@ -91,6 +91,21 @@ div {
     color: #000000;
 }
 
+#joinDiv {
+    position: fixed;
+    visibility: hidden;
+    top: 35%;
+    left: 2%;
+}
+
+#acceptJoin {
+    color: #00FF00;
+}
+
+#rejectJoin {
+    color: #ff0000;
+}
+
 #status {
     position: absolute;
     padding: 10px;

@@ -17,7 +17,6 @@ var util = require('./lib/util');
 var quadtree = require('../../quadtree');
 
 /* My imports */
-var socketImport = require("./socket.js");
 var mapElemImport = require("./mapElements.js");
 
 //game attribute
@@ -185,13 +184,14 @@ io.on('connection', function (socket) {
         for (var i = 0; i < currentPlayer.cells.length; i++) {
             //if (((currentPlayer.cells[i].mass >= c.defaultPlayerMass + c.fireFood) && c.fireFood > 0) || (currentPlayer.cells[i].mass >= 20 && c.fireFood === 0)) {
             var masa = 1;
-            console.log('[INFO] User :: ' + currentPlayer.name + ' :: Remaining munitions : ', currentPlayer.munitions);
             if (currentPlayer.munitions > 0) {
 
                 masa = currentPlayer.cells[i].mass * 0.1;
                 /*currentPlayer.cells[i].mass -= masa;
                  currentPlayer.massTotal -= masa;*/
                 currentPlayer.munitions -= 1;
+                console.log('[INFO] User :: ' + currentPlayer.name + ' :: Remaining munitions : ', currentPlayer.munitions);
+
                 socket.emit('fire', currentPlayer);
                 massFood.push({
                     id: currentPlayer.id,
@@ -234,6 +234,15 @@ io.on('connection', function (socket) {
                 }
             }
             currentPlayer.lastSplit = new Date().getTime();
+        }
+    });
+
+    socket.on('regroupPlayers', function () {
+        console.log('Server regroup called');
+        if (users.length > 1) {
+            console.log(currentPlayer.name + ' asked for a super vessel');
+            socket.broadcast.emit('proposeJoin');
+
         }
     });
 

@@ -30,9 +30,7 @@ function startGame(type) {
         setupSocket(socket);
     }
     if (!animLoopHandle) {
-        console
         animloop();
-
     }
 
     socket.emit('respawn');
@@ -94,6 +92,27 @@ $("#feed").click(function () {
 $("#split").click(function () {
     socket.emit('2');
     reenviar = false;
+});
+
+$("#regroup").click(function () {
+    var regroupImg = $('#regroup');
+    socket.emit('regroupPlayers');
+
+    console.log("I am the proposing player");
+    regroupImg.removeClass('fa-users');
+    regroupImg.addClass("fa-spinner fa-spin");
+});
+
+$("#acceptJoin").click(function () {
+    socket.emit('acceptJoin');
+    $('#regroup').css('visibility', 'visible');
+    $('#joinDiv').css("visibility", "hidden");
+});
+
+$("#rejectJoin").click(function () {
+    socket.emit('acceptJoin');
+    $('#regroup').css('visibility', 'visible');
+    $('#joinDiv').css("visibility", "hidden");
 });
 
 function checkLatency() {
