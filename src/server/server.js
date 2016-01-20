@@ -83,6 +83,8 @@ io.on('connection', function (socket) {
         id: socket.id,
         x: position.x,
         y: position.y,
+        munitions: c.munition,
+        life: c.life,
         cells: cells,
         massTotal: massTotal,
         hue: Math.round(Math.random() * 360),
@@ -148,10 +150,7 @@ io.on('connection', function (socket) {
 
             socket.emit('gameSetup', {
                 gameWidth: c.gameWidth,
-                gameHeight: c.gameHeight,
-                munitions: c.munition,
-                life: c.life
-
+                gameHeight: c.gameHeight
             });
 
 
@@ -186,11 +185,14 @@ io.on('connection', function (socket) {
         for (var i = 0; i < currentPlayer.cells.length; i++) {
             //if (((currentPlayer.cells[i].mass >= c.defaultPlayerMass + c.fireFood) && c.fireFood > 0) || (currentPlayer.cells[i].mass >= 20 && c.fireFood === 0)) {
             var masa = 1;
-            if (c.munition > 0) {
+            console.log('[INFO] User :: ' + currentPlayer.name + ' :: Remaining munitions : ', currentPlayer.munitions);
+            if (currentPlayer.munitions > 0) {
 
                 masa = currentPlayer.cells[i].mass * 0.1;
                 /*currentPlayer.cells[i].mass -= masa;
                  currentPlayer.massTotal -= masa;*/
+                currentPlayer.munitions -= 1;
+                socket.emit('fire', currentPlayer);
                 massFood.push({
                     id: currentPlayer.id,
                     num: i,
@@ -203,7 +205,6 @@ io.on('connection', function (socket) {
                     x: currentPlayer.cells[i].x,
                     y: currentPlayer.cells[i].y,
                     radius: util.massToRadius(masa),
-                    munitions: --c.munition,
                     speed: 30
                 });
 

@@ -14,14 +14,21 @@ function setupSocket(socket) {
 
     // Handle connection.
     socket.on('welcome', function (playerSettings) {
+        console.log(playerSettings);
         player = playerSettings;
+
         player.name = playerName;
         player.screenWidth = screenWidth;
         player.screenHeight = screenHeight;
         player.target = target;
+
+        document.getElementById('munitionPoint').innerHTML = player.munitions;
+        document.getElementById('lifePoint').innerHTML = player.life;
         socket.emit('gotit', player);
         gameStart = true;
         console.log('Game started at: ' + gameStart);
+
+
         if (mobile) {
             document.getElementById('gameAreaWrapper').removeChild(document.getElementById('chatbox'));
         }
@@ -31,15 +38,7 @@ function setupSocket(socket) {
     socket.on('gameSetup', function (data) {
         gameWidth = data.gameWidth;
         gameHeight = data.gameHeight;
-        munitions = data.munitions;
-        life = data.life;
-        if (!gameTop) {
 
-            console.log('Douuul ', munitions);
-            document.getElementById('munitionPoint').innerHTML = munitions;
-            document.getElementById('lifePoint').innerHTML = life;
-            gameTop = true;
-        }
         resize();
     });
 
@@ -112,6 +111,12 @@ function setupSocket(socket) {
                 animLoopHandle = undefined;
             }
         }, 2500);
+    });
+
+
+    socket.on ('fire', function(player){
+        document.getElementById('munitionsBar').style.width = (player.munitions * 500 / 10) + 'px';
+        document.getElementById('munitionPoint').innerHTML = player.munitions;
     });
 
     /*    socket.on('kick', function (data) {
