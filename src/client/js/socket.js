@@ -122,11 +122,11 @@ function setupSocket(socket) {
     });
 
     socket.on('proposeJoin', function (currentPlayer) {
-
-        $('#regroup').css("visibility", "hidden");
-        $('#joinDiv').css("visibility", "visible")
-        $('#joinText').text('Do you want to join ' + currentPlayer.name + '\'s team');
-
+        if (!connectedToOthers) {
+            $('#regroup').css("visibility", "hidden");
+            $('#joinDiv').css("visibility", "visible");
+            $('#joinText').text('Do you want to join ' + currentPlayer.name + '\'s team');
+        }
     });
 }
 
