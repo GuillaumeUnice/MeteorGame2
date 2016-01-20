@@ -96,16 +96,25 @@ $("#split").click(function () {
 
 $("#regroup").click(function () {
     var regroupImg = $('#regroup');
-    socket.emit('regroupPlayers');
+    if (!connectedToOthers) {
+        socket.emit('regroupPlayers');
 
-    console.log("I am the proposing player");
-    regroupImg.removeClass('fa-users');
-    regroupImg.addClass("fa-spinner fa-spin");
+        console.log("I am the proposing player");
+        regroupImg.removeClass('fa-users');
+        regroupImg.addClass("fa-spinner fa-spin");
+    }
 });
 
 $("#acceptJoin").click(function () {
+    var regroup = $('#regroup');
     socket.emit('acceptJoin');
-    $('#regroup').css('visibility', 'visible');
+    connectedToOthers = true;
+    regroup.css('visibility', 'visible');
+    regroup.css('color', '#00FF00');
+    regroup.css('cursor', 'none');
+    regroup.removeClass('fa-spinner fa-spin');
+    regroup.addClass('fa-users');
+
     $('#joinDiv').css("visibility", "hidden");
 });
 

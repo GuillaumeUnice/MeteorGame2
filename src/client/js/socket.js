@@ -66,7 +66,7 @@ function setupSocket(socket) {
                     status += (i + 1) + '. An unnamed cell';
             }
 
-            miniMapFrame.fillRect(miniMap.width * leaderboard[i].x / gameWidth, miniMap.height * leaderboard[i].y / gameHeight, 4, 4);
+            miniMapFrame.fillRect(miniMap.width * leaderboard[i].x / gameWidth, miniMap.height * leaderboard[i].y / gameHeight, 8, 8);
         }
         //status += '<br />Players: ' + data.players;
         document.getElementById('status').innerHTML = status;
@@ -121,10 +121,11 @@ function setupSocket(socket) {
         document.getElementById('munitionPoint').innerHTML = player.munitions;
     });
 
-    socket.on('proposeJoin', function () {
+    socket.on('proposeJoin', function (currentPlayer) {
 
-        $('#regroup').css("display", "none");
-        $("#joinDiv").css("visibility", "visible")
+        $('#regroup').css("visibility", "hidden");
+        $('#joinDiv').css("visibility", "visible")
+        $('#joinText').text('Do you want to join ' + currentPlayer.name + '\'s team');
 
     });
 }

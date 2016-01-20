@@ -241,7 +241,7 @@ io.on('connection', function (socket) {
         console.log('Server regroup called');
         if (users.length > 1) {
             console.log(currentPlayer.name + ' asked for a super vessel');
-            socket.broadcast.emit('proposeJoin');
+            socket.broadcast.emit('proposeJoin', currentPlayer);
 
         }
     });

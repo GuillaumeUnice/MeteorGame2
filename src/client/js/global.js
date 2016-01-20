@@ -14,7 +14,7 @@ var playerName;
 var playerType;
 var playerNameInput = document.getElementById('playerNameInput');
 var socket;
-
+var connectedToOthers = false;
 var reason;
 var reenviar = true;
 var borderDraw = false;
