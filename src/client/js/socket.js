@@ -73,7 +73,7 @@ function setupSocket(socket) {
     });
 
     // Handle movement.
-    socket.on('serverTellPlayerMove', function (userData, foodsList, massList, virusList) {
+    socket.on('serverTellPlayerMove', function (userData, foodsList, massList, virusList, objectList) {
         var playerData;
         for (var i = 0; i < userData.length; i++) {
             if (typeof(userData[i].id) == "undefined") {
@@ -96,6 +96,7 @@ function setupSocket(socket) {
         users = userData;
         foods = foodsList;
         viruses = virusList;
+        object = objectList;
         fireFood = massList;
     });
 

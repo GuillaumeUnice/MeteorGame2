@@ -50,6 +50,7 @@ var player = {
 
 var foods = [];
 var viruses = [];
+var object = [];
 var fireFood = [];
 var users = [];
 var leaderboard = [];

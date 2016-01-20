@@ -19,6 +19,7 @@ var quadtree = require('../../quadtree');
 /* My imports */
 var socketImport = require("./socket.js");
 var mapElemImport = require("./mapElements.js");
+var objectImport = require("./object.js");
 
 //game attribute
 var args = {x: 0, y: 0, h: c.gameHeight, w: c.gameWidth, maxChildren: 1, maxDepth: 5};
@@ -31,6 +32,7 @@ var users = [];
 var massFood = [];
 var food = [];
 var virus = [];
+var object = [];
 var sockets = {};
 
 var leaderboard = [];
@@ -591,6 +593,14 @@ function balanceMass(c, food, users) {
     if (virusToAdd > 0) {
         mapElemImport.addVirus(virusToAdd, c, virus);
     }
+
+    var objectToAdd = c.objectMax - object.length;
+
+    if (objectToAdd > 0) {
+        objectImport.addObject(objectToAdd, c, object);
+    }
+
+
 }
 
 
@@ -626,6 +636,21 @@ function sendUpdates() {
             .filter(function (f) {
                 return f;
             });
+
+
+        var visibleObject = object
+            .map(function (f) {
+                if (f.x > u.x - u.screenWidth / 2 - f.radius &&
+                    f.x < u.x + u.screenWidth / 2 + f.radius &&
+                    f.y > u.y - u.screenHeight / 2 - f.radius &&
+                    f.y < u.y + u.screenHeight / 2 + f.radius) {
+                    return f;
+                }
+            })
+            .filter(function (f) {
+                return f;
+            });
+        
 
         var visibleMass = massFood
             .map(function (f) {
@@ -675,7 +700,7 @@ function sendUpdates() {
                 return f;
             });
 
-        sockets[u.id].emit('serverTellPlayerMove', visibleCells, visibleFood, visibleMass, visibleVirus);
+        sockets[u.id].emit('serverTellPlayerMove', visibleCells, visibleFood, visibleMass, visibleVirus, visibleObject);
         if (leaderboardChanged) {
             sockets[u.id].emit('leaderboard', {
                 players: users.length,

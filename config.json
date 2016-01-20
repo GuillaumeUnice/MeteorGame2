@@ -19,7 +19,6 @@
   "gameWidth": 5000,
   "gameHeight": 5000,
   "adminPass": "DEFAULT",
-  "gameMass": 20000,
   "maxFood": 0,
   "maxVirus": 50,
   "slowBase": 4.5,
@@ -33,7 +32,7 @@
   "mergeTimer": 15,
   "objectMax": 20,
   "object": {
-    "fill": "#000000",
+    "fill": "#33ff33",
     "stroke": "#2ECC71",
     "strokeWidth": 20,
     "objectRadius": 20

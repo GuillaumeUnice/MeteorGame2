@@ -47,10 +47,11 @@ function gameLoop() {
         if (gameStart) {
             graph.fillStyle = backgroundColor;
             graph.fillRect(0, 0, screenWidth, screenHeight);
-
+            console.log(object);
             drawgrid();
             foods.forEach(drawFood);
             viruses.forEach(drawVirus);
+            object.forEach(drawObject);
             fireFood.forEach(drawFireFood);
 
             if (borderDraw) {

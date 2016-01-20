@@ -48,6 +48,19 @@ function drawVirus(virus) {
 
 }
 
+function drawObject(object) {
+
+    graph.strokeStyle = 'hsl(' + 100 + ', 100%, 45%)';
+    graph.fillStyle = 'hsl(' + 100 + ', 100%, 50%)';
+    graph.lineWidth = foodConfig.border;
+console.log(object);
+    /*
+        graph.strokeStyle = object.stroke;
+        graph.fillStyle = object.fill;
+        graph.lineWidth = object.strokeWidth;
+    */
+}
+
 function drawFireFood(mass) {
 
     var img = new Image();
