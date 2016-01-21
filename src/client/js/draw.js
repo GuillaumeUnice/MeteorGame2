@@ -97,7 +97,6 @@ function drawPlayers(order) {
         graph.drawImage(playerImg, circle.x, circle.y, playerImgWidth, playerImgHeight);
         graph.fillText(nameCell, circle.x + playerImgWidth / 2, circle.y);
 
-
     }
 
 
