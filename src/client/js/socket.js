@@ -136,7 +136,6 @@ function setupSocket(socket) {
 
             if (vessel.id == player.id) {
                 isMemberOfSuper = true;
-
             }
 
         });

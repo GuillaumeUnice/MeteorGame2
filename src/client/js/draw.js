@@ -90,23 +90,9 @@ function drawPlayers(order) {
 
         graph.font = 'bold ' + fontSize + 'px sans-serif';
         graph.fillStyle = '#FF0000';
-        if (!isMemberOfASuperVessel(nameCell)) {
-            graph.drawImage(playerImg, circle.x, circle.y);
-            graph.fillText(nameCell, circle.x + playerImg.width / 2, circle.y);
-        } else {
+        graph.drawImage(playerImg, circle.x, circle.y);
+        graph.fillText(nameCell, circle.x + playerImg.width / 2, circle.y);
 
-            mySuperVessel[0].x = 300;
-            mySuperVessel[0].y = 500;
-            graph.drawImage(playerImg, mySuperVessel[0].x, mySuperVessel[0].y, 300, 300);
-            graph.fillText(mySuperVessel[0].name, mySuperVessel[0].x, mySuperVessel[0].y);
-
-            for (var i = 1; i < mySuperVessel.length; i++) {
-                mySuperVessel[i].x = mySuperVessel[i - 1].x + 300;
-                mySuperVessel[i].y = mySuperVessel[i - 1].y;
-                graph.drawImage(playerImg, mySuperVessel[i].x, mySuperVessel[i].y, 300, 300);
-                graph.fillText(mySuperVessel[i].name, mySuperVessel[i].x, mySuperVessel[i].y);
-            }
-        }
 
     }
 

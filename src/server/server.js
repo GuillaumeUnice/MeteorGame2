@@ -59,6 +59,8 @@ app.use(express.static(__dirname + '/../client'));
  * - keyboard action
  * - check latency
  **/
+
+//This method is called the first time the user is connected
 io.on('connection', function (socket) {
     console.log('A user connected is !', socket.handshake.query.type);
     //initialize a player
@@ -84,6 +86,7 @@ io.on('connection', function (socket) {
         munitions: c.munition,
         life: c.life,
         cells: cells,
+        isInSuperVessel: false,
         massTotal: massTotal,
         hue: Math.round(Math.random() * 360),
         type: type,
@@ -269,21 +272,53 @@ io.on('connection', function (socket) {
 
             console.log('Asking player : ', superVessel[0].name);
             console.log('Accepting player : ', currentPlayer.name);
-            currentPlayer.isMemberOfTeam = {status: true, idPilot: superVessel[0].id};
+            currentPlayer.isInSuperVessel = true;
 
             superVessel.push(currentPlayer);
             console.log('Remaining places : ', 4 - superVessel.length + ' / 4 ');
             if (superVessel.length == 4) {
-                io.sockets.emit('teamFull', superVessel);
+                superVessel[0].x = 300;
+                superVessel[0].y = 500;
+
+
+                for (var i = 1; i < superVessel.length; i++) {
+                    superVessel[i].x = superVessel[i - 1].x + 300;
+                    superVessel[i].y = superVessel[i - 1].y;
+                }
+
+                for (var j = 0; j < superVessel.length; j++) {
+                    for(var k = 0; k < users.length; k++){
+                        if (users[k].id == superVessel[j].id){
+                            users[k].x = superVessel[j].x;
+                            users[k].y = superVessel[j].y;
+                        }
+                    }
+
+                }
+
+                //    io.sockets.emit('teamFull', superVessel);
             }
         } else {
             console.log('The team is complete');
-            socket.emit('teamFull', superVessel);
+            //socket.emit('teamFull', superVessel);
         }
     });
 
 
 });
+
+
+function isMemberOfASuperVessel(playerName) {
+    if (mySuperVessel.length == 0)
+        return false;
+    var isIn = false;
+    mySuperVessel.forEach(function (vessel) {
+        if (vessel.name === playerName)
+            isIn = true;
+    });
+
+    return isIn;
+}
 
 /***********************************************************************END SOCKET*************************************************************************/
 //noinspection JSDuplicatedDeclaration

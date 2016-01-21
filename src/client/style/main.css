@@ -106,6 +106,10 @@ div {
     color: #ff0000;
 }
 
+.btn-status{
+    color : #000000;
+}
+
 #status {
     position: absolute;
     padding: 10px;
