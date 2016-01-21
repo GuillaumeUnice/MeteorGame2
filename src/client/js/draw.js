@@ -69,8 +69,8 @@ function drawPlayers(order) {
     var playerImg = document.createElement("img"), playerImgWidth = 250, playerImgHeight = 250;
     playerImg.src = "../img/vaisseaux.png";
 
-    if (screenWidth >= 320 && screenWidth <= 767) {
-        playerImgWidth = playerImgHeight = 75
+    if ((screenWidth >= 320 && screenWidth <= 767) || (screenWidth >= 320 && screenWidth <= 1024)) {
+        playerImgWidth = playerImgHeight = 75;
     }
 
     for (var z = 0; z < order.length; z++) {
@@ -82,7 +82,7 @@ function drawPlayers(order) {
         };
 
 
-        var nameCell = "NoName";
+        var nameCell = "";
         if (typeof userCurrent.id == "undefined") {
             nameCell = player.name;
         } else {

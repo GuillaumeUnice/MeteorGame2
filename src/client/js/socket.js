@@ -116,7 +116,12 @@ function setupSocket(socket) {
 
 
     socket.on('fire', function (player) {
-        document.getElementById('munitionsBar').style.width = (player.munitions * 500 / 10) + 'px';
+        if (screenWidth >= 320 && screenWidth <= 767)
+            document.getElementById('munitionsBar').style.height = (player.munitions * 150 / 10) + 'px';
+
+        if (screenWidth > 768)
+            document.getElementById('munitionsBar').style.width = (player.munitions * 500 / 10) + 'px';
+
         document.getElementById('munitionPoint').innerHTML = player.munitions;
     });
 
