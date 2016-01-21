@@ -298,13 +298,25 @@ Media queries for tablets
         font-size: 15px;
     }
 
-    #lifeBar {
+    #munitionsBar {
         position: absolute;
         left: 0;
         top: 150px;
         width: 5px;
         height: 150px;
-        border: 5px solid #00FF00;
+        border: 5px solid #000000;
+    }
+
+    #munitionIcon {
+        position: absolute;
+        left: 0;
+        top: 130px;
+    }
+
+    #munitionPoint {
+        position: absolute;
+        top: 305px;
+        left: 0;
     }
 
     #lifePoint {
@@ -314,15 +326,7 @@ Media queries for tablets
         bottom: 23px;
     }
 
-    #munitionPoint {
-        display: none;
-
-        position: absolute;
-        right: 10%;
-        bottom: 10px;
-    }
-
-    #munitionsBar {
+    #lifeBar {
         display: none;
 
         position: absolute;
@@ -332,6 +336,10 @@ Media queries for tablets
         width: 500px;
         background-color: #000000;
         border: 5px solid #000000;
+    }
+
+    #lifeIcon {
+        display: none;
     }
 
 }
@@ -376,7 +384,6 @@ Media queries for desktop
     }
 
     #lifeIcon {
-        display : none;
         position: absolute;
         left: 17%;
         bottom: 22px;
@@ -391,6 +398,12 @@ Media queries for desktop
     #munitionPoint {
         position: absolute;
         right: 10%;
+        bottom: 10px;
+    }
+
+    #munitionIcon {
+        position: absolute;
+        left: 17%;
         bottom: 10px;
     }
 
