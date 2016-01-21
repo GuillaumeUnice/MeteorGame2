@@ -98,8 +98,6 @@ $("#regroup").click(function () {
     var regroupImg = $('#regroup');
     if (!connectedToOthers) {
         socket.emit('regroupPlayers');
-
-        console.log("I am the proposing player");
         regroupImg.removeClass('fa-users');
         regroupImg.addClass("fa-spinner fa-spin");
     }
@@ -107,19 +105,18 @@ $("#regroup").click(function () {
 
 $("#acceptJoin").click(function () {
     var regroup = $('#regroup');
-    socket.emit('acceptJoin');
+    socket.emit('acceptJoin', player);
     connectedToOthers = true;
     regroup.css('visibility', 'visible');
     regroup.css('color', '#00FF00');
     regroup.css('cursor', 'none');
     regroup.removeClass('fa-spinner fa-spin');
     regroup.addClass('fa-users');
-
     $('#joinDiv').css("visibility", "hidden");
 });
 
 $("#rejectJoin").click(function () {
-    socket.emit('acceptJoin');
+    socket.emit('rejectJoin');
     $('#regroup').css('visibility', 'visible');
     $('#joinDiv').css("visibility", "hidden");
 });

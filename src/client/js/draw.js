@@ -60,7 +60,6 @@ function drawFireFood(mass) {
 function drawPlayers(order) {
 
 
-
     var start = {
         x: player.x - (screenWidth / 2),
         y: player.y - (screenHeight / 2)
@@ -73,7 +72,6 @@ function drawPlayers(order) {
     for (var z = 0; z < order.length; z++) {
         var userCurrent = users[order[z].nCell];
         var cellCurrent = users[order[z].nCell].cells[order[z].nDiv];
-
         var circle = {
             x: cellCurrent.x - start.x,
             y: cellCurrent.y - start.y
@@ -87,17 +85,44 @@ function drawPlayers(order) {
             nameCell = userCurrent.name;
         }
 
+
         var fontSize = Math.max(cellCurrent.radius / 3, 12);
 
         graph.font = 'bold ' + fontSize + 'px sans-serif';
+        graph.fillStyle = '#FF0000';
+        if (!isMemberOfASuperVessel(nameCell)) {
+            graph.drawImage(playerImg, circle.x, circle.y);
+            graph.fillText(nameCell, circle.x + playerImg.width / 2, circle.y);
+        } else {
 
-        graph.drawImage(playerImg, circle.x, circle.y);
-        graph.fillText(nameCell, circle.x + playerImg.width / 2, circle.y);
+            mySuperVessel[0].x = 300;
+            mySuperVessel[0].y = 500;
+            graph.drawImage(playerImg, mySuperVessel[0].x, mySuperVessel[0].y, 300, 300);
+            graph.fillText(mySuperVessel[0].name, mySuperVessel[0].x, mySuperVessel[0].y);
 
+            for (var i = 1; i < mySuperVessel.length; i++) {
+                mySuperVessel[i].x = mySuperVessel[i - 1].x + 300;
+                mySuperVessel[i].y = mySuperVessel[i - 1].y;
+                graph.drawImage(playerImg, mySuperVessel[i].x, mySuperVessel[i].y, 300, 300);
+                graph.fillText(mySuperVessel[i].name, mySuperVessel[i].x, mySuperVessel[i].y);
+            }
+        }
 
     }
 
 
+}
+
+function isMemberOfASuperVessel(playerName) {
+    if (mySuperVessel.length == 0)
+        return false;
+    var isIn = false;
+    mySuperVessel.forEach(function (vessel) {
+        if (vessel.name === playerName)
+            isIn = true;
+    });
+
+    return isIn;
 }
 
 function valueInRange(min, max, value) {

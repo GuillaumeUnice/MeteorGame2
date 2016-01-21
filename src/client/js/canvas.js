@@ -47,7 +47,7 @@ var player = {
     screenHeight: screenHeight,
     target: {x: screenWidth / 2, y: screenHeight / 2}
 };
-
+var mySuperVessel = [];
 var foods = [];
 var viruses = [];
 var fireFood = [];

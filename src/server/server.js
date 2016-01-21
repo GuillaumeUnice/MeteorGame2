@@ -27,6 +27,7 @@ console.log(args);
 var tree = quadtree.QUAD.init(args);
 
 var users = [];
+var superVessel = [];
 var massFood = [];
 var food = [];
 var virus = [];
@@ -42,10 +43,8 @@ var initMassLog = util.log(c.defaultPlayerMass, c.slowBase);
 
 app.use(express.static(__dirname + '/../client'));
 
-
 //SOCKET IMPORT ATTEMPT
 //io.on('connection', function (socket) {socketImport.ioon(socket,c,users,sockets);});
-
 
 /***********************************************************************START SOCKET*************************************************************************/
 /************************************************************************************************************************************************/
@@ -241,6 +240,9 @@ io.on('connection', function (socket) {
         console.log('Server regroup called');
         if (users.length > 1) {
             console.log(currentPlayer.name + ' asked for a super vessel');
+
+            superVessel.push(currentPlayer);
+            superVessel[0].role = 'pilot';
             socket.broadcast.emit('proposeJoin', currentPlayer);
 
         }
@@ -260,6 +262,24 @@ io.on('connection', function (socket) {
 //see also client/app.js (who send 'ping'), and client/chat.js(who receive 'pong')
     socket.on('ping', function () {
         socket.emit('pong');
+    });
+
+    socket.on('acceptJoin', function () {
+        if (superVessel.length < 4) {
+
+            console.log('Asking player : ', superVessel[0].name);
+            console.log('Accepting player : ', currentPlayer.name);
+            currentPlayer.isMemberOfTeam = {status: true, idPilot: superVessel[0].id};
+
+            superVessel.push(currentPlayer);
+            console.log('Remaining places : ', 4 - superVessel.length + ' / 4 ');
+            if (superVessel.length == 4) {
+                io.sockets.emit('teamFull', superVessel);
+            }
+        } else {
+            console.log('The team is complete');
+            socket.emit('teamFull', superVessel);
+        }
     });
 
 
@@ -511,8 +531,6 @@ function tickPlayer(currentPlayer) {
 }
 /*.................................END OF TICK ..................................................................................*/
 
-
-
 /*......................loopS.......................................................*/
 function moveloop() {
     for (var i = 0; i < users.length; i++) {
@@ -675,7 +693,7 @@ function sendUpdates() {
                                 y: f.y,
                                 cells: f.cells,
                                 massTotal: Math.round(f.massTotal),
-                                hue: f.hue,
+                                hue: f.hue
                             };
                         }
                     }

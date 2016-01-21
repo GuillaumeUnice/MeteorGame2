@@ -14,7 +14,6 @@ function setupSocket(socket) {
 
     // Handle connection.
     socket.on('welcome', function (playerSettings) {
-        console.log(playerSettings);
         player = playerSettings;
 
         player.name = playerName;
@@ -127,6 +126,26 @@ function setupSocket(socket) {
             $('#joinDiv').css("visibility", "visible");
             $('#joinText').text('Do you want to join ' + currentPlayer.name + '\'s team');
         }
+    });
+
+    socket.on('teamFull', function (superVessel) {
+        console.log('The team is composed by { ');
+        var isMemberOfSuper = false;
+        console.log(superVessel.length);
+        superVessel.forEach(function (vessel) {
+
+            if (vessel.id == player.id) {
+                isMemberOfSuper = true;
+
+            }
+
+        });
+
+        if (isMemberOfSuper) {
+            console.log('New super vessel taken in account');
+            mySuperVessel = superVessel;
+        }
+        console.log('}')
     });
 }
 
