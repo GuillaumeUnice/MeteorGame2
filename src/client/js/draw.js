@@ -66,8 +66,12 @@ function drawPlayers(order) {
     };
 
     // var playerImg = new Image();
-    var playerImg = document.createElement("img");
+    var playerImg = document.createElement("img"), playerImgWidth = 250, playerImgHeight = 250;
     playerImg.src = "../img/vaisseaux.png";
+
+    if (screenWidth >= 320 && screenWidth <= 767) {
+        playerImgWidth = playerImgHeight = 75
+    }
 
     for (var z = 0; z < order.length; z++) {
         var userCurrent = users[order[z].nCell];
@@ -90,8 +94,8 @@ function drawPlayers(order) {
 
         graph.font = 'bold ' + fontSize + 'px sans-serif';
         graph.fillStyle = '#FF0000';
-        graph.drawImage(playerImg, circle.x, circle.y);
-        graph.fillText(nameCell, circle.x + playerImg.width / 2, circle.y);
+        graph.drawImage(playerImg, circle.x, circle.y, playerImgWidth, playerImgHeight);
+        graph.fillText(nameCell, circle.x + playerImgWidth / 2, circle.y);
 
 
     }
