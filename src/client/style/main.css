@@ -74,16 +74,6 @@ div {
     cursor: pointer;
 }
 
-#minimap {
-    position: fixed;
-    background-color: #e7e7e7;
-    left: 10px;
-    top: 0;
-    width: 20%;
-    height: 30%;
-    border: 3px solid #000000;
-}
-
 #regroup {
     position: fixed;
     top: 35%;
@@ -106,24 +96,8 @@ div {
     color: #ff0000;
 }
 
-.btn-status{
-    color : #000000;
-}
-
-#status {
-    position: absolute;
-    padding: 10px;
-    background: rgba(0, 0, 0, 0.4);
-    color: #FFF;
-    font-size: 16px;
-    top: 10px;
-    right: 10px;
-    font-weight: bold;
-    text-align: center;
-}
-
-#status .title {
-    font-size: 25px;
+.btn-status {
+    color: #000000;
 }
 
 #status .me {
@@ -321,12 +295,63 @@ div {
     opacity: 0;
 }
 
-@media only screen  and (max-width: 768px) {
+@media only screen  and (min-width: 320px) and (max-width: 767px) {
+    #minimap {
+        position: absolute;
+        background-color: #e7e7e7;
+        left: 0;
+        margin-top: 32px;
+        width: 100px;
+        height: 100px;
+        border: 3px solid #000000;
+    }
 
-}
+    #status {
+        position: absolute;
+        padding: 10px;
+        background: #000000;
+        color: #FFF;
+        margin-top: 32px;
+        font-size: 8px;
+        top: 0;
+        right: 0;
+        width: 100px;
+        font-weight: bold;
+        text-align: center;
+        border: 3px solid #000000;
+    }
 
-@media only screen  and (max-width: 1224px) {
-    #chatbox {
-        display: none;
+    #status .title {
+        font-size: 15px;
     }
 }
+
+@media only screen  and (min-width: 768px) {
+    #minimap {
+        position: fixed;
+        background-color: #e7e7e7;
+        left: 10px;
+        top: 0;
+        width: 15%;
+        height: 25%;
+        border: 3px solid #000000;
+    }
+
+    #status .title {
+        font-size: 25px;
+    }
+
+    #status {
+        position: absolute;
+        padding: 10px;
+        background: rgba(0, 0, 0, 0.4);
+        color: #FFF;
+        font-size: 16px;
+        top: 10px;
+        right: 10px;
+        font-weight: bold;
+        text-align: center;
+    }
+}
+
+
