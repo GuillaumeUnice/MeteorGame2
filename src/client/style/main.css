@@ -453,6 +453,12 @@ Media queries for desktop
         right: 25%;
     }
 
+    #minimap.regroup-ds {
+        opacity: 0;
+        width : 0;
+
+    }
+
 }
 
 @media only screen  and (min-width: 768px) and (orientation: landscape) {

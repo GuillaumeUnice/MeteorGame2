@@ -109,14 +109,20 @@ function drawPlayers(order) {
             if ((screenWidth >= 320 && screenWidth <= 767)) {
                 $('#feed').addClass('regroup-sm');
 
-                $('#minimap').removeClass('navbar-collapse collapse');
-                $('#minimap').addClass('regroup-sm');
+                var miniM = $('#minimap');
+                miniM.removeClass('navbar-collapse collapse');
+                miniM.addClass('regroup-sm');
                 $('#regroup').addClass('regroup-sm');
             }
         }
 
         if (userCurrent.isDisplayer) {
+
+
             $('#message-info').text('You are now linked to a super vessel and the displayer');
+            if (screenWidth >= 1200) {
+                $('#minimap').addClass('regroup-ds');
+            }
             mySuperVessel.forEach(function (vessel) {
                 graph.drawImage(playerImg, vessel.x * screenWidth / gameWidth, vessel.y * screenHeight / gameHeight, playerImgWidth, playerImgHeight);
                 graph.fillText(vessel.name, vessel.x * screenWidth / gameWidth + playerImgWidth / 2, vessel.y * screenHeight / gameHeight);
