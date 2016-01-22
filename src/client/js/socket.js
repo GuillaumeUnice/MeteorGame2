@@ -142,6 +142,20 @@ function setupSocket(socket) {
         mySuperVessel = superVessel;
 
     });
+
+    socket.on('gameOver',function() {
+        gameStart=false;
+
+         window.setTimeout(function () {
+         document.getElementById('gameAreaWrapper').style.opacity = 0;
+         document.getElementById('startMenuWrapper').style.maxHeight = '1000px';
+         died = false;
+         if (animLoopHandle) {
+         window.cancelAnimationFrame(animLoopHandle);
+         animLoopHandle = undefined;
+         }
+         }, 2500);
+    });
 }
 
 

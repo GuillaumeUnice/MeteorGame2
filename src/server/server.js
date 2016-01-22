@@ -43,7 +43,7 @@ var initMassLog = util.log(c.defaultPlayerMass, c.slowBase);
 
 app.use(express.static(__dirname + '/../client'));
 
-var endgame= false;
+var endGame= false;
 
 //SOCKET IMPORT ATTEMPT
 //io.on('connection', function (socket) {socketImport.ioon(socket,c,users,sockets);});
@@ -214,6 +214,7 @@ io.on('connection', function (socket) {
 
             } else {
                 console.log("No more munitions");
+                endGame=true;
             }
             //}
         }
@@ -577,7 +578,7 @@ function moveloop() {
 }
 
 function gameloop() {
-    if(!endgame){
+    if(!endGame){
 
         if (users.length > 0) {
             users.sort(function (a, b) {
@@ -621,10 +622,15 @@ function gameloop() {
         }
     }
     else{
-        sockets.forEach(function (s) {s.emit('RIP');} );
+        users.forEach(function(u){
+            sockets[u.id].emit('gameOver');
+        });
+        endGame = false;
     }
     balanceMass(c, food, users);
 }
+
+
 
 /* TODO : exporter cette fonction dans un autre fichier, mais pas dans mapElements car cela ferai une "dépendance circulaire"*/
 /*.................................................balanceMass,called in gameloop......................................................*/
