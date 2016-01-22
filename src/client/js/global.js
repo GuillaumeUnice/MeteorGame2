@@ -10,7 +10,7 @@ var KEY_RIGHT = 39;
 var KEY_DOWN = 40;
 var KEY_FIRE = 32;
 
-
+var askingPlayer = false;
 var playerName;
 var playerType;
 var playerNameInput = document.getElementById('playerNameInput');

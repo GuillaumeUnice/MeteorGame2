@@ -240,7 +240,7 @@ io.on('connection', function (socket) {
     });
 
     socket.on('regroupPlayers', function () {
-        console.log('Server regroup called');
+
         if (users.length > 1) {
             console.log(currentPlayer.name + ' asked for a super vessel');
 

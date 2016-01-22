@@ -100,8 +100,10 @@ $("#regroup").click(function () {
         socket.emit('regroupPlayers');
         regroupImg.removeClass('fa-users');
         regroupImg.addClass("fa-spinner fa-spin");
+        askingPlayer = true;
     }
 });
+
 
 $("#acceptJoin").click(function () {
     var regroup = $('#regroup');

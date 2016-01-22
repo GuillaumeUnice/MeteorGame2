@@ -99,11 +99,15 @@ function drawPlayers(order) {
 
         graph.font = 'bold ' + fontSize + 'px sans-serif';
         graph.fillStyle = '#FF0000';
+        if(askingPlayer){
+            console.log('Boordel');
+        }
         if (!userCurrent.isInSuperVessel) {
             graph.drawImage(playerImg, circle.x, circle.y, playerImgWidth, playerImgHeight);
             graph.fillText(nameCell, circle.x + playerImgWidth / 2, circle.y);
         }
         if (userCurrent.isInSuperVessel && !userCurrent.isDisplayer) {
+            console.log('You are in the super vessel');
             var messageInfo = document.getElementById('#message-info');
             $('#message-info').text('You are now linked to a super vessel');
             if ((screenWidth >= 320 && screenWidth <= 767)) {
@@ -119,10 +123,10 @@ function drawPlayers(order) {
         if (userCurrent.isDisplayer) {
 
 
-            $('#message-info').text('You are now linked to a super vessel and the displayer');
-            if (screenWidth >= 1200) {
-                $('#minimap').addClass('regroup-ds');
-            }
+            $('#message-info').text('You are now linked to a super vessel that will be displayed here');
+            //if (screenWidth >= 1200) {
+            $('#minimap').addClass('regroup-ds');
+            //}
             mySuperVessel.forEach(function (vessel) {
                 graph.drawImage(playerImg, vessel.x * screenWidth / gameWidth, vessel.y * screenHeight / gameHeight, playerImgWidth, playerImgHeight);
                 graph.fillText(vessel.name, vessel.x * screenWidth / gameWidth + playerImgWidth / 2, vessel.y * screenHeight / gameHeight);
