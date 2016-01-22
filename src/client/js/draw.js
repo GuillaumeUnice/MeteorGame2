@@ -103,8 +103,16 @@ function drawPlayers(order) {
             graph.drawImage(playerImg, circle.x, circle.y, playerImgWidth, playerImgHeight);
             graph.fillText(nameCell, circle.x + playerImgWidth / 2, circle.y);
         }
-        if (userCurrent.isInSuperVessel && !userCurrent.id) {
+        if (userCurrent.isInSuperVessel && !userCurrent.isDisplayer) {
+            var messageInfo = document.getElementById('#message-info');
             $('#message-info').text('You are now linked to a super vessel');
+            if ((screenWidth >= 320 && screenWidth <= 767)) {
+                $('#feed').addClass('regroup-sm');
+
+                $('#minimap').removeClass('navbar-collapse collapse');
+                $('#minimap').addClass('regroup-sm');
+                $('#regroup').addClass('regroup-sm');
+            }
         }
 
         if (userCurrent.isDisplayer) {
