@@ -43,6 +43,8 @@ var initMassLog = util.log(c.defaultPlayerMass, c.slowBase);
 
 app.use(express.static(__dirname + '/../client'));
 
+var endgame= false;
+
 //SOCKET IMPORT ATTEMPT
 //io.on('connection', function (socket) {socketImport.ioon(socket,c,users,sockets);});
 
@@ -577,45 +579,51 @@ function moveloop() {
 }
 
 function gameloop() {
-    if (users.length > 0) {
-        users.sort(function (a, b) {
-            return b.massTotal - a.massTotal;
-        });
+    if(!endgame){
 
-        var topUsers = [];
+        if (users.length > 0) {
+            users.sort(function (a, b) {
+                return b.massTotal - a.massTotal;
+            });
 
-        for (var i = 0; i < Math.min(10, users.length); i++) {
-            if (users[i].type == 'player') {
-                topUsers.push({
-                    id: users[i].id,
-                    name: users[i].name,
-                    x: users[i].x,
-                    y: users[i].y
-                });
+            var topUsers = [];
+
+            for (var i = 0; i < Math.min(10, users.length); i++) {
+                if (users[i].type == 'player') {
+                    topUsers.push({
+                        id: users[i].id,
+                        name: users[i].name,
+                        x: users[i].x,
+                        y: users[i].y
+                    });
+                }
             }
-        }
-        if (isNaN(leaderboard) || leaderboard.length !== topUsers.length) {
-            leaderboard = topUsers;
-            leaderboardChanged = true;
-        }
-        else {
-            for (i = 0; i < leaderboard.length; i++) {
-                if (leaderboard[i].id !== topUsers[i].id) {
-                    leaderboard = topUsers;
-                    leaderboardChanged = true;
-                    break;
+            if (isNaN(leaderboard) || leaderboard.length !== topUsers.length) {
+                leaderboard = topUsers;
+                leaderboardChanged = true;
+            }
+            else {
+                for (i = 0; i < leaderboard.length; i++) {
+                    if (leaderboard[i].id !== topUsers[i].id) {
+                        leaderboard = topUsers;
+                        leaderboardChanged = true;
+                        break;
+                    }
+                }
+            }
+            for (i = 0; i < users.length; i++) {
+                for (var z = 0; z < users[i].cells.length; z++) {
+                    if (users[i].cells[z].mass * (1 - (c.massLossRate / 1000)) > c.defaultPlayerMass) {
+                        var massLoss = users[i].cells[z].mass * (1 - (c.massLossRate / 1000));
+                        users[i].massTotal -= users[i].cells[z].mass - massLoss;
+                        users[i].cells[z].mass = massLoss;
+                    }
                 }
             }
         }
-        for (i = 0; i < users.length; i++) {
-            for (var z = 0; z < users[i].cells.length; z++) {
-                if (users[i].cells[z].mass * (1 - (c.massLossRate / 1000)) > c.defaultPlayerMass) {
-                    var massLoss = users[i].cells[z].mass * (1 - (c.massLossRate / 1000));
-                    users[i].massTotal -= users[i].cells[z].mass - massLoss;
-                    users[i].cells[z].mass = massLoss;
-                }
-            }
-        }
+    }
+    else{
+        sockets.forEach(function (s) {s.emit('RIP');} );
     }
     balanceMass(c, food, users);
 }
