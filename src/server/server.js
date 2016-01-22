@@ -197,6 +197,7 @@ io.on('connection', function (socket) {
                 console.log('[INFO] User :: ' + currentPlayer.name + ' :: Remaining munitions : ', currentPlayer.munitions);
 
                 socket.emit('fire', currentPlayer);
+              //  wound(12);
                 massFood.push({
                     id: currentPlayer.id,
                     num: i,
@@ -209,7 +210,7 @@ io.on('connection', function (socket) {
                     x: currentPlayer.cells[i].x,
                     y: currentPlayer.cells[i].y,
                     radius: util.massToRadius(masa),
-                    speed: 40
+                    speed: 50
                 });
 
             } else {
@@ -475,7 +476,12 @@ function tickPlayer(currentPlayer) {
     }
 
     function eatMass(m) {
-        if (SAT.pointInCircle(new V(m.x, m.y), playerCircle)) {
+        if (SAT.pointInCircle(new V(m.x, m.y), playerCircle)) {     
+            if(m.id !=currentPlayer.id){
+                currentPlayer.life-=5;
+                sockets[currentPlayer.id].emit('wound',currentPlayer);
+            }
+
             if (m.id == currentPlayer.id && m.speed > 0 && z == m.num)
                 return false;
             if (currentCell.mass > m.masa * 1.1)
@@ -484,7 +490,33 @@ function tickPlayer(currentPlayer) {
         return false;
     }
 
-    function check(user) {
+    //Detecter the confilt
+/*    function check(user) {
+        for (var i = 0; i < user.cells.length; i++) {
+      //      if (user.cells[i].mass > 10 && user.id !== currentPlayer.id) {
+            if(user.id !== currentPlayer.id){
+                var response = new SAT.Response();
+                var collided = SAT.testCircleCircle(
+                    new C(new V(currentPlayer.x, currentPlayer.y), 150),
+                    new C(new V(user.cells[i].x, user.cells[i].y), 150),
+                    response);
+                if (collided) {                   
+                    response.aUser = currentCell;
+                    response.bUser = {
+                        id: user.id,
+                        name: user.name,
+                        x: user.cells[i].x,
+                        y: user.cells[i].y,
+                        num: i,
+                        mass: user.cells[i].mass
+                    };
+                    playerCollisions.push(response);
+                }
+            }
+        }
+    }
+*/
+function check(user) {
         for (var i = 0; i < user.cells.length; i++) {
             if (user.cells[i].mass > 10 && user.id !== currentPlayer.id) {
                 var response = new SAT.Response();
@@ -507,9 +539,11 @@ function tickPlayer(currentPlayer) {
         }
     }
 
+
     /*....................collision logic..............................*/
     function collisionCheck(collision) {
-
+ 
+            console.log("attention, confilt");
         //Kill result depends on the ball size of player
         if (collision.aUser.mass > collision.bUser.mass * 1.1 && collision.aUser.radius > Math.sqrt(Math.pow(collision.aUser.x - collision.bUser.x, 2) + Math.pow(collision.aUser.y - collision.bUser.y, 2)) * 1.75) {
             console.log('[DEBUG] Killing user: ' + collision.bUser.id);
@@ -535,8 +569,8 @@ function tickPlayer(currentPlayer) {
     for (var z = 0; z < currentPlayer.cells.length; z++) {
         var currentCell = currentPlayer.cells[z];
         var playerCircle = new C(
-            new V(currentCell.x, currentCell.y),
-            currentCell.radius
+            new V(currentCell.x, currentCell.y),250
+          //  currentCell.radius
         );
 
         var foodEaten = food.map(funcFood)
@@ -575,8 +609,10 @@ function tickPlayer(currentPlayer) {
         tree.insert(users);
         var playerCollisions = [];
 
+        //Get all the collision with other users
         var otherUsers = tree.retrieve(currentPlayer, check);
 
+        
         playerCollisions.forEach(collisionCheck);
     }
 

@@ -119,6 +119,7 @@ function setupSocket(socket) {
 
     socket.on('fire', function (player) {
         console.log('fire');
+        //The munitionBar
         var munitionBar = document.getElementById('munitionsBar');
         if (screenWidth >= 320 && screenWidth <= 767) {
             munitionBar.style.height = (player.munitions * 150 / 10) + 'px';
@@ -133,6 +134,9 @@ function setupSocket(socket) {
     //Player gets wounded
     socket.on('wound', function(currentPlayer){
         player.life=currentPlayer.life;
+
+        console.log(player.life);
+        
         document.getElementById('lifePoint').innerHTML = player.life;
 
         var lifeBar = document.getElementById('lifeBar');
