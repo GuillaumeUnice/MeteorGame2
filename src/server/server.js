@@ -270,33 +270,45 @@ io.on('connection', function (socket) {
     socket.on('acceptJoin', function () {
         if (superVessel.length < 4) {
 
+
             console.log('Asking player : ', superVessel[0].name);
             console.log('Accepting player : ', currentPlayer.name);
             currentPlayer.isInSuperVessel = true;
+            currentPlayer.isDisplayer = false;
 
             superVessel.push(currentPlayer);
             console.log('Remaining places : ', 4 - superVessel.length + ' / 4 ');
             if (superVessel.length == 4) {
-                superVessel[0].x = 300;
-                superVessel[0].y = 500;
-
-
+                console.log('The super vessel is now ready');
+                var displayer = 0;
                 for (var i = 1; i < superVessel.length; i++) {
-                    superVessel[i].x = superVessel[i - 1].x + 300;
-                    superVessel[i].y = superVessel[i - 1].y;
-                }
+                    if (superVessel[i].screenWidth > superVessel[displayer].screenWidth) {
+                        superVessel[displayer].isDisplayer = false;
+                        superVessel[i].isDisplayer = true;
+                        displayer = i;
 
-                for (var j = 0; j < superVessel.length; j++) {
-                    for(var k = 0; k < users.length; k++){
-                        if (users[k].id == superVessel[j].id){
-                            users[k].x = superVessel[j].x;
-                            users[k].y = superVessel[j].y;
-                        }
                     }
-
                 }
 
-                //    io.sockets.emit('teamFull', superVessel);
+                //on affecte les nouvelles positions
+                superVessel[0].x = c.gameWidth / 2;
+                superVessel[0].y = c.gameHeight / 2;
+
+
+                superVessel[1].x = superVessel[0].x + 640;
+                superVessel[1].y = superVessel[0].y;
+
+                superVessel[2].x = superVessel[0].x + 320;
+                superVessel[2].y = superVessel[0].y - 320;
+
+                superVessel[3].x = superVessel[2].x;
+                superVessel[3].y = superVessel[0].y + 320;
+
+                console.log("The super vessel members");
+                console.log(superVessel);
+
+                io.emit('teamFull', superVessel);
+
             }
         } else {
             console.log('The team is complete');
@@ -306,20 +318,6 @@ io.on('connection', function (socket) {
 
 
 });
-
-
-function isMemberOfASuperVessel(playerName) {
-    if (mySuperVessel.length == 0)
-        return false;
-    var isIn = false;
-    mySuperVessel.forEach(function (vessel) {
-        if (vessel.name === playerName)
-            isIn = true;
-    });
-
-    return isIn;
-}
-
 /***********************************************************************END SOCKET*************************************************************************/
 //noinspection JSDuplicatedDeclaration
 /******/
@@ -660,6 +658,8 @@ function balanceMass(c, food, users) {
 /*.................................................update canvas..............................................................*/
 function sendUpdates() {
     users.forEach(function (u) {
+
+
         // center the view if x/y is undefined, this will happen for spectators
         u.x = u.x || c.gameWidth / 2;
         u.y = u.y || c.gameHeight / 2;
@@ -719,7 +719,9 @@ function sendUpdates() {
                                 cells: f.cells,
                                 massTotal: Math.round(f.massTotal),
                                 hue: f.hue,
-                                name: f.name
+                                name: f.name,
+                                isInSuperVessel: f.isInSuperVessel,
+                                isDisplayer: f.isDisplayer
                             };
                         } else {
                             //console.log("Nombre: " + f.name + " Es Usuario");
@@ -728,7 +730,9 @@ function sendUpdates() {
                                 y: f.y,
                                 cells: f.cells,
                                 massTotal: Math.round(f.massTotal),
-                                hue: f.hue
+                                hue: f.hue,
+                                isInSuperVessel: f.isInSuperVessel,
+                                isDisplayer: f.isDisplayer
                             };
                         }
                     }
