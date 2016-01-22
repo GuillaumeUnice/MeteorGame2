@@ -590,7 +590,9 @@ function gameloop() {
                     id: users[i].id,
                     name: users[i].name,
                     x: users[i].x,
-                    y: users[i].y
+                    y: users[i].y,
+                    isInSuperVessel: users[i].isInSuperVessel,
+                    isDisplayer: users[i].isDisplayer
                 });
             }
         }

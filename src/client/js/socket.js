@@ -59,8 +59,9 @@ function setupSocket(socket) {
                 } else
                     status += (i + 1) + '. An unnamed cell';
             }
-
-            miniMapFrame.fillRect(miniMap.width * leaderboard[i].x / gameWidth, miniMap.height * leaderboard[i].y / gameHeight, 8, 8);
+            if (!leaderboard[i].isInSuperVessel || leaderboard[i].isDisplayer) {
+                miniMapFrame.fillRect(miniMap.width * leaderboard[i].x / gameWidth, miniMap.height * leaderboard[i].y / gameHeight, 8, 8);
+            }
         }
         //status += '<br />Players: ' + data.players;
         document.getElementById('status').innerHTML = status;
