@@ -185,11 +185,6 @@ io.on('connection', function (socket) {
     socket.on('1', function () {
         console.log('Fire called');
         // Fire food.
-
-
-        //A DEPLACER (TEST)
-        wound(3);
-
         for (var i = 0; i < currentPlayer.cells.length; i++) {
             //if (((currentPlayer.cells[i].mass >= c.defaultPlayerMass + c.fireFood) && c.fireFood > 0) || (currentPlayer.cells[i].mass >= 20 && c.fireFood === 0)) {
             var masa = 1;
@@ -220,6 +215,7 @@ io.on('connection', function (socket) {
             } else {
                 console.log("No more munitions");
                 socket.emit('noAmmo');
+                endGame=true;
             }
             //}
         }
