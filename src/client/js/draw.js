@@ -99,17 +99,22 @@ function drawPlayers(order) {
 
         graph.font = 'bold ' + fontSize + 'px sans-serif';
         graph.fillStyle = '#FF0000';
-        if(askingPlayer){
-            console.log('Boordel');
-        }
+
         if (!userCurrent.isInSuperVessel) {
             graph.drawImage(playerImg, circle.x, circle.y, playerImgWidth, playerImgHeight);
             graph.fillText(nameCell, circle.x + playerImgWidth / 2, circle.y);
         }
         if (userCurrent.isInSuperVessel && !userCurrent.isDisplayer) {
-            console.log('You are in the super vessel');
+
+
             var messageInfo = document.getElementById('#message-info');
+
             $('#message-info').text('You are now linked to a super vessel');
+
+            if ((screen.orientation.type === "landscape")) {
+                console.log('Please fucking work !!!!!!!!!!');
+            }
+
             if ((screenWidth >= 320 && screenWidth <= 767)) {
                 $('#feed').addClass('regroup-sm');
 
@@ -117,6 +122,15 @@ function drawPlayers(order) {
                 miniM.removeClass('navbar-collapse collapse');
                 miniM.addClass('regroup-sm');
                 $('#regroup').addClass('regroup-sm');
+            }
+
+            if (window.orientation === 90){
+                $('#feed').addClass('regroup-md');
+
+                var miniM2 = $('#minimap');
+                miniM2.removeClass('navbar-collapse collapse');
+                miniM2.addClass('regroup-md');
+                $('#regroup').addClass('regroup-md');
             }
         }
 

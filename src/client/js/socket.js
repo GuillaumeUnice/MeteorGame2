@@ -26,12 +26,7 @@ function setupSocket(socket) {
         document.getElementById('lifePoint').innerHTML = player.life;
         socket.emit('gotit', player);
         gameStart = true;
-        console.log('Game started at: ' + gameStart);
 
-
-        /*  if (mobile) {
-         document.getElementById('gameAreaWrapper').removeChild(document.getElementById('chatbox'));
-         }*/
         c.focus();
     });
 
@@ -140,10 +135,6 @@ function setupSocket(socket) {
     socket.on('teamFull', function (superVessel) {
         var isIn = false;
         mySuperVessel = superVessel;
-
-        console.log('I am on it');
-        console.log(superVessel);
-
     });
 }
 

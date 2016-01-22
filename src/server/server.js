@@ -279,6 +279,9 @@ io.on('connection', function (socket) {
             superVessel.push(currentPlayer);
             console.log('Remaining places : ', 4 - superVessel.length + ' / 4 ');
             if (superVessel.length == 4) {
+                superVessel[0].isInSuperVessel = true;
+                superVessel[0].isDisplayer = true;
+
                 console.log('The super vessel is now ready');
                 var displayer = 0;
                 for (var i = 1; i < superVessel.length; i++) {
@@ -289,7 +292,6 @@ io.on('connection', function (socket) {
 
                     }
                 }
-
                 //on affecte les nouvelles positions
                 superVessel[0].x = c.gameWidth / 2;
                 superVessel[0].y = c.gameHeight / 2;
