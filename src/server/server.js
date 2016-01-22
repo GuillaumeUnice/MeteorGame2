@@ -203,13 +203,13 @@ io.on('connection', function (socket) {
                     masa: masa,
                     hue: currentPlayer.hue,
                     target: {
-                        x: currentPlayer.x - currentPlayer.cells[i].x + currentPlayer.target.x,
-                        y: currentPlayer.y - currentPlayer.cells[i].y + currentPlayer.target.y
+                        x: currentPlayer.x - currentPlayer.cells[i].x + currentPlayer.target.x+200,
+                        y: currentPlayer.y - currentPlayer.cells[i].y + currentPlayer.target.y+200
                     },
                     x: currentPlayer.cells[i].x,
                     y: currentPlayer.cells[i].y,
                     radius: util.massToRadius(masa),
-                    speed: 30
+                    speed: 40
                 });
 
             } else {
