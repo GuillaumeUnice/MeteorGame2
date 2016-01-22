@@ -118,7 +118,7 @@ function setupSocket(socket) {
 
 
     socket.on('fire', function (player) {
-
+        console.log('fire');
         var munitionBar = document.getElementById('munitionsBar');
         if (screenWidth >= 320 && screenWidth <= 767) {
             munitionBar.style.height = (player.munitions * 150 / 10) + 'px';
@@ -127,6 +127,29 @@ function setupSocket(socket) {
             munitionBar.style.width = (player.munitions * 500 / 10) + 'px';
         }
         document.getElementById('munitionPoint').innerHTML = player.munitions;
+    });
+
+    //A DEPLACER
+    //Player gets wounded
+    socket.on('wound', function(currentPlayer){
+        player.life=currentPlayer.life;
+        document.getElementById('lifePoint').innerHTML = player.life;
+
+        var lifeBar = document.getElementById('lifeBar');
+        if (screenWidth >= 320 && screenWidth <= 767) {
+            lifeBar.style.height = (player.life * 150 / 100) + 'px';
+        }
+        if (screenWidth > 768) {
+            lifeBar.style.width = (player.life * 500 / 100) + 'px';
+        }
+    });
+
+    //A DEPLACER
+    socket.on('noAmmo', function(){
+        console.log('noammo');
+        var munitionBar = document.getElementById('munitionsBar');
+        munitionBar.style.border='5px solid red';
+        munitionBar.style.width=500+'px';
     });
 
     socket.on('proposeJoin', function (currentPlayer) {
@@ -141,6 +164,20 @@ function setupSocket(socket) {
 
         mySuperVessel = superVessel;
 
+    });
+
+    socket.on('gameOver',function() {
+        gameStart=false;
+
+         window.setTimeout(function () {
+         document.getElementById('gameAreaWrapper').style.opacity = 0;
+         document.getElementById('startMenuWrapper').style.maxHeight = '1000px';
+         died = false;
+         if (animLoopHandle) {
+         window.cancelAnimationFrame(animLoopHandle);
+         animLoopHandle = undefined;
+         }
+         }, 2500);
     });
 }
 

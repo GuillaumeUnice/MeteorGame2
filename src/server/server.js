@@ -43,7 +43,7 @@ var initMassLog = util.log(c.defaultPlayerMass, c.slowBase);
 
 app.use(express.static(__dirname + '/../client'));
 
-var endgame= false;
+var endGame= false;
 
 //SOCKET IMPORT ATTEMPT
 //io.on('connection', function (socket) {socketImport.ioon(socket,c,users,sockets);});
@@ -185,6 +185,11 @@ io.on('connection', function (socket) {
     socket.on('1', function () {
         console.log('Fire called');
         // Fire food.
+
+
+        //A DEPLACER (TEST)
+        wound(3);
+
         for (var i = 0; i < currentPlayer.cells.length; i++) {
             //if (((currentPlayer.cells[i].mass >= c.defaultPlayerMass + c.fireFood) && c.fireFood > 0) || (currentPlayer.cells[i].mass >= 20 && c.fireFood === 0)) {
             var masa = 1;
@@ -214,10 +219,26 @@ io.on('connection', function (socket) {
 
             } else {
                 console.log("No more munitions");
+                socket.emit('noAmmo');
             }
             //}
         }
     });
+
+    /*
+        wounds the currentPlayer
+     */
+    function wound(nb){
+        //end the game if the player is dead
+        if(currentPlayer.life -nb <=0 ){
+            endGame=true;
+        }else{
+            //else change the player's life and send info
+            currentPlayer.life-=nb;
+            socket.emit('wound',currentPlayer);
+        }
+
+    }
 
 //split, client call this in client/app.js
     socket.on('2', function () {
@@ -577,7 +598,7 @@ function moveloop() {
 }
 
 function gameloop() {
-    if(!endgame){
+    if(!endGame){
 
         if (users.length > 0) {
             users.sort(function (a, b) {
@@ -621,10 +642,15 @@ function gameloop() {
         }
     }
     else{
-        sockets.forEach(function (s) {s.emit('RIP');} );
+        users.forEach(function(u){
+            sockets[u.id].emit('gameOver');
+        });
+        endGame = false;
     }
     balanceMass(c, food, users);
 }
+
+
 
 /* TODO : exporter cette fonction dans un autre fichier, mais pas dans mapElements car cela ferai une "dépendance circulaire"*/
 /*.................................................balanceMass,called in gameloop......................................................*/
