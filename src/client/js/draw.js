@@ -52,13 +52,13 @@ function drawFireFood(mass) {
 
     var img = new Image();
     img.src = "../img/bullet.png";
-    var bulletWidth = 50, bulletHeight = 50;
+    var bulletWidth = 30, bulletHeight = 30;
 
     if ((screenWidth >= 320 && screenWidth <= 767) || (screenWidth >= 320 && screenWidth <= 1024)) {
         bulletHeight = bulletWidth = 15;
     }
 
-    graph.drawImage(img, mass.x - player.x + screenWidth / 2, mass.y - player.y + screenHeight / 2, bulletWidth, bulletHeight);
+    graph.drawImage(img, mass.x - player.x +105+ screenWidth/2, mass.y - player.y +100+ screenHeight/2, bulletWidth, bulletHeight);
 
 }
 
