@@ -77,20 +77,22 @@ function setupSocket(socket) {
         for (var i = 0; i < userData.length; i++) {
             if (typeof(userData[i].id) == "undefined") {
                 playerData = userData[i];
+
                 i = userData.length;
             }
         }
         if (playerType == 'player') {
-            var xoffset = player.x - playerData.x;
-            var yoffset = player.y - playerData.y;
-
-            player.x = playerData.x;
-            player.y = playerData.y;
-            player.hue = playerData.hue;
-            player.massTotal = playerData.massTotal;
-            player.cells = playerData.cells;
-            player.xoffset = isNaN(xoffset) ? 0 : xoffset;
-            player.yoffset = isNaN(yoffset) ? 0 : yoffset;
+            if (playerData) {
+                var xoffset = player.x - playerData.x;
+                var yoffset = player.y - playerData.y;
+                player.x = playerData.x;
+                player.y = playerData.y;
+                player.hue = playerData.hue;
+                player.massTotal = playerData.massTotal;
+                player.cells = playerData.cells;
+                player.xoffset = isNaN(xoffset) ? 0 : xoffset;
+                player.yoffset = isNaN(yoffset) ? 0 : yoffset;
+            }
         }
         users = userData;
         foods = foodsList;
@@ -131,27 +133,14 @@ function setupSocket(socket) {
         if (!connectedToOthers) {
             $('#regroup').css("visibility", "hidden");
             $('#joinDiv').css("visibility", "visible");
-            $('#joinText').text('Do you want to join ' + currentPlayer.name + '\'s team');
+            $('#joinText').html('Do you want to join <span class="label label-primary">' + currentPlayer.name + '\'s</span> team');
         }
     });
 
     socket.on('teamFull', function (superVessel) {
-        console.log('The team is composed by { ');
-        var isMemberOfSuper = false;
-        console.log(superVessel.length);
-        superVessel.forEach(function (vessel) {
 
-            if (vessel.id == player.id) {
-                isMemberOfSuper = true;
-            }
+        mySuperVessel = superVessel;
 
-        });
-
-        if (isMemberOfSuper) {
-            console.log('New super vessel taken in account');
-            mySuperVessel = superVessel;
-        }
-        console.log('}')
     });
 }
 

@@ -41,13 +41,6 @@ div {
     color: #000000;
 }
 
-#joinDiv {
-    position: fixed;
-    visibility: hidden;
-    top: 35%;
-    right: 2%;
-}
-
 #acceptJoin {
     color: #00FF00;
 }
@@ -61,7 +54,7 @@ div {
 }
 
 #status .me {
-    color: #FF8888;
+    color: #00FF00;
     font-size: 16px;
 }
 
@@ -328,7 +321,6 @@ Media queries for tablets
 
     #lifeBar {
         display: none;
-
         position: absolute;
         left: 20%;
         right: 20%;
@@ -338,7 +330,37 @@ Media queries for tablets
         border: 5px solid #000000;
     }
 
+    #joinDiv {
+        position: fixed;
+        visibility: hidden;
+        top: 35%;
+        right: 0;
+    }
+
     #lifeIcon {
+        display: none;
+    }
+
+    #message-info {
+        margin-top: 32px;
+        position: fixed;
+        top: 0;
+        left: 25%;
+        right: 25%;
+    }
+
+    #feed.regroup-sm {
+        width: 100px;
+        height: 100px;
+    }
+
+    #minimap.regroup-sm {
+        width: 100%;
+        height: 50%;
+        top: 65px;
+    }
+
+    #regroup.regroup-sm {
         display: none;
     }
 
@@ -415,6 +437,26 @@ Media queries for desktop
         width: 500px;
         background-color: #000000;
         border: 5px solid #000000;
+    }
+
+    #joinDiv {
+        position: fixed;
+        visibility: hidden;
+        top: 35%;
+        right: 2%;
+    }
+
+    #message-info {
+        position: fixed;
+        top: 0;
+        left: 25%;
+        right: 25%;
+    }
+
+    #minimap.regroup-ds {
+        opacity: 0;
+        width : 0;
+
     }
 
 }

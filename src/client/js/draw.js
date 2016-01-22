@@ -52,8 +52,13 @@ function drawFireFood(mass) {
 
     var img = new Image();
     img.src = "../img/bullet.png";
+    var bulletWidth = 50, bulletHeight = 50;
 
-    graph.drawImage(img, mass.x - player.x + screenWidth / 2, mass.y - player.y + screenHeight / 2, 50, 50);
+    if ((screenWidth >= 320 && screenWidth <= 767) || (screenWidth >= 320 && screenWidth <= 1024)) {
+        bulletHeight = bulletWidth = 15;
+    }
+
+    graph.drawImage(img, mass.x - player.x + screenWidth / 2, mass.y - player.y + screenHeight / 2, bulletWidth, bulletHeight);
 
 }
 
@@ -94,8 +99,37 @@ function drawPlayers(order) {
 
         graph.font = 'bold ' + fontSize + 'px sans-serif';
         graph.fillStyle = '#FF0000';
-        graph.drawImage(playerImg, circle.x, circle.y, playerImgWidth, playerImgHeight);
-        graph.fillText(nameCell, circle.x + playerImgWidth / 2, circle.y);
+        if (!userCurrent.isInSuperVessel) {
+            graph.drawImage(playerImg, circle.x, circle.y, playerImgWidth, playerImgHeight);
+            graph.fillText(nameCell, circle.x + playerImgWidth / 2, circle.y);
+        }
+        if (userCurrent.isInSuperVessel && !userCurrent.isDisplayer) {
+            var messageInfo = document.getElementById('#message-info');
+            $('#message-info').text('You are now linked to a super vessel');
+            if ((screenWidth >= 320 && screenWidth <= 767)) {
+                $('#feed').addClass('regroup-sm');
+
+                var miniM = $('#minimap');
+                miniM.removeClass('navbar-collapse collapse');
+                miniM.addClass('regroup-sm');
+                $('#regroup').addClass('regroup-sm');
+            }
+        }
+
+        if (userCurrent.isDisplayer) {
+
+
+            $('#message-info').text('You are now linked to a super vessel and the displayer');
+            if (screenWidth >= 1200) {
+                $('#minimap').addClass('regroup-ds');
+            }
+            mySuperVessel.forEach(function (vessel) {
+                graph.drawImage(playerImg, vessel.x * screenWidth / gameWidth, vessel.y * screenHeight / gameHeight, playerImgWidth, playerImgHeight);
+                graph.fillText(vessel.name, vessel.x * screenWidth / gameWidth + playerImgWidth / 2, vessel.y * screenHeight / gameHeight);
+
+            });
+        }
+
 
     }
 

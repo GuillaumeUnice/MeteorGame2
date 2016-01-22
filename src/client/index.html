@@ -26,11 +26,11 @@
 		</button>
 		</span>
 	</div>
-	<div id="status" class="navbar-collapse collapse"><span class="title">Connected</span></div>
-	<div class="chatbox" id="chatbox" style="visibility:hidden">
-		<ul id="chatList" class="chat-list"></ul>
-		<input id="chatInput" type="text" class="chat-input" placeholder="Chat here..." maxlength="35"/>
+	<div class="panel panel-success">
+		<div class="panel-heading text-center" id="message-info" ></div>
 	</div>
+	<div id="status" class="navbar-collapse collapse"><span class="title">Connected</span></div>
+
 
 	<!--img id="split" class="split hidden-md hidden-lg" src="img/spacebar.png" alt="splitBtn"/-->
 	<img id="feed" class="feed hidden-lg" src="img/feed.png" alt="feedBtn"/>
@@ -38,17 +38,20 @@
 	<i class="fa fa-heart fa-fw" id="lifeIcon"></i> <span id="lifeBar"></span> <span class="label label-info"
 	                                                                                 id="lifePoint"></span>
 	<i class="fa fa-fire fa-fw" id="munitionIcon"></i> <span id="munitionsBar"> </span><span class="label label-default"
-	                                                                                      id="munitionPoint"></span>
+	                                                                                         id="munitionPoint"></span>
 
 	<canvas id="minimap" width="300" height="300" class="navbar-collapse collapse"></canvas>
 	<i class="fa fa-3x fa-users action-icon" id="regroup"></i>
 	<div id="joinDiv">
 		<div class="panel panel-default">
 			<div class="panel-heading" id="joinText"></div>
+			<div class="panel-panel-footer">
+				<div class="text-center"><i class="fa fa-3x fa-check action-icon" id="acceptJoin"></i>
+					<i class="fa fa-3x fa-ban action-icon" id="rejectJoin"></i></div>
+			</div>
 		</div>
 		<br>
-		<i class="fa fa-3x fa-check action-icon" id="acceptJoin"></i>
-		<i class="fa fa-3x fa-ban action-icon" id="rejectJoin"></i>
+
 	</div>
 	<!--img id="split" class="split" src="img/split.png" alt="splitBtn"/-->
 
