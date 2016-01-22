@@ -44,7 +44,6 @@ exports.removeObject = function(toRem) {
         Object.pop();
     }
 }
-
 /** Test de collision **/
 exports.funcObject = function (f) {
     return SAT.pointInCircle(new V(f.x, f.y), playerCircle);

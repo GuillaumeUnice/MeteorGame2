@@ -12,7 +12,7 @@ var c = require('../../config.json');
 
 // Import utilities.
 var util = require('./lib/util');
-
+ 
 // Import quadtree.
 var quadtree = require('../../quadtree');
 
@@ -395,6 +395,7 @@ function tickPlayer(currentPlayer) {
     }
 
     function eatMass(m) {
+        console.log("eatMass");
         if (SAT.pointInCircle(new V(m.x, m.y), playerCircle)) {
             if (m.id == currentPlayer.id && m.speed > 0 && z == m.num)
                 return false;
@@ -405,6 +406,7 @@ function tickPlayer(currentPlayer) {
     }
 
     function check(user) {
+
         for (var i = 0; i < user.cells.length; i++) {
             if (user.cells[i].mass > 10 && user.id !== currentPlayer.id) {
                 var response = new SAT.Response();
@@ -416,20 +418,44 @@ function tickPlayer(currentPlayer) {
                     response.bUser = {
                         id: user.id,
                         name: user.name,
-                        x: user.cells[i].x,
-                        y: user.cells[i].y,
+                        x: object[i].x,
+                        y: object[i].y,
                         num: i,
-                        mass: user.cells[i].mass
+                        mass: 30
                     };
                     playerCollisions.push(response);
                 }
+            }
+        }
+
+
+
+
+        for (var i = 0; i < object.length; i++) {
+            var response = new SAT.Response();
+            var collided = SAT.testCircleCircle(playerCircle,
+                new C(new V(object[i].x, object[i].y), 50),
+                response);
+            if (collided) {
+                console.log("coco");
+                response.aUser = currentCell;
+                response.bUser = {
+                    id: user.id,
+                    name: user.name,
+                    x: user.cells[i].x,
+                    y: user.cells[i].y,
+                    num: i,
+                    mass: user.cells[i].mass
+                };
+
+                playerCollisions.push(response);
             }
         }
     }
 
     /*....................collision logic..............................*/
     function collisionCheck(collision) {
-
+        console.log("collisionCheck");
         //Kill result depends on the ball size of player
         if (collision.aUser.mass > collision.bUser.mass * 1.1 && collision.aUser.radius > Math.sqrt(Math.pow(collision.aUser.x - collision.bUser.x, 2) + Math.pow(collision.aUser.y - collision.bUser.y, 2)) * 1.75) {
             console.log('[DEBUG] Killing user: ' + collision.bUser.id);
@@ -496,8 +522,11 @@ function tickPlayer(currentPlayer) {
         var playerCollisions = [];
 
         var otherUsers = tree.retrieve(currentPlayer, check);
+        for(var i = 0; i < playerCollisions.length; i++) {
 
-        playerCollisions.forEach(collisionCheck);
+            collisionCheck(playerCollisions[i]); 
+        }
+        
     }
 
 }

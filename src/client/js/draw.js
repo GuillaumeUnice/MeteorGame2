@@ -49,12 +49,16 @@ function drawVirus(virus) {
 }
 
 function drawObject(object) {
-
-    graph.strokeStyle = 'hsl(' + 100 + ', 100%, 45%)';
+    console.log("drawObject");
+   /*graph.strokeStyle = 'hsl(' + 100 + ', 100%, 45%)';
     graph.fillStyle = 'hsl(' + 100 + ', 100%, 50%)';
     graph.lineWidth = foodConfig.border;
-console.log(object);
-    /*
+    graph.rect(300,300,150,100);
+     */
+    
+    //drawCircle(object.x - object.x + screenWidth / 2, object.y - player.y + screenHeight / 2, 20, 30);
+
+drawCircle(object.x - player.x + screenWidth / 2, object.y - player.y + screenHeight / 2, 20, 30);    /*
         graph.strokeStyle = object.stroke;
         graph.fillStyle = object.fill;
         graph.lineWidth = object.strokeWidth;
