@@ -186,7 +186,9 @@ io.on('connection', function (socket) {
         console.log('Fire called');
         // Fire food.
 
-        wound();
+
+        //A DEPLACER (TEST)
+        wound(3);
 
         for (var i = 0; i < currentPlayer.cells.length; i++) {
             //if (((currentPlayer.cells[i].mass >= c.defaultPlayerMass + c.fireFood) && c.fireFood > 0) || (currentPlayer.cells[i].mass >= 20 && c.fireFood === 0)) {
@@ -217,6 +219,7 @@ io.on('connection', function (socket) {
 
             } else {
                 console.log("No more munitions");
+                socket.emit('noAmmo');
             }
             //}
         }
@@ -225,13 +228,13 @@ io.on('connection', function (socket) {
     /*
         wounds the currentPlayer
      */
-    function wound(){
+    function wound(nb){
         //end the game if the player is dead
-        if(currentPlayer.life -1 <=0 ){
+        if(currentPlayer.life -nb <=0 ){
             endGame=true;
         }else{
             //else change the player's life and send info
-            currentPlayer.life--;
+            currentPlayer.life-=nb;
             socket.emit('wound',currentPlayer);
         }
 

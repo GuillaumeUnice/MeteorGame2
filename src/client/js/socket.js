@@ -118,7 +118,7 @@ function setupSocket(socket) {
 
 
     socket.on('fire', function (player) {
-
+        console.log('fire');
         var munitionBar = document.getElementById('munitionsBar');
         if (screenWidth >= 320 && screenWidth <= 767) {
             munitionBar.style.height = (player.munitions * 150 / 10) + 'px';
@@ -142,6 +142,14 @@ function setupSocket(socket) {
         if (screenWidth > 768) {
             lifeBar.style.width = (player.life * 500 / 100) + 'px';
         }
+    });
+
+    //A DEPLACER
+    socket.on('noAmmo', function(){
+        console.log('noammo');
+        var munitionBar = document.getElementById('munitionsBar');
+        munitionBar.style.border='5px solid red';
+        munitionBar.style.width=500+'px';
     });
 
     socket.on('proposeJoin', function (currentPlayer) {
