@@ -129,6 +129,21 @@ function setupSocket(socket) {
         document.getElementById('munitionPoint').innerHTML = player.munitions;
     });
 
+    //A DEPLACER
+    //Player gets wounded
+    socket.on('wound', function(currentPlayer){
+        player.life=currentPlayer.life;
+        document.getElementById('lifePoint').innerHTML = player.life;
+
+        var lifeBar = document.getElementById('lifeBar');
+        if (screenWidth >= 320 && screenWidth <= 767) {
+            lifeBar.style.height = (player.life * 150 / 100) + 'px';
+        }
+        if (screenWidth > 768) {
+            lifeBar.style.width = (player.life * 500 / 100) + 'px';
+        }
+    });
+
     socket.on('proposeJoin', function (currentPlayer) {
         if (!connectedToOthers) {
             $('#regroup').css("visibility", "hidden");
