@@ -136,6 +136,14 @@ function setupSocket(socket) {
     socket.on('teamFull', function (superVessel) {
         var isIn = false;
         mySuperVessel = superVessel;
+
+        mySuperVessel.forEach(function (vessel) {
+            if (vessel.isDisplayer) {
+                Leap.loop(setLeap).use('screenPosition', {scale: 0.25});
+                Leap.loopController.setBackground(true);
+            }
+        });
+
     });
 }
 

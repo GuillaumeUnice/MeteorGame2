@@ -124,7 +124,7 @@ function drawPlayers(order) {
                 $('#regroup').addClass('regroup-sm');
             }
 
-            if (window.orientation === 90){
+            if (window.orientation === 90) {
                 $('#feed').addClass('regroup-md');
 
                 var miniM2 = $('#minimap');
@@ -146,6 +146,7 @@ function drawPlayers(order) {
                 graph.fillText(vessel.name, vessel.x * screenWidth / gameWidth + playerImgWidth / 2, vessel.y * screenHeight / gameHeight);
 
             });
+
         }
 
 
