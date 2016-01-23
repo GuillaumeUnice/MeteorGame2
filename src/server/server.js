@@ -43,7 +43,7 @@ var initMassLog = util.log(c.defaultPlayerMass, c.slowBase);
 
 app.use(express.static(__dirname + '/../client'));
 
-var endGame= false;
+var endGame = false;
 
 //SOCKET IMPORT ATTEMPT
 //io.on('connection', function (socket) {socketImport.ioon(socket,c,users,sockets);});
@@ -197,15 +197,15 @@ io.on('connection', function (socket) {
                 console.log('[INFO] User :: ' + currentPlayer.name + ' :: Remaining munitions : ', currentPlayer.munitions);
 
                 socket.emit('fire', currentPlayer);
-              //  wound(12);
+                //  wound(12);
                 massFood.push({
                     id: currentPlayer.id,
                     num: i,
                     masa: masa,
                     hue: currentPlayer.hue,
                     target: {
-                        x: currentPlayer.x - currentPlayer.cells[i].x + currentPlayer.target.x+200,
-                        y: currentPlayer.y - currentPlayer.cells[i].y + currentPlayer.target.y+200
+                        x: currentPlayer.x - currentPlayer.cells[i].x + currentPlayer.target.x + 200,
+                        y: currentPlayer.y - currentPlayer.cells[i].y + currentPlayer.target.y + 200
                     },
                     x: currentPlayer.cells[i].x,
                     y: currentPlayer.cells[i].y,
@@ -216,23 +216,23 @@ io.on('connection', function (socket) {
             } else {
                 console.log("No more munitions");
                 socket.emit('noAmmo');
-                endGame=true;
+                endGame = true;
             }
             //}
         }
     });
 
     /*
-        wounds the currentPlayer
+     wounds the currentPlayer
      */
-    function wound(nb){
+    function wound(nb) {
         //end the game if the player is dead
-        if(currentPlayer.life -nb <=0 ){
-            endGame=true;
-        }else{
+        if (currentPlayer.life - nb <= 0) {
+            endGame = true;
+        } else {
             //else change the player's life and send info
-            currentPlayer.life-=nb;
-            socket.emit('wound',currentPlayer);
+            currentPlayer.life -= nb;
+            socket.emit('wound', currentPlayer);
         }
 
     }
@@ -260,7 +260,7 @@ io.on('connection', function (socket) {
     });
 
     socket.on('regroupPlayers', function () {
-        console.log('Server regroup called');
+
         if (users.length > 1) {
             console.log(currentPlayer.name + ' asked for a super vessel');
 
@@ -299,6 +299,9 @@ io.on('connection', function (socket) {
             superVessel.push(currentPlayer);
             console.log('Remaining places : ', 4 - superVessel.length + ' / 4 ');
             if (superVessel.length == 4) {
+                superVessel[0].isInSuperVessel = true;
+                superVessel[0].isDisplayer = true;
+
                 console.log('The super vessel is now ready');
                 var displayer = 0;
                 for (var i = 1; i < superVessel.length; i++) {
@@ -309,7 +312,6 @@ io.on('connection', function (socket) {
 
                     }
                 }
-
                 //on affecte les nouvelles positions
                 superVessel[0].x = c.gameWidth / 2;
                 superVessel[0].y = c.gameHeight / 2;
@@ -476,10 +478,10 @@ function tickPlayer(currentPlayer) {
     }
 
     function eatMass(m) {
-        if (SAT.pointInCircle(new V(m.x, m.y), playerCircle)) {     
-            if(m.id !=currentPlayer.id){
-                currentPlayer.life-=5;
-                sockets[currentPlayer.id].emit('wound',currentPlayer);
+        if (SAT.pointInCircle(new V(m.x, m.y), playerCircle)) {
+            if (m.id != currentPlayer.id) {
+                currentPlayer.life -= 5;
+                sockets[currentPlayer.id].emit('wound', currentPlayer);
             }
 
             if (m.id == currentPlayer.id && m.speed > 0 && z == m.num)
@@ -491,32 +493,32 @@ function tickPlayer(currentPlayer) {
     }
 
     //Detecter the confilt
-/*    function check(user) {
-        for (var i = 0; i < user.cells.length; i++) {
-      //      if (user.cells[i].mass > 10 && user.id !== currentPlayer.id) {
-            if(user.id !== currentPlayer.id){
-                var response = new SAT.Response();
-                var collided = SAT.testCircleCircle(
-                    new C(new V(currentPlayer.x, currentPlayer.y), 150),
-                    new C(new V(user.cells[i].x, user.cells[i].y), 150),
-                    response);
-                if (collided) {                   
-                    response.aUser = currentCell;
-                    response.bUser = {
-                        id: user.id,
-                        name: user.name,
-                        x: user.cells[i].x,
-                        y: user.cells[i].y,
-                        num: i,
-                        mass: user.cells[i].mass
-                    };
-                    playerCollisions.push(response);
-                }
-            }
-        }
-    }
-*/
-function check(user) {
+    /*    function check(user) {
+     for (var i = 0; i < user.cells.length; i++) {
+     //      if (user.cells[i].mass > 10 && user.id !== currentPlayer.id) {
+     if(user.id !== currentPlayer.id){
+     var response = new SAT.Response();
+     var collided = SAT.testCircleCircle(
+     new C(new V(currentPlayer.x, currentPlayer.y), 150),
+     new C(new V(user.cells[i].x, user.cells[i].y), 150),
+     response);
+     if (collided) {
+     response.aUser = currentCell;
+     response.bUser = {
+     id: user.id,
+     name: user.name,
+     x: user.cells[i].x,
+     y: user.cells[i].y,
+     num: i,
+     mass: user.cells[i].mass
+     };
+     playerCollisions.push(response);
+     }
+     }
+     }
+     }
+     */
+    function check(user) {
         for (var i = 0; i < user.cells.length; i++) {
             if (user.cells[i].mass > 10 && user.id !== currentPlayer.id) {
                 var response = new SAT.Response();
@@ -542,8 +544,8 @@ function check(user) {
 
     /*....................collision logic..............................*/
     function collisionCheck(collision) {
- 
-            console.log("attention, confilt");
+
+        console.log("attention, confilt");
         //Kill result depends on the ball size of player
         if (collision.aUser.mass > collision.bUser.mass * 1.1 && collision.aUser.radius > Math.sqrt(Math.pow(collision.aUser.x - collision.bUser.x, 2) + Math.pow(collision.aUser.y - collision.bUser.y, 2)) * 1.75) {
             console.log('[DEBUG] Killing user: ' + collision.bUser.id);
@@ -569,8 +571,8 @@ function check(user) {
     for (var z = 0; z < currentPlayer.cells.length; z++) {
         var currentCell = currentPlayer.cells[z];
         var playerCircle = new C(
-            new V(currentCell.x, currentCell.y),250
-          //  currentCell.radius
+            new V(currentCell.x, currentCell.y), 250
+            //  currentCell.radius
         );
 
         var foodEaten = food.map(funcFood)
@@ -612,7 +614,7 @@ function check(user) {
         //Get all the collision with other users
         var otherUsers = tree.retrieve(currentPlayer, check);
 
-        
+
         playerCollisions.forEach(collisionCheck);
     }
 
@@ -630,7 +632,7 @@ function moveloop() {
 }
 
 function gameloop() {
-    if(!endGame){
+    if (!endGame) {
 
         if (users.length > 0) {
             users.sort(function (a, b) {
@@ -645,7 +647,9 @@ function gameloop() {
                         id: users[i].id,
                         name: users[i].name,
                         x: users[i].x,
-                        y: users[i].y
+                        y: users[i].y,
+                        isInSuperVessel: users[i].isInSuperVessel,
+                        isDisplayer: users[i].isDisplayer
                     });
                 }
             }
@@ -673,15 +677,14 @@ function gameloop() {
             }
         }
     }
-    else{
-        users.forEach(function(u){
+    else {
+        users.forEach(function (u) {
             sockets[u.id].emit('gameOver');
         });
         endGame = false;
     }
     balanceMass(c, food, users);
 }
-
 
 
 /* TODO : exporter cette fonction dans un autre fichier, mais pas dans mapElements car cela ferai une "dépendance circulaire"*/
@@ -818,6 +821,7 @@ function sendUpdates() {
     });
     leaderboardChanged = false;
 }
+
 /*.........................HERE WE CALL ALL THE FUNCTION ABOVE...........................................................................................*/
 setInterval(moveloop, 1000 / 60);
 setInterval(gameloop, 1000);

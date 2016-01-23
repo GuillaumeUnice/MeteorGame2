@@ -58,7 +58,7 @@ function drawFireFood(mass) {
         bulletHeight = bulletWidth = 15;
     }
 
-    graph.drawImage(img, mass.x - player.x +105+ screenWidth/2, mass.y - player.y +100+ screenHeight/2, bulletWidth, bulletHeight);
+    graph.drawImage(img, mass.x - player.x + 105 + screenWidth / 2, mass.y - player.y + 100 + screenHeight / 2, bulletWidth, bulletHeight);
 
 }
 
@@ -99,13 +99,22 @@ function drawPlayers(order) {
 
         graph.font = 'bold ' + fontSize + 'px sans-serif';
         graph.fillStyle = '#FF0000';
+
         if (!userCurrent.isInSuperVessel) {
             graph.drawImage(playerImg, circle.x, circle.y, playerImgWidth, playerImgHeight);
             graph.fillText(nameCell, circle.x + playerImgWidth / 2, circle.y);
         }
         if (userCurrent.isInSuperVessel && !userCurrent.isDisplayer) {
+
+
             var messageInfo = document.getElementById('#message-info');
+
             $('#message-info').text('You are now linked to a super vessel');
+
+            if ((screen.orientation.type === "landscape")) {
+                console.log('Please fucking work !!!!!!!!!!');
+            }
+
             if ((screenWidth >= 320 && screenWidth <= 767)) {
                 $('#feed').addClass('regroup-sm');
 
@@ -114,20 +123,29 @@ function drawPlayers(order) {
                 miniM.addClass('regroup-sm');
                 $('#regroup').addClass('regroup-sm');
             }
+
+            if (window.orientation === 90) {
+                $('#feed').addClass('regroup-md');
+
+                var miniM2 = $('#minimap');
+                miniM2.removeClass('navbar-collapse collapse');
+                miniM2.addClass('regroup-md');
+                $('#regroup').addClass('regroup-md');
+            }
         }
 
         if (userCurrent.isDisplayer) {
 
-
-            $('#message-info').text('You are now linked to a super vessel and the displayer');
-            if (screenWidth >= 1200) {
-                $('#minimap').addClass('regroup-ds');
-            }
+            $('#message-info').text('You are now linked to a super vessel that will be displayed here');
+            //if (screenWidth >= 1200) {
+            $('#minimap').addClass('regroup-ds');
+            //}
             mySuperVessel.forEach(function (vessel) {
                 graph.drawImage(playerImg, vessel.x * screenWidth / gameWidth, vessel.y * screenHeight / gameHeight, playerImgWidth, playerImgHeight);
                 graph.fillText(vessel.name, vessel.x * screenWidth / gameWidth + playerImgWidth / 2, vessel.y * screenHeight / gameHeight);
 
             });
+
         }
 
 

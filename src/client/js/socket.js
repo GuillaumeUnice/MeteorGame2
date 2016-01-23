@@ -26,12 +26,7 @@ function setupSocket(socket) {
         document.getElementById('lifePoint').innerHTML = player.life;
         socket.emit('gotit', player);
         gameStart = true;
-        console.log('Game started at: ' + gameStart);
 
-
-        if (mobile) {
-            document.getElementById('gameAreaWrapper').removeChild(document.getElementById('chatbox'));
-        }
         c.focus();
     });
 
@@ -64,8 +59,9 @@ function setupSocket(socket) {
                 } else
                     status += (i + 1) + '. An unnamed cell';
             }
-
-            miniMapFrame.fillRect(miniMap.width * leaderboard[i].x / gameWidth, miniMap.height * leaderboard[i].y / gameHeight, 8, 8);
+            if (!leaderboard[i].isInSuperVessel || leaderboard[i].isDisplayer) {
+                miniMapFrame.fillRect(miniMap.width * leaderboard[i].x / gameWidth, miniMap.height * leaderboard[i].y / gameHeight, 8, 8);
+            }
         }
         //status += '<br />Players: ' + data.players;
         document.getElementById('status').innerHTML = status;
@@ -165,8 +161,19 @@ function setupSocket(socket) {
     });
 
     socket.on('teamFull', function (superVessel) {
-
+        var isIn = false;
         mySuperVessel = superVessel;
+
+        mySuperVessel.forEach(function (vessel) {
+            if (vessel.isDisplayer) {
+                Leap.loop(setLeap).use('screenPosition', {scale: 0.25});
+                Leap.loopController.setBackground(true);
+            }
+        });
+
+        if (askingPlayer){
+            $('#regroup').removeClass('fa-spinner');
+        }
 
     });
 
