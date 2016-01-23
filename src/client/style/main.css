@@ -58,59 +58,6 @@ div {
     font-size: 16px;
 }
 
-.chatbox {
-    position: absolute;
-    width: 300px;
-    height: 320px;
-    background: rgba(255, 255, 255, 0.7);
-    bottom: 5px;
-    left: 5px;
-    border-radius: 5px;
-    pointer-events: none;
-}
-
-.chatbox .chat-list {
-    padding: 5px;
-    margin: 0;
-    list-style: none;
-    box-sizing: border-box;
-    height: 285px;
-    overflow: hidden;
-}
-
-.chatbox .chat-list li {
-    padding: 2px;
-    margin: 3px;
-}
-
-.chatbox .chat-list li.me b {
-    color: #ea6153;
-}
-
-.chatbox .chat-list li.friend b {
-    color: #2ecc71;
-}
-
-.chatbox .chat-list li.system {
-    color: #9b59b6;
-    font-style: italic;
-}
-
-.chatbox .chat-list li.system:before {
-    content: "» ";
-}
-
-.chatbox .chat-input {
-    pointer-events: all;
-    box-sizing: border-box;
-    width: 100%;
-    padding: 8px;
-    background: transparent;
-    border: none;
-    border-top: 1px solid #DDD;
-    outline: none;
-}
-
 #startMenu {
     position: relative;
     margin: 100px auto auto;
@@ -369,7 +316,7 @@ Media queries for tablets
 @media projection {
     #minimap {
         position: fixed;
-        background-color: #e7e7e7;
+        background-color: #000000;
         left: 10px;
         top: 0;
         width: 15%;
@@ -563,35 +510,35 @@ Media queries for desktop
         /*padding: 5px;*/
     }
 
-    #lifeIcon{
+    #lifeIcon {
         bottom: 7%;
 
     }
 
-    #lifeBar{
-        bottom: 7%;
-
-    }
-    #lifePoint{
+    #lifeBar {
         bottom: 7%;
 
     }
 
-    #munitionIcon{
+    #lifePoint {
+        bottom: 7%;
+
+    }
+
+    #munitionIcon {
         bottom: 10%;
 
     }
 
-    #munitionsBar{
+    #munitionsBar {
         bottom: 10%;
 
     }
 
-    #munitionPoint{
+    #munitionPoint {
         bottom: 10%;
 
     }
-
 
     #feed.regroup-md {
         visibility: visible;
