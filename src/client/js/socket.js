@@ -49,8 +49,9 @@ function setupSocket(socket) {
                     status += '<span class="me">' + (i + 1) + '. ' + leaderboard[i].name + "</span>";
                     miniMapFrame.fillStyle = "#00FF00";
 
-                } else
+                } else {
                     status += '<span class="me">' + (i + 1) + ". An unnamed cell</span>";
+                }
             } else {
                 if (leaderboard[i].name.length !== 0) {
                     status += (i + 1) + '. ' + leaderboard[i].name;
@@ -60,7 +61,10 @@ function setupSocket(socket) {
                     status += (i + 1) + '. An unnamed cell';
             }
             if (!leaderboard[i].isInSuperVessel || leaderboard[i].isDisplayer) {
-                miniMapFrame.fillRect(miniMap.width * leaderboard[i].x / gameWidth, miniMap.height * leaderboard[i].y / gameHeight, 8, 8);
+                if (leaderboard[i].isDisplayer)
+                    miniMapFrame.fillStyle = "#FFFFFF";
+
+                miniMapFrame.fillRect(0.98 * miniMap.width * leaderboard[i].x / gameWidth, 0.97 * miniMap.height * leaderboard[i].y / gameHeight, 8, 8);
             }
         }
         //status += '<br />Players: ' + data.players;
@@ -128,11 +132,11 @@ function setupSocket(socket) {
 
     //A DEPLACER
     //Player gets wounded
-    socket.on('wound', function(currentPlayer){
-        player.life=currentPlayer.life;
+    socket.on('wound', function (currentPlayer) {
+        player.life = currentPlayer.life;
 
         console.log(player.life);
-        
+
         document.getElementById('lifePoint').innerHTML = player.life;
 
         var lifeBar = document.getElementById('lifeBar');
@@ -145,11 +149,11 @@ function setupSocket(socket) {
     });
 
     //A DEPLACER
-    socket.on('noAmmo', function(){
+    socket.on('noAmmo', function () {
         console.log('noammo');
         var munitionBar = document.getElementById('munitionsBar');
-        munitionBar.style.border='5px solid red';
-        munitionBar.style.width=500+'px';
+        munitionBar.style.border = '5px solid red';
+        munitionBar.style.width = 500 + 'px';
     });
 
     socket.on('proposeJoin', function (currentPlayer) {
@@ -171,24 +175,24 @@ function setupSocket(socket) {
             }
         });
 
-        if (askingPlayer){
+        if (askingPlayer) {
             $('#regroup').removeClass('fa-spinner');
         }
 
     });
 
-    socket.on('gameOver',function() {
-        gameStart=false;
+    socket.on('gameOver', function () {
+        gameStart = false;
 
-         window.setTimeout(function () {
-         document.getElementById('gameAreaWrapper').style.opacity = 0;
-         document.getElementById('startMenuWrapper').style.maxHeight = '1000px';
-         died = false;
-         if (animLoopHandle) {
-         window.cancelAnimationFrame(animLoopHandle);
-         animLoopHandle = undefined;
-         }
-         }, 2500);
+        window.setTimeout(function () {
+            document.getElementById('gameAreaWrapper').style.opacity = 0;
+            document.getElementById('startMenuWrapper').style.maxHeight = '1000px';
+            died = false;
+            if (animLoopHandle) {
+                window.cancelAnimationFrame(animLoopHandle);
+                animLoopHandle = undefined;
+            }
+        }, 2500);
     });
 }
 
