@@ -200,6 +200,15 @@ div {
     border: 3px solid #000000;
 }
 
+#message-info{
+    background-color: #000000;
+    color: #ffffff;
+}
+
+#panel-message{
+    visibility: hidden;
+}
+
 /**
 Media queries for tablets
 **/
