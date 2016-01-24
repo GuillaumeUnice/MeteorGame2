@@ -2,9 +2,9 @@
 
 'use strict';
 
-var cfg = require('../../../config.json');
+var configuration = require('../../../config.json');
 
-exports.validNick = function (nickname) {
+exports.validNickName = function (nickname) {
     var regex = /^\w*$/;
     return regex.exec(nickname) !== null;
 };
@@ -34,8 +34,8 @@ exports.randomInRange = function (from, to) {
 // generate a random position within the field of play
 exports.randomPosition = function (radius) {
     return {
-        x: exports.randomInRange(radius, cfg.gameWidth - radius),
-        y: exports.randomInRange(radius, cfg.gameHeight - radius)
+        x: exports.randomInRange(radius, configuration.gameWidth - radius),
+        y: exports.randomInRange(radius, configuration.gameHeight - radius)
     };
 };
 

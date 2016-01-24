@@ -27,7 +27,7 @@ function setupSocket(socket) {
         socket.emit('gotit', player);
         gameStart = true;
 
-        c.focus();
+        gameSettings.focus();
     });
 
     socket.on('gameSetup', function (data) {
@@ -198,8 +198,8 @@ function setupSocket(socket) {
 
 
 function resize() {
-    player.screenWidth = c.width = screenWidth = playerType == 'player' ? window.innerWidth : gameWidth;
-    player.screenHeight = c.height = screenHeight = playerType == 'player' ? window.innerHeight : gameHeight;
+    player.screenWidth = gameSettings.width = screenWidth = playerType == 'player' ? window.innerWidth : gameWidth;
+    player.screenHeight = gameSettings.height = screenHeight = playerType == 'player' ? window.innerHeight : gameHeight;
     socket.emit('windowResized', {screenWidth: screenWidth, screenHeight: screenHeight});
 }
 

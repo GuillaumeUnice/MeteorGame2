@@ -6,14 +6,14 @@ var object = [];
 function addObject(toAdd) {
     //var radius = c.util.massToRadius(c.foodMass);
     while (toAdd--) {
-        var position = c.foodUniformDisposition ? util.uniformPosition(food, radius) : util.randomPosition(radius);
+        var position = gameSettings.foodUniformDisposition ? util.uniformPosition(food, radius) : util.randomPosition(radius);
         object.push({
             // Make IDs unique.
             id: ((new Date()).getTime() + '' + object.length) >>> 0,
             x: position.x,
             y: position.y,
             radius: objectRadius,
-            hue: c.objectColor
+            hue: gameSettings.objectColor
         });
     }
 }
@@ -25,7 +25,7 @@ function addObject(toAdd) {
 **/
 function balanceObject() {
 
-    var objectToAdd = object.length - c.objectMax;
+    var objectToAdd = object.length - gameSettings.objectMax;
 
     if (foodToAdd > 0) {
         addObject(objectToAdd);
@@ -41,7 +41,7 @@ function removeObject(toRem) {
 
 /** Test de collision **/
 function funcObject(f) {
-    return SAT.pointInCircle(new V(f.x, f.y), playerCircle);
+    return SAT.pointInCircle(new SATVector(f.x, f.y), playerCircle);
 }
 /** Suppression d'objet **/
 function deleteObject(f) {
