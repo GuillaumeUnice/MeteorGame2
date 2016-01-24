@@ -230,28 +230,6 @@ io.on('connection', function (socket) {
 
     }
 
-//split, client call this in client/app.js
-    socket.on('2', function () {
-        //Split cells.
-        if (currentPlayer.cells.length < gameSettings.limitSplit && currentPlayer.massTotal >= gameSettings.defaultPlayerMass * 2) {
-            var numMax = currentPlayer.cells.length;
-            for (var d = 0; d < numMax; d++) {
-                if (currentPlayer.cells[d].mass >= gameSettings.defaultPlayerMass * 2) {
-                    currentPlayer.cells[d].mass = currentPlayer.cells[d].mass / 2;
-                    currentPlayer.cells[d].radius = util.massToRadius(currentPlayer.cells[d].mass);
-                    currentPlayer.cells.push({
-                        mass: currentPlayer.cells[d].mass,
-                        x: currentPlayer.cells[d].x,
-                        y: currentPlayer.cells[d].y,
-                        radius: currentPlayer.cells[d].radius,
-                        speed: 25
-                    });
-                }
-            }
-            currentPlayer.lastSplit = new Date().getTime();
-        }
-    });
-
     socket.on('regroupPlayers', function () {
 
         if (users.length > 1) {

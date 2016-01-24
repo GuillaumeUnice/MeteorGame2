@@ -86,14 +86,6 @@ $("#feed").click(function () {
     reenviar = false;
 });
 
-/**
- * Previously used to split in 2 the circle
- */
-$("#split").click(function () {
-    socket.emit('2');
-    reenviar = false;
-});
-
 $("#regroup").click(function () {
     var regroupImg = $('#regroup');
     if (!connectedToOthers) {
