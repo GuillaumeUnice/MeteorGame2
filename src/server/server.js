@@ -54,10 +54,8 @@ var endGame = false;
  *All the socket functions.
  * - game global : start , disconnect ect
  * - windows configuration
- * - chat
- * - login autentification
- * - kick a normal player as admin player
- * - play : feed and split
+ * - login authentication
+ * - play : fire
  * - keyboard action
  * - check latency
  **/
@@ -163,7 +161,7 @@ io.on('connection', function (socket) {
 
     });
 
-//if client disconnect
+//if client disconnects
     socket.on('disconnect', function () {
         if (util.findIndex(users, currentPlayer.id) > -1)
             users.splice(util.findIndex(users, currentPlayer.id), 1);
@@ -218,7 +216,7 @@ io.on('connection', function (socket) {
     /*
      wounds the currentPlayer
      */
-    function wound(nb) {
+   /* function wound(nb) {
         //end the game if the player is dead
         if (currentPlayer.life - nb <= 0) {
             endGame = true;
@@ -228,15 +226,13 @@ io.on('connection', function (socket) {
             socket.emit('wound', currentPlayer);
         }
 
-    }
+    }*/
 
     socket.on('regroupPlayers', function () {
 
         if (users.length > 1) {
             console.log(currentPlayer.name + ' asked for a super vessel');
-
             superVessel.push(currentPlayer);
-            superVessel[0].role = 'pilot';
             socket.broadcast.emit('proposeJoin', currentPlayer);
 
         }
@@ -253,30 +249,24 @@ io.on('connection', function (socket) {
 
     /*................................. to test the latency.................................*/
 
-//see also client/app.js (who send 'ping'), and client/chat.js(who receive 'pong')
-    socket.on('ping', function () {
-        socket.emit('pong');
-    });
-
     socket.on('acceptJoin', function () {
         if (superVessel.length < 4) {
 
 
             console.log('Asking player : ', superVessel[0].name);
             console.log('Accepting player : ', currentPlayer.name);
-            currentPlayer.isInSuperVessel = true;
-            currentPlayer.isDisplayer = false;
 
             superVessel.push(currentPlayer);
             console.log('Remaining places : ', 4 - superVessel.length + ' / 4 ');
             if (superVessel.length == 4) {
-                superVessel[0].isInSuperVessel = true;
-                superVessel[0].isDisplayer = true;
 
-                console.log('The super vessel is now ready');
+                superVessel.forEach(function (vessel) {
+                    vessel.isInSuperVessel = true;
+                    vessel.isDisplayer = true;
+                });
                 var displayer = 0;
                 for (var i = 1; i < superVessel.length; i++) {
-                    if (superVessel[i].screenWidth > superVessel[displayer].screenWidth) {
+                    if (superVessel[i].screenWidth >= superVessel[displayer].screenWidth) {
                         superVessel[displayer].isDisplayer = false;
                         superVessel[i].isDisplayer = true;
                         displayer = i;

@@ -114,9 +114,3 @@ $("#rejectJoin").click(function () {
     $('#regroup').css('visibility', 'visible');
     $('#joinDiv').css("visibility", "hidden");
 });
-
-function checkLatency() {
-    // Ping.
-    startPingTime = Date.now();
-    socket.emit('ping');
-}
