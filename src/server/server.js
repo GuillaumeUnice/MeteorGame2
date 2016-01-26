@@ -395,7 +395,7 @@ function tickPlayer(currentPlayer) {
     }
 
     function eatMass(m) {
-        console.log("eatMass");
+        //console.log("eatMass");
         if (SAT.pointInCircle(new V(m.x, m.y), playerCircle)) {
             if (m.id == currentPlayer.id && m.speed > 0 && z == m.num)
                 return false;
@@ -406,22 +406,24 @@ function tickPlayer(currentPlayer) {
     }
 
     function check(user) {
-
-        for (var i = 0; i < user.cells.length; i++) {
-            if (user.cells[i].mass > 10 && user.id !== currentPlayer.id) {
+    //console.log(user.cells);
+    //console.log(playerCircle);
+        for(var i=0; i<user.cells.length; i++) {
+            if(user.cells[i].mass > 10 && user.id !== currentPlayer.id) {
                 var response = new SAT.Response();
                 var collided = SAT.testCircleCircle(playerCircle,
                     new C(new V(user.cells[i].x, user.cells[i].y), user.cells[i].radius),
                     response);
+
                 if (collided) {
                     response.aUser = currentCell;
                     response.bUser = {
                         id: user.id,
                         name: user.name,
-                        x: object[i].x,
-                        y: object[i].y,
+                        x: user.cells[i].x,
+                        y: user.cells[i].y,
                         num: i,
-                        mass: 30
+                        mass: user.cells[i].mass
                     };
                     playerCollisions.push(response);
                 }
@@ -434,11 +436,21 @@ function tickPlayer(currentPlayer) {
         for (var i = 0; i < object.length; i++) {
             var response = new SAT.Response();
             var collided = SAT.testCircleCircle(playerCircle,
-                new C(new V(object[i].x, object[i].y), 50),
+                new C(new V(object[i].x , object[i].y), 20),
                 response);
-            if (collided) {
+//console.log(playerCircle.pos.x);
+//console.log((Math.ceil(object[i].x) + " === " + Math.ceil(playerCircle.pos.x)) + " && " + Math.ceil(object[i].y) + " === " + Math.ceil(playerCircle.pos.y));
+  //          var collided = false;
+    /*        if((Math.ceil(object[i].x) === Math.ceil(playerCircle.pos.x)) && Math.ceil(object[i].y) === Math.ceil(playerCircle.pos.y)) {
                 console.log("coco");
-                response.aUser = currentCell;
+            }*/
+
+            //console.log(collided);
+            if (collided) {
+                var resX = Math.ceil(object[i].x);
+                var resY = Math.ceil(object[i].y);
+                console.log(resX + " === " + Math.ceil(playerCircle.pos.x) + " && " + resY + " === " + Math.ceil(playerCircle.pos.y));
+                /*response.aUser = currentCell;
                 response.bUser = {
                     id: user.id,
                     name: user.name,
@@ -448,7 +460,7 @@ function tickPlayer(currentPlayer) {
                     mass: user.cells[i].mass
                 };
 
-                playerCollisions.push(response);
+                playerCollisions.push(response);*/
             }
         }
     }
