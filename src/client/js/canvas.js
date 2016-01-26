@@ -8,9 +8,7 @@ var screenWidth = window.innerWidth;
 var screenHeight = window.innerHeight;
 var gameWidth = 0;
 var gameHeight = 0;
-var munitions = 0;
 var life = 0;
-var gameTop = false;
 var xoffset = -gameWidth;
 var yoffset = -gameHeight;
 
@@ -21,8 +19,6 @@ var kicked = false;
 
 // TODO: Break out into GameControls.
 var continuity = false;
-var startPingTime = 0;
-var toggleMassState = 0;
 var backgroundColor = '#ffffff';
 
 var lineColor = '#000000';
@@ -57,19 +53,19 @@ var target = {x: player.x, y: player.y};
 var directionLock = false;
 var directions = [];
 
-var c = document.getElementById('cvs');
-c.width = screenWidth;
-c.height = screenHeight;
-//c.addEventListener('mousemove', gameInput, false);
-c.addEventListener('mouseout', outOfBounds, false);
-c.addEventListener('keyup', function (event) {
+var gameCanvas = document.getElementById('cvs');
+gameCanvas.width = screenWidth;
+gameCanvas.height = screenHeight;
+//gameCanvas.addEventListener('mousemove', gameInput, false);
+gameCanvas.addEventListener('mouseout', outOfBounds, false);
+gameCanvas.addEventListener('keyup', function (event) {
     reenviar = true;
     directionUp(event);
 }, false);
-c.addEventListener('keypress', keyInput, false);
-c.addEventListener('keydown', directionDown, false);
-c.addEventListener('touchstart', touchInput, false);
-c.addEventListener('touchmove', touchInput, false);
+gameCanvas.addEventListener('keypress', keyInput, false);
+gameCanvas.addEventListener('keydown', directionDown, false);
+gameCanvas.addEventListener('touchstart', touchInput, false);
+gameCanvas.addEventListener('touchmove', touchInput, false);
 
 // Register when the mouse goes off the canvas.
 function outOfBounds() {
@@ -78,7 +74,7 @@ function outOfBounds() {
     }
 }
 
-var graph = c.getContext('2d');
+var graph = gameCanvas.getContext('2d');
 
 var miniMap = document.getElementById("minimap");
 var miniMapFrame = miniMap.getContext("2d");
