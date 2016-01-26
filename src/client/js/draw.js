@@ -142,18 +142,6 @@ function drawPlayers(order) {
 
 }
 
-function isMemberOfASuperVessel(playerName) {
-    if (mySuperVessel.length == 0)
-        return false;
-    var isIn = false;
-    mySuperVessel.forEach(function (vessel) {
-        if (vessel.name === playerName)
-            isIn = true;
-    });
-
-    return isIn;
-}
-
 function valueInRange(min, max, value) {
     return Math.min(max, Math.max(min, value));
 }
