@@ -216,17 +216,17 @@ io.on('connection', function (socket) {
     /*
      wounds the currentPlayer
      */
-   /* function wound(nb) {
-        //end the game if the player is dead
-        if (currentPlayer.life - nb <= 0) {
-            endGame = true;
-        } else {
-            //else change the player's life and send info
-            currentPlayer.life -= nb;
-            socket.emit('wound', currentPlayer);
-        }
+    /* function wound(nb) {
+     //end the game if the player is dead
+     if (currentPlayer.life - nb <= 0) {
+     endGame = true;
+     } else {
+     //else change the player's life and send info
+     currentPlayer.life -= nb;
+     socket.emit('wound', currentPlayer);
+     }
 
-    }*/
+     }*/
 
     socket.on('regroupPlayers', function () {
 
@@ -252,12 +252,8 @@ io.on('connection', function (socket) {
     socket.on('acceptJoin', function () {
         if (superVessel.length < 4) {
 
-
-            console.log('Asking player : ', superVessel[0].name);
-            console.log('Accepting player : ', currentPlayer.name);
-
             superVessel.push(currentPlayer);
-            console.log('Remaining places : ', 4 - superVessel.length + ' / 4 ');
+
             if (superVessel.length == 4) {
 
                 superVessel.forEach(function (vessel) {
@@ -422,10 +418,6 @@ function movePlayer(player) {
 
 /*...................START OF TICK, this function is called in moveloop..................................................................................................*/
 function tickPlayer(currentPlayer) {
-    if (currentPlayer.lastHeartbeat < new Date().getTime() - gameSettings.maxHeartbeatInterval) {
-        sockets[currentPlayer.id].emit('kick', 'Last heartbeat received over ' + gameSettings.maxHeartbeatInterval + ' ago.');
-        sockets[currentPlayer.id].disconnect();
-    }
 
     movePlayer(currentPlayer);
 
