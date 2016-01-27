@@ -76,7 +76,6 @@ var directionLock = false;
 var directions = [];
 
 var gameCanvas = document.getElementById('gameArea');
-
 var graph = gameCanvas.getContext('2d');
 var miniMap = document.getElementById("minimap");
 var miniMapFrame = miniMap.getContext("2d");

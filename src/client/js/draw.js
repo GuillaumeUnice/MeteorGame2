@@ -1,4 +1,5 @@
-
+var playerImg = new Image();
+playerImg.src = "../img/vaisseaux.png";
 
 function drawFireFood(mass) {
 
@@ -22,9 +23,7 @@ function drawPlayers(order) {
         y: player.y - (screenHeight / 2)
     };
 
-    // var playerImg = new Image();
-    var playerImg = document.createElement("img"), playerImgWidth = 250, playerImgHeight = 250;
-    playerImg.src = "../img/vaisseaux.png";
+    var playerImgWidth = 250, playerImgHeight = 250;
 
     if ((screenWidth >= 320 && screenWidth <= 767) || (screenWidth >= 320 && screenWidth <= 1024)) {
         playerImgWidth = playerImgHeight = 75;
@@ -115,7 +114,35 @@ function valueInRange(min, max, value) {
     return Math.min(max, Math.max(min, value));
 }
 
+var imageRepository = new function () {
+    this.backgroundImg = new Image();
+    this.backgroundImg.src = "../img/background2.jpg";
+
+};
+
+
+function Drawable() {
+    this.init = function (x, y) {
+        this.x = x;
+        this.y = y;
+    };
+
+    this.speed = 0;
+    this.canvasWidth = 0;
+    this.canvasHeight = 0;
+
+    this.draw = function () {
+
+    }
+}
+
+
 function drawgrid() {
+
+    //graph.globalAlpha = 1;
+
+    //graph.drawImage(backgroundImg, 0, 0, screenWidth, screenHeight);
+
     graph.lineWidth = 1;
 
 
@@ -135,6 +162,8 @@ function drawgrid() {
 
     graph.stroke();
     graph.globalAlpha = 1;
+    //graph.globalAlpha = 1;
+
 }
 
 function drawborder() {
