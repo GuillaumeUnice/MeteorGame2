@@ -20,16 +20,9 @@ function setLeap (frame) {
 
 }
 
-/*Leap.loop().use('screenPosition', {scale: 0.25});*/
-
-
-
 
 var Cat = function () {
     var cat = this;
 };
 
 cats[0] = new Cat();
-
-// This allows us to move the cat even whilst in an iFrame.
-///Leap.loopController.setBackground(true);

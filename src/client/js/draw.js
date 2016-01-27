@@ -1,35 +1,4 @@
-function drawCircle(centerX, centerY, radius, sides) {
-    var theta = 0;
-    var x = 0;
-    var y = 0;
 
-    graph.beginPath();
-
-    for (var i = 0; i < sides; i++) {
-        theta = (i / sides) * 2 * Math.PI;
-        x = centerX + radius * Math.sin(theta);
-        y = centerY + radius * Math.cos(theta);
-        graph.lineTo(x, y);
-    }
-
-    graph.closePath();
-    graph.stroke();
-    graph.fill();
-}
-
-function drawFood(food) {
-    graph.strokeStyle = 'hsl(' + food.hue + ', 100%, 45%)';
-    graph.fillStyle = 'hsl(' + food.hue + ', 100%, 50%)';
-    graph.lineWidth = foodConfig.border;
-    drawCircle(food.x - player.x + screenWidth / 2, food.y - player.y + screenHeight / 2, food.radius, foodSides);
-}
-
-function drawVirus(virus) {
-    graph.strokeStyle = virus.stroke;
-    graph.fillStyle = virus.fill;
-    graph.lineWidth = virus.strokeWidth;
-
-}
 
 function drawFireFood(mass) {
 
@@ -149,27 +118,23 @@ function valueInRange(min, max, value) {
 function drawgrid() {
     graph.lineWidth = 1;
 
-    var backrgoundImg = document.createElement('img');
-    backrgoundImg.src = "../img/background2.jpg";
 
-    graph.drawImage(backrgoundImg, 0, 0, screenWidth, screenHeight);
+    graph.strokeStyle = lineColor;
+    graph.globalAlpha = 0.15;
+    graph.beginPath();
 
-    /*graph.strokeStyle = lineColor;
-     graph.globalAlpha = 0.15;
-     graph.beginPath();
+    for (var x = xoffset - player.x; x < screenWidth; x += screenHeight / 18) {
+        graph.moveTo(x, 0);
+        graph.lineTo(x, screenHeight);
+    }
 
-     for (var x = xoffset - player.x; x < screenWidth; x += screenHeight / 18) {
-     graph.moveTo(x, 0);
-     graph.lineTo(x, screenHeight);
-     }
+    for (var y = yoffset - player.y; y < screenHeight; y += screenHeight / 18) {
+        graph.moveTo(0, y);
+        graph.lineTo(screenWidth, y);
+    }
 
-     for (var y = yoffset - player.y; y < screenHeight; y += screenHeight / 18) {
-     graph.moveTo(0, y);
-     graph.lineTo(screenWidth, y);
-     }
-
-     graph.stroke();
-     graph.globalAlpha = 1;*/
+    graph.stroke();
+    graph.globalAlpha = 1;
 }
 
 function drawborder() {

@@ -3,57 +3,6 @@
  * @type {Number}
  */
 // Canvas.
-var screenWidth = window.innerWidth;
-
-var screenHeight = window.innerHeight;
-var gameWidth = 0;
-var gameHeight = 0;
-var life = 0;
-var xoffset = -gameWidth;
-var yoffset = -gameHeight;
-
-var gameStart = false;
-var disconnected = false;
-var died = false;
-var kicked = false;
-
-// TODO: Break out into GameControls.
-var continuity = false;
-var backgroundColor = '#ffffff';
-
-var lineColor = '#000000';
-
-var foodConfig = {
-    border: 0
-};
-
-var playerConfig = {
-    border: 6,
-    textColor: '#FFFFFF',
-    textBorder: '#000000',
-    textBorderSize: 3,
-    defaultSize: 30
-};
-
-var player = {
-    id: -1,
-    x: screenWidth / 2,
-    y: screenHeight / 2,
-    screenWidth: screenWidth,
-    screenHeight: screenHeight,
-    target: {x: screenWidth / 2, y: screenHeight / 2}
-};
-var mySuperVessel = [];
-var foods = [];
-var viruses = [];
-var fireFood = [];
-var users = [];
-var leaderboard = [];
-var target = {x: player.x, y: player.y};
-var directionLock = false;
-var directions = [];
-
-var gameCanvas = document.getElementById('cvs');
 gameCanvas.width = screenWidth;
 gameCanvas.height = screenHeight;
 //gameCanvas.addEventListener('mousemove', gameInput, false);
@@ -73,12 +22,6 @@ function outOfBounds() {
         target = {x: 0, y: 0};
     }
 }
-
-var graph = gameCanvas.getContext('2d');
-
-var miniMap = document.getElementById("minimap");
-var miniMapFrame = miniMap.getContext("2d");
-
 
 function gameInput(mouse) {
     if (!directionLock) {
