@@ -566,18 +566,26 @@ function tickPlayer(currentPlayer) {
             if (collided) {
                 var resX = Math.ceil(object[i].x);
                 var resY = Math.ceil(object[i].y);
-                console.log(resX + " === " + Math.ceil(playerCircle.pos.x) + " && " + resY + " === " + Math.ceil(playerCircle.pos.y));
+                //console.log(resX + " === " + Math.ceil(playerCircle.pos.x) + " && " + resY + " === " + Math.ceil(playerCircle.pos.y));
                 
-                console.log(currentPlayer);
+                //console.log(currentPlayer);
                 if(object[i].type === c.object.lifeType.name) {
                     console.log("lifeType");
+                    currentPlayer.life = ((currentPlayer.life + c.object.lifeType.point) > c.life) ? c.life : (currentPlayer.life + c.object.lifeType.point);
+                    console.log(currentPlayer.life);
                 } else if (object[i].type === c.object.bulletType.name) {
                     console.log("bulletType");
-                    console.log(c.munition);
+                    currentPlayer.munitions = ((currentPlayer.munitions + c.object.bulletType.point) > c.munition) ? c.munition : (currentPlayer.munitions + c.object.bulletType.point);
+                    console.log(currentPlayer.munitions);
                 } else {
                     console.log("mineType");
+                    currentPlayer.life -= c.object.mineType.point;
+                    if(currentPlayer.life <= 0) {
+                        endGame = true;
+                    }   
+                    
                 }
-
+                //TODO socket.emit('wound', currentPlayer);
                 object.splice(object.indexOf(object[i]), 1);
             }
         }

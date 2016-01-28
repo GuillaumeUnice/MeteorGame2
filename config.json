@@ -36,16 +36,19 @@
     "objectRadius": 20,
     "lifeType": {
       "name" : "life",
+      "point" : 10,
       "fill": "#33ff33",
       "stroke": "#2ECC71"
     },
     "mineType": {
       "name" : "mine",
+      "point" : 10,
       "fill": "#FF3030",
       "stroke": "#FFA9A9"
     },
     "bulletType": {
       "name" : "bullet",
+      "point": 1,
       "fill": "#060202",
       "stroke": "#949494"
     }
