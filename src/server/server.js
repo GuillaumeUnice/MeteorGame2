@@ -17,7 +17,6 @@ var util = require('./lib/util');
 var quadtree = require('../../quadtree');
 
 /* My imports */
-var socketImport = require("./socket.js");
 var mapElemImport = require("./mapElements.js");
 var objectImport = require("./object.js");
 
@@ -29,6 +28,7 @@ console.log(args);
 var tree = quadtree.QUAD.init(args);
 
 var users = [];
+var superVessel = [];
 var massFood = [];
 var food = [];
 var virus = [];
@@ -45,10 +45,10 @@ var initMassLog = util.log(c.defaultPlayerMass, c.slowBase);
 
 app.use(express.static(__dirname + '/../client'));
 
+var endGame = false;
 
 //SOCKET IMPORT ATTEMPT
 //io.on('connection', function (socket) {socketImport.ioon(socket,c,users,sockets);});
-
 
 /***********************************************************************START SOCKET*************************************************************************/
 /************************************************************************************************************************************************/
@@ -63,6 +63,8 @@ app.use(express.static(__dirname + '/../client'));
  * - keyboard action
  * - check latency
  **/
+
+//This method is called the first time the user is connected
 io.on('connection', function (socket) {
     console.log('A user connected is !', socket.handshake.query.type);
     //initialize a player
@@ -85,7 +87,10 @@ io.on('connection', function (socket) {
         id: socket.id,
         x: position.x,
         y: position.y,
+        munitions: c.munition,
+        life: c.life,
         cells: cells,
+        isInSuperVessel: false,
         massTotal: massTotal,
         hue: Math.round(Math.random() * 360),
         type: type,
@@ -150,10 +155,7 @@ io.on('connection', function (socket) {
 
             socket.emit('gameSetup', {
                 gameWidth: c.gameWidth,
-                gameHeight: c.gameHeight,
-                munitions: c.munition,
-                life: c.life
-
+                gameHeight: c.gameHeight
             });
 
 
@@ -188,34 +190,55 @@ io.on('connection', function (socket) {
         for (var i = 0; i < currentPlayer.cells.length; i++) {
             //if (((currentPlayer.cells[i].mass >= c.defaultPlayerMass + c.fireFood) && c.fireFood > 0) || (currentPlayer.cells[i].mass >= 20 && c.fireFood === 0)) {
             var masa = 1;
-            if (c.munition > 0) {
+            if (currentPlayer.munitions > 0) {
 
                 masa = currentPlayer.cells[i].mass * 0.1;
 
                 /*currentPlayer.cells[i].mass -= masa;
                  currentPlayer.massTotal -= masa;*/
+                currentPlayer.munitions -= 1;
+                console.log('[INFO] User :: ' + currentPlayer.name + ' :: Remaining munitions : ', currentPlayer.munitions);
+
+                socket.emit('fire', currentPlayer);
+                //  wound(12);
                 massFood.push({
                     id: currentPlayer.id,
                     num: i,
                     masa: masa,
                     hue: currentPlayer.hue,
                     target: {
-                        x: currentPlayer.x - currentPlayer.cells[i].x + currentPlayer.target.x,
-                        y: currentPlayer.y - currentPlayer.cells[i].y + currentPlayer.target.y
+                        x: currentPlayer.x - currentPlayer.cells[i].x + currentPlayer.target.x + 200,
+                        y: currentPlayer.y - currentPlayer.cells[i].y + currentPlayer.target.y + 200
                     },
                     x: currentPlayer.cells[i].x,
                     y: currentPlayer.cells[i].y,
                     radius: util.massToRadius(masa),
-                    munitions: --c.munition,
-                    speed: 30
+                    speed: 50
                 });
 
             } else {
                 console.log("No more munitions");
+                socket.emit('noAmmo');
+                endGame = true;
             }
             //}
         }
     });
+
+    /*
+     wounds the currentPlayer
+     */
+    function wound(nb) {
+        //end the game if the player is dead
+        if (currentPlayer.life - nb <= 0) {
+            endGame = true;
+        } else {
+            //else change the player's life and send info
+            currentPlayer.life -= nb;
+            socket.emit('wound', currentPlayer);
+        }
+
+    }
 
 //split, client call this in client/app.js
     socket.on('2', function () {
@@ -239,6 +262,18 @@ io.on('connection', function (socket) {
         }
     });
 
+    socket.on('regroupPlayers', function () {
+
+        if (users.length > 1) {
+            console.log(currentPlayer.name + ' asked for a super vessel');
+
+            superVessel.push(currentPlayer);
+            superVessel[0].role = 'pilot';
+            socket.broadcast.emit('proposeJoin', currentPlayer);
+
+        }
+    });
+
 // keyboard action, to change direction, see also client/delete.js
 // Heartbeat function, update everytime.
     socket.on('0', function (target) {
@@ -255,9 +290,59 @@ io.on('connection', function (socket) {
         socket.emit('pong');
     });
 
+    socket.on('acceptJoin', function () {
+        if (superVessel.length < 4) {
+
+
+            console.log('Asking player : ', superVessel[0].name);
+            console.log('Accepting player : ', currentPlayer.name);
+            currentPlayer.isInSuperVessel = true;
+            currentPlayer.isDisplayer = false;
+
+            superVessel.push(currentPlayer);
+            console.log('Remaining places : ', 4 - superVessel.length + ' / 4 ');
+            if (superVessel.length == 4) {
+                superVessel[0].isInSuperVessel = true;
+                superVessel[0].isDisplayer = true;
+
+                console.log('The super vessel is now ready');
+                var displayer = 0;
+                for (var i = 1; i < superVessel.length; i++) {
+                    if (superVessel[i].screenWidth > superVessel[displayer].screenWidth) {
+                        superVessel[displayer].isDisplayer = false;
+                        superVessel[i].isDisplayer = true;
+                        displayer = i;
+
+                    }
+                }
+                //on affecte les nouvelles positions
+                superVessel[0].x = c.gameWidth / 2;
+                superVessel[0].y = c.gameHeight / 2;
+
+
+                superVessel[1].x = superVessel[0].x + 640;
+                superVessel[1].y = superVessel[0].y;
+
+                superVessel[2].x = superVessel[0].x + 320;
+                superVessel[2].y = superVessel[0].y - 320;
+
+                superVessel[3].x = superVessel[2].x;
+                superVessel[3].y = superVessel[0].y + 320;
+
+                console.log("The super vessel members");
+                console.log(superVessel);
+
+                io.emit('teamFull', superVessel);
+
+            }
+        } else {
+            console.log('The team is complete');
+            //socket.emit('teamFull', superVessel);
+        }
+    });
+
 
 });
-
 /***********************************************************************END SOCKET*************************************************************************/
 //noinspection JSDuplicatedDeclaration
 /******/
@@ -398,6 +483,11 @@ function tickPlayer(currentPlayer) {
     function eatMass(m) {
         //console.log("eatMass");
         if (SAT.pointInCircle(new V(m.x, m.y), playerCircle)) {
+            if (m.id != currentPlayer.id) {
+                currentPlayer.life -= 5;
+                sockets[currentPlayer.id].emit('wound', currentPlayer);
+            }
+
             if (m.id == currentPlayer.id && m.speed > 0 && z == m.num)
                 return false;
             if (currentCell.mass > m.masa * 1.1)
@@ -406,6 +496,32 @@ function tickPlayer(currentPlayer) {
         return false;
     }
 
+    //Detecter the confilt
+    /*    function check(user) {
+     for (var i = 0; i < user.cells.length; i++) {
+     //      if (user.cells[i].mass > 10 && user.id !== currentPlayer.id) {
+     if(user.id !== currentPlayer.id){
+     var response = new SAT.Response();
+     var collided = SAT.testCircleCircle(
+     new C(new V(currentPlayer.x, currentPlayer.y), 150),
+     new C(new V(user.cells[i].x, user.cells[i].y), 150),
+     response);
+     if (collided) {
+     response.aUser = currentCell;
+     response.bUser = {
+     id: user.id,
+     name: user.name,
+     x: user.cells[i].x,
+     y: user.cells[i].y,
+     num: i,
+     mass: user.cells[i].mass
+     };
+     playerCollisions.push(response);
+     }
+     }
+     }
+     }
+     */
     function check(user) {
     //console.log(user.cells);
     //console.log(playerCircle);
@@ -467,6 +583,7 @@ function tickPlayer(currentPlayer) {
         }
     }
 
+
     /*....................collision logic..............................*/
     function collisionCheck(collision) {
         console.log("collisionCheck");
@@ -495,8 +612,8 @@ function tickPlayer(currentPlayer) {
     for (var z = 0; z < currentPlayer.cells.length; z++) {
         var currentCell = currentPlayer.cells[z];
         var playerCircle = new C(
-            new V(currentCell.x, currentCell.y),
-            currentCell.radius
+            new V(currentCell.x, currentCell.y), 250
+            //  currentCell.radius
         );
 
         var foodEaten = food.map(funcFood)
@@ -535,9 +652,9 @@ function tickPlayer(currentPlayer) {
         tree.insert(users);
         var playerCollisions = [];
 
+        //Get all the collision with other users
         var otherUsers = tree.retrieve(currentPlayer, check);
         for(var i = 0; i < playerCollisions.length; i++) {
-
             collisionCheck(playerCollisions[i]); 
         }
         
@@ -545,8 +662,6 @@ function tickPlayer(currentPlayer) {
 
 }
 /*.................................END OF TICK ..................................................................................*/
-
-
 
 /*......................loopS.......................................................*/
 function moveloop() {
@@ -559,48 +674,60 @@ function moveloop() {
 }
 
 function gameloop() {
-    if (users.length > 0) {
-        users.sort(function (a, b) {
-            return b.massTotal - a.massTotal;
-        });
+    if (!endGame) {
 
-        var topUsers = [];
+        if (users.length > 0) {
+            users.sort(function (a, b) {
+                return b.massTotal - a.massTotal;
+            });
 
-        for (var i = 0; i < Math.min(10, users.length); i++) {
-            if (users[i].type == 'player') {
-                topUsers.push({
-                    id: users[i].id,
-                    name: users[i].name,
-                    x: users[i].x,
-                    y: users[i].y
-                });
-            }
-        }
-        if (isNaN(leaderboard) || leaderboard.length !== topUsers.length) {
-            leaderboard = topUsers;
-            leaderboardChanged = true;
-        }
-        else {
-            for (i = 0; i < leaderboard.length; i++) {
-                if (leaderboard[i].id !== topUsers[i].id) {
-                    leaderboard = topUsers;
-                    leaderboardChanged = true;
-                    break;
+            var topUsers = [];
+
+            for (var i = 0; i < Math.min(10, users.length); i++) {
+                if (users[i].type == 'player') {
+                    topUsers.push({
+                        id: users[i].id,
+                        name: users[i].name,
+                        x: users[i].x,
+                        y: users[i].y,
+                        isInSuperVessel: users[i].isInSuperVessel,
+                        isDisplayer: users[i].isDisplayer
+                    });
                 }
             }
-        }
-        for (i = 0; i < users.length; i++) {
-            for (var z = 0; z < users[i].cells.length; z++) {
-                if (users[i].cells[z].mass * (1 - (c.massLossRate / 1000)) > c.defaultPlayerMass) {
-                    var massLoss = users[i].cells[z].mass * (1 - (c.massLossRate / 1000));
-                    users[i].massTotal -= users[i].cells[z].mass - massLoss;
-                    users[i].cells[z].mass = massLoss;
+            if (isNaN(leaderboard) || leaderboard.length !== topUsers.length) {
+                leaderboard = topUsers;
+                leaderboardChanged = true;
+            }
+            else {
+                for (i = 0; i < leaderboard.length; i++) {
+                    if (leaderboard[i].id !== topUsers[i].id) {
+                        leaderboard = topUsers;
+                        leaderboardChanged = true;
+                        break;
+                    }
+                }
+            }
+            for (i = 0; i < users.length; i++) {
+                for (var z = 0; z < users[i].cells.length; z++) {
+                    if (users[i].cells[z].mass * (1 - (c.massLossRate / 1000)) > c.defaultPlayerMass) {
+                        var massLoss = users[i].cells[z].mass * (1 - (c.massLossRate / 1000));
+                        users[i].massTotal -= users[i].cells[z].mass - massLoss;
+                        users[i].cells[z].mass = massLoss;
+                    }
                 }
             }
         }
     }
+    else {
+        users.forEach(function (u) {
+            sockets[u.id].emit('gameOver');
+        });
+        endGame = false;
+    }
     balanceMass(c, food, users);
 }
+
 
 /* TODO : exporter cette fonction dans un autre fichier, mais pas dans mapElements car cela ferai une "dépendance circulaire"*/
 /*.................................................balanceMass,called in gameloop......................................................*/
@@ -650,6 +777,8 @@ function balanceMass(c, food, users) {
 /*.................................................update canvas..............................................................*/
 function sendUpdates() {
     users.forEach(function (u) {
+
+
         // center the view if x/y is undefined, this will happen for spectators
         u.x = u.x || c.gameWidth / 2;
         u.y = u.y || c.gameHeight / 2;
@@ -724,7 +853,9 @@ function sendUpdates() {
                                 cells: f.cells,
                                 massTotal: Math.round(f.massTotal),
                                 hue: f.hue,
-                                name: f.name
+                                name: f.name,
+                                isInSuperVessel: f.isInSuperVessel,
+                                isDisplayer: f.isDisplayer
                             };
                         } else {
                             //console.log("Nombre: " + f.name + " Es Usuario");
@@ -734,6 +865,8 @@ function sendUpdates() {
                                 cells: f.cells,
                                 massTotal: Math.round(f.massTotal),
                                 hue: f.hue,
+                                isInSuperVessel: f.isInSuperVessel,
+                                isDisplayer: f.isDisplayer
                             };
                         }
                     }
@@ -753,6 +886,7 @@ function sendUpdates() {
     });
     leaderboardChanged = false;
 }
+
 /*.........................HERE WE CALL ALL THE FUNCTION ABOVE...........................................................................................*/
 setInterval(moveloop, 1000 / 60);
 setInterval(gameloop, 1000);

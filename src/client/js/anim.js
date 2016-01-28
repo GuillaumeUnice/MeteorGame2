@@ -55,6 +55,7 @@ function gameLoop() {
 
             console.log(object);
             drawgrid();
+            
             /*foods.forEach(drawFood);
             viruses.forEach(drawVirus);*/
 
@@ -62,6 +63,7 @@ function gameLoop() {
                 drawObject(object[i]);
             }
             object.forEach(drawObject);
+
             fireFood.forEach(drawFireFood);
 
             if (borderDraw) {

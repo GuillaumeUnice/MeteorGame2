@@ -3,7 +3,7 @@ var cats = {};
 var i = true;
 
 
-Leap.loop(function (frame) {
+function setLeap (frame) {
     frame.hands.forEach(function (hand, index) {
 
         console.log(hand.screenPosition());
@@ -16,10 +16,13 @@ Leap.loop(function (frame) {
             target.y = 0;
         }
 
-
     });
 
-}).use('screenPosition', {scale: 0.25});
+}
+
+/*Leap.loop().use('screenPosition', {scale: 0.25});*/
+
+
 
 
 var Cat = function () {
@@ -29,4 +32,4 @@ var Cat = function () {
 cats[0] = new Cat();
 
 // This allows us to move the cat even whilst in an iFrame.
-Leap.loopController.setBackground(true);
+///Leap.loopController.setBackground(true);

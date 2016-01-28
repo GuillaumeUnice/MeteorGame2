@@ -71,16 +71,17 @@ function drawFireFood(mass) {
 
     var img = new Image();
     img.src = "../img/bullet.png";
+    var bulletWidth = 30, bulletHeight = 30;
 
-    document.getElementById('munitionsBar').style.width = (mass.munitions * 500 / 10) + 'px';
-    document.getElementById('munitionPoint').innerHTML = mass.munitions;
+    if ((screenWidth >= 320 && screenWidth <= 767) || (screenWidth >= 320 && screenWidth <= 1024)) {
+        bulletHeight = bulletWidth = 15;
+    }
 
-    graph.drawImage(img, mass.x - player.x + screenWidth / 2, mass.y - player.y + screenHeight / 2, 50, 50);
+    graph.drawImage(img, mass.x - player.x + 105 + screenWidth / 2, mass.y - player.y + 100 + screenHeight / 2, bulletWidth, bulletHeight);
 
 }
 
 function drawPlayers(order) {
-
 
 
     var start = {
@@ -89,37 +90,104 @@ function drawPlayers(order) {
     };
 
     // var playerImg = new Image();
-    var playerImg = document.createElement("img");
+    var playerImg = document.createElement("img"), playerImgWidth = 250, playerImgHeight = 250;
     playerImg.src = "../img/vaisseaux.png";
+
+    if ((screenWidth >= 320 && screenWidth <= 767) || (screenWidth >= 320 && screenWidth <= 1024)) {
+        playerImgWidth = playerImgHeight = 75;
+    }
 
     for (var z = 0; z < order.length; z++) {
         var userCurrent = users[order[z].nCell];
         var cellCurrent = users[order[z].nCell].cells[order[z].nDiv];
-
         var circle = {
             x: cellCurrent.x - start.x,
             y: cellCurrent.y - start.y
         };
 
 
-        var nameCell = "NoName";
+        var nameCell = "";
         if (typeof userCurrent.id == "undefined") {
             nameCell = player.name;
         } else {
             nameCell = userCurrent.name;
         }
 
+
         var fontSize = Math.max(cellCurrent.radius / 3, 12);
 
         graph.font = 'bold ' + fontSize + 'px sans-serif';
+        graph.fillStyle = '#FF0000';
 
-        graph.drawImage(playerImg, circle.x, circle.y);
-        graph.fillText(nameCell, circle.x + playerImg.width / 2, circle.y);
+        if (!userCurrent.isInSuperVessel) {
+
+            graph.drawImage(playerImg, circle.x, circle.y, playerImgWidth, playerImgHeight);
+            graph.fillText(nameCell, circle.x + playerImgWidth / 2, circle.y);
+        }
+        else {
+
+            $('#panel-message').css('visibility', 'visible');
+            if (userCurrent.isInSuperVessel && !userCurrent.isDisplayer) {
+
+
+                var messageInfo = document.getElementById('#message-info');
+
+                $('#message-info').text('You are now linked to a super vessel');
+
+                if ((screen.orientation.type === "landscape")) {
+                    console.log('Please fucking work !!!!!!!!!!');
+                }
+
+                if ((screenWidth >= 320 && screenWidth <= 767)) {
+                    $('#feed').addClass('regroup-sm');
+
+                    var miniM = $('#minimap');
+                    miniM.removeClass('navbar-collapse collapse');
+                    miniM.addClass('regroup-sm');
+                    $('#regroup').addClass('regroup-sm');
+                }
+
+                if (window.orientation === 90) {
+                    $('#feed').addClass('regroup-md');
+
+                    var miniM2 = $('#minimap');
+                    miniM2.removeClass('navbar-collapse collapse');
+                    miniM2.addClass('regroup-md');
+                    $('#regroup').addClass('regroup-md');
+                }
+            }
+
+            if (userCurrent.isDisplayer) {
+
+                $('#message-info').text('You are now linked to a super vessel that will be displayed here');
+                //if (screenWidth >= 1200) {
+                $('#minimap').addClass('regroup-ds');
+                //}
+                mySuperVessel.forEach(function (vessel) {
+                    graph.drawImage(playerImg, vessel.x * screenWidth / gameWidth, vessel.y * screenHeight / gameHeight, playerImgWidth, playerImgHeight);
+                    graph.fillText(vessel.name, vessel.x * screenWidth / gameWidth + playerImgWidth / 2, vessel.y * screenHeight / gameHeight);
+
+                });
+
+            }
+        }
 
 
     }
 
 
+}
+
+function isMemberOfASuperVessel(playerName) {
+    if (mySuperVessel.length == 0)
+        return false;
+    var isIn = false;
+    mySuperVessel.forEach(function (vessel) {
+        if (vessel.name === playerName)
+            isIn = true;
+    });
+
+    return isIn;
 }
 
 function valueInRange(min, max, value) {

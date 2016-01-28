@@ -30,9 +30,7 @@ function startGame(type) {
         setupSocket(socket);
     }
     if (!animLoopHandle) {
-        console
         animloop();
-
     }
 
     socket.emit('respawn');
@@ -94,6 +92,35 @@ $("#feed").click(function () {
 $("#split").click(function () {
     socket.emit('2');
     reenviar = false;
+});
+
+$("#regroup").click(function () {
+    var regroupImg = $('#regroup');
+    if (!connectedToOthers) {
+        socket.emit('regroupPlayers');
+        regroupImg.removeClass('fa-users');
+        regroupImg.addClass("fa-spinner fa-spin");
+        askingPlayer = true;
+    }
+});
+
+
+$("#acceptJoin").click(function () {
+    var regroup = $('#regroup');
+    socket.emit('acceptJoin', player);
+    connectedToOthers = true;
+    regroup.css('visibility', 'visible');
+    regroup.css('color', '#00FF00');
+    regroup.css('cursor', 'none');
+    regroup.removeClass('fa-spinner fa-spin');
+    regroup.addClass('fa-users');
+    $('#joinDiv').css("visibility", "hidden");
+});
+
+$("#rejectJoin").click(function () {
+    socket.emit('rejectJoin');
+    $('#regroup').css('visibility', 'visible');
+    $('#joinDiv').css("visibility", "hidden");
 });
 
 function checkLatency() {
