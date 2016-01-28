@@ -175,7 +175,7 @@ div {
 }
 
 #panel-message {
-    visibility: hidden;
+    display: none;
 }
 
 /**

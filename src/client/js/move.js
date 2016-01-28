@@ -7,7 +7,30 @@
 function directionDown(event) {
     var key = event.which || event.keyCode;
 
+
     if (directional(key)) {
+
+        switch (key) {
+            case KEY_DOWN:
+                imageRepository.playerImg.src = imageRepository.player_down;
+                break;
+            case KEY_LEFT:
+                imageRepository.playerImg.src = imageRepository.player_left;
+                break;
+            case KEY_RIGHT:
+                imageRepository.playerImg.src = imageRepository.player_right;
+                break;
+            case KEY_UP:
+                imageRepository.playerImg.src = imageRepository.player_up;
+                break;
+
+            default:
+                imageRepository.playerImg.src = imageRepository.player_up;
+                break;
+
+
+        }
+
         directionLock = true;
         if (newDirection(key, directions, true)) {
             updateTarget(directions);
@@ -69,7 +92,6 @@ function updateTarget(list) {
     target.x += directionHorizontal;
     target.y += directionVertical;
 }
-
 
 
 function directional(key) {

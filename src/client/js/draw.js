@@ -1,9 +1,14 @@
 var imageRepository = new function () {
     this.playerImg = new Image();
     this.bulletImg = new Image();
-    this.playerImg.src = "../img/vaisseaux.png";
-    this.bulletImg.src = "../img/bullet.png";
 
+    this.player_up = "../img/ship_up.png";
+    this.player_down = "../img/ship_down.png";
+    this.player_left = "../img/ship_left.png";
+    this.player_right = "../img/ship_right.png";
+
+    this.playerImg.src = this.player_up;
+    this.bulletImg.src = "../img/bullet.png";
 };
 
 
@@ -63,7 +68,7 @@ function drawPlayers(order) {
         }
         else {
 
-            $('#panel-message').css('visibility', 'visible');
+            $('#panel-message').css('display', 'block');
             if (userCurrent.isInSuperVessel && !userCurrent.isDisplayer) {
 
 
@@ -126,7 +131,7 @@ function drawgrid() {
 
 
     graph.strokeStyle = lineColor;
-    graph.globalAlpha = 0.15;
+    graph.globalAlpha = 1;
     graph.beginPath();
 
     for (var x = xoffset - player.x; x < screenWidth; x += screenHeight / 18) {
