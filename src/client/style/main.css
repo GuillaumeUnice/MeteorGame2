@@ -387,6 +387,10 @@ Media queries for tablets
 Media queries for desktop
 **/
 @media only screen  and (min-width: 768px) {
+    #mobileControlArea {
+        display: none;
+    }
+
     #minimap {
         position: fixed;
         left: 0;

@@ -1,17 +1,22 @@
-var playerImg = new Image();
-playerImg.src = "../img/vaisseaux.png";
+var imageRepository = new function () {
+    this.playerImg = new Image();
+    this.bulletImg = new Image();
+    this.playerImg.src = "../img/vaisseaux.png";
+    this.bulletImg.src = "../img/bullet.png";
+
+};
+
 
 function drawFireFood(mass) {
 
-    var img = new Image();
-    img.src = "../img/bullet.png";
+
     var bulletWidth = 30, bulletHeight = 30;
 
     if ((screenWidth >= 320 && screenWidth <= 767) || (screenWidth >= 320 && screenWidth <= 1024)) {
         bulletHeight = bulletWidth = 15;
     }
 
-    graph.drawImage(img, mass.x - player.x + 105 + screenWidth / 2, mass.y - player.y + 100 + screenHeight / 2, bulletWidth, bulletHeight);
+    graph.drawImage(imageRepository.bulletImg, mass.x - player.x + 105 + screenWidth / 2, mass.y - player.y + 100 + screenHeight / 2, bulletWidth, bulletHeight);
 
 }
 
@@ -53,7 +58,7 @@ function drawPlayers(order) {
 
         if (!userCurrent.isInSuperVessel) {
 
-            graph.drawImage(playerImg, circle.x, circle.y, playerImgWidth, playerImgHeight);
+            graph.drawImage(imageRepository.playerImg, circle.x, circle.y, playerImgWidth, playerImgHeight);
             graph.fillText(nameCell, circle.x + playerImgWidth / 2, circle.y);
         }
         else {
@@ -96,7 +101,7 @@ function drawPlayers(order) {
                 $('#minimap').addClass('regroup-ds');
                 //}
                 mySuperVessel.forEach(function (vessel) {
-                    graph.drawImage(playerImg, vessel.x * screenWidth / gameWidth, vessel.y * screenHeight / gameHeight, playerImgWidth, playerImgHeight);
+                    graph.drawImage(imageRepository.playerImg, vessel.x * screenWidth / gameWidth, vessel.y * screenHeight / gameHeight, playerImgWidth, playerImgHeight);
                     graph.fillText(vessel.name, vessel.x * screenWidth / gameWidth + playerImgWidth / 2, vessel.y * screenHeight / gameHeight);
 
                 });
@@ -114,34 +119,8 @@ function valueInRange(min, max, value) {
     return Math.min(max, Math.max(min, value));
 }
 
-var imageRepository = new function () {
-    this.backgroundImg = new Image();
-    this.backgroundImg.src = "../img/background2.jpg";
-
-};
-
-
-function Drawable() {
-    this.init = function (x, y) {
-        this.x = x;
-        this.y = y;
-    };
-
-    this.speed = 0;
-    this.canvasWidth = 0;
-    this.canvasHeight = 0;
-
-    this.draw = function () {
-
-    }
-}
-
 
 function drawgrid() {
-
-    //graph.globalAlpha = 1;
-
-    //graph.drawImage(backgroundImg, 0, 0, screenWidth, screenHeight);
 
     graph.lineWidth = 1;
 

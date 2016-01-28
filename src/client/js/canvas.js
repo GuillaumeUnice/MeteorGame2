@@ -44,8 +44,8 @@ function keyInput(event) {
 function touchInput(touch) {
     touch.preventDefault();
     touch.stopPropagation();
-   // if (!directionLock) {
-     ///   target.x = touch.touches[0].clientX - screenWidth / 2;
-        //target.y = touch.touches[0].clientY - screenHeight / 2;
-    //}
+    if (!directionLock) {
+        target.x = touch.touches[0].clientX - screenWidth / 2;
+        target.y = touch.touches[0].clientY - screenHeight / 2;
+    }
 }
