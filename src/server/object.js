@@ -9,17 +9,48 @@ exports.addObject = function (toAdd, c, object) {
     var radius = c.object.objectRadius;
     while (toAdd--) {
         var position = c.foodUniformDisposition ? util.uniformPosition(object, radius) : util.randomPosition(radius);
-        object.push({
-            // Make IDs unique.
-            id: ((new Date()).getTime() + '' + object.length) >>> 0,
-            x: position.x,
-            y: position.y,
-            radius: c.object.objectRadius,
-            hue: c.object.fill,
-            fill: c.object.fill,
-            stroke: c.object.stroke,
-            strokeWidth: c.object.strokeWidth
-        });
+        var random = Math.floor(Math.random() * 3) + 1;
+        if(random === 1) {
+            object.push({
+                // Make IDs unique.
+                id: ((new Date()).getTime() + '' + object.length) >>> 0,
+                x: position.x,
+                y: position.y,
+                radius: c.object.objectRadius,
+                hue: c.object.mineType.fill,
+                fill: c.object.mineType.fill,
+                stroke: c.object.mineType.stroke,
+                strokeWidth: c.object.strokeWidth,
+                type: c.object.mineType.name
+            });
+        } else if(random === 2) {
+            object.push({
+                // Make IDs unique.
+                id: ((new Date()).getTime() + '' + object.length) >>> 0,
+                x: position.x,
+                y: position.y,
+                radius: c.object.objectRadius,
+                hue: c.object.bulletType.fill,
+                fill: c.object.bulletType.fill,
+                stroke: c.object.bulletType.stroke,
+                strokeWidth: c.object.strokeWidth,
+                type: c.object.bulletType.name
+            });
+        } else {
+            object.push({
+                // Make IDs unique.
+                id: ((new Date()).getTime() + '' + object.length) >>> 0,
+                x: position.x,
+                y: position.y,
+                radius: c.object.objectRadius,
+                hue: c.object.lifeType.fill,
+                fill: c.object.lifeType.fill,
+                stroke: c.object.lifeType.stroke,
+                strokeWidth: c.object.strokeWidth,
+                type: c.object.lifeType.name
+            });
+        }
+        
     }
 
 }

@@ -30,11 +30,24 @@
   "newPlayerInitialPosition": "farthest",
   "massLossRate": 1,
   "mergeTimer": 15,
-  "objectMax": 20,
+  "objectMax": 70,
   "object": {
-    "fill": "#33ff33",
-    "stroke": "#2ECC71",
     "strokeWidth": 20,
-    "objectRadius": 20
+    "objectRadius": 20,
+    "lifeType": {
+      "name" : "life",
+      "fill": "#33ff33",
+      "stroke": "#2ECC71"
+    },
+    "mineType": {
+      "name" : "mine",
+      "fill": "#FF3030",
+      "stroke": "#FFA9A9"
+    },
+    "bulletType": {
+      "name" : "bullet",
+      "fill": "#060202",
+      "stroke": "#949494"
+    }
   }
 }

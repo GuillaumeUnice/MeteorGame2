@@ -191,6 +191,7 @@ io.on('connection', function (socket) {
             if (c.munition > 0) {
 
                 masa = currentPlayer.cells[i].mass * 0.1;
+
                 /*currentPlayer.cells[i].mass -= masa;
                  currentPlayer.massTotal -= masa;*/
                 massFood.push({
@@ -438,29 +439,30 @@ function tickPlayer(currentPlayer) {
             var collided = SAT.testCircleCircle(playerCircle,
                 new C(new V(object[i].x , object[i].y), 20),
                 response);
-//console.log(playerCircle.pos.x);
-//console.log((Math.ceil(object[i].x) + " === " + Math.ceil(playerCircle.pos.x)) + " && " + Math.ceil(object[i].y) + " === " + Math.ceil(playerCircle.pos.y));
-  //          var collided = false;
-    /*        if((Math.ceil(object[i].x) === Math.ceil(playerCircle.pos.x)) && Math.ceil(object[i].y) === Math.ceil(playerCircle.pos.y)) {
+        //console.log(playerCircle.pos.x);
+        //console.log((Math.ceil(object[i].x) + " === " + Math.ceil(playerCircle.pos.x)) + " && " + Math.ceil(object[i].y) + " === " + Math.ceil(playerCircle.pos.y));
+        //var collided = false;
+        /*if((Math.ceil(object[i].x) === Math.ceil(playerCircle.pos.x)) && Math.ceil(object[i].y) === Math.ceil(playerCircle.pos.y)) {
                 console.log("coco");
-            }*/
-
-            //console.log(collided);
+        }*/
+        //console.log(collided);
+        //
             if (collided) {
                 var resX = Math.ceil(object[i].x);
                 var resY = Math.ceil(object[i].y);
                 console.log(resX + " === " + Math.ceil(playerCircle.pos.x) + " && " + resY + " === " + Math.ceil(playerCircle.pos.y));
-                /*response.aUser = currentCell;
-                response.bUser = {
-                    id: user.id,
-                    name: user.name,
-                    x: user.cells[i].x,
-                    y: user.cells[i].y,
-                    num: i,
-                    mass: user.cells[i].mass
-                };
+                
+                console.log(currentPlayer);
+                if(object[i].type === c.object.lifeType.name) {
+                    console.log("lifeType");
+                } else if (object[i].type === c.object.bulletType.name) {
+                    console.log("bulletType");
+                    console.log(c.munition);
+                } else {
+                    console.log("mineType");
+                }
 
-                playerCollisions.push(response);*/
+                object.splice(object.indexOf(object[i]), 1);
             }
         }
     }

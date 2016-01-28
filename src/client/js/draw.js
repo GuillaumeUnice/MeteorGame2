@@ -58,11 +58,12 @@ function drawObject(object) {
     
     //drawCircle(object.x - object.x + screenWidth / 2, object.y - player.y + screenHeight / 2, 20, 30);
 
-drawCircle(object.x - player.x + screenWidth / 2 + 100, object.y - player.y + screenHeight / 2 + 100, 20, 30);
+    graph.strokeStyle = object.stroke;
+    graph.fillStyle = object.fill;
+    graph.lineWidth = object.strokeWidth;
+
+    drawCircle(object.x - player.x + screenWidth / 2 + 100, object.y - player.y + screenHeight / 2 + 100, 20, 30);
     
-        graph.strokeStyle = object.stroke;
-        graph.fillStyle = object.fill;
-        graph.lineWidth = object.strokeWidth;
     
 }
 
