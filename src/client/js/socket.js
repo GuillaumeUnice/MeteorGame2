@@ -200,6 +200,7 @@ function setupSocket(socket) {
 function resize() {
     player.screenWidth = gameCanvas.width = screenWidth = playerType == 'player' ? window.innerWidth : gameWidth;
     player.screenHeight = gameCanvas.height = screenHeight = playerType == 'player' ? window.innerHeight : gameHeight;
-    socket.emit('windowResized', {screenWidth: screenWidth, screenHeight: screenHeight});
+    if (socket)
+        socket.emit('windowResized', {screenWidth: screenWidth, screenHeight: screenHeight});
 }
 

@@ -72,7 +72,7 @@ var fireFood = [];
 var users = [];
 var leaderboard = [];
 var target = {x: player.x, y: player.y};
-var directionLock = false;
+var directionLock = true;
 var directions = [];
 
 var gameCanvas = document.getElementById('gameArea');

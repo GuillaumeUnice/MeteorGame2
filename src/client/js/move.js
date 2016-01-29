@@ -2,7 +2,6 @@
  * Handles moves mainly via the keyboard
  * @param event
  */
-
 // Function called when a key is pressed, will change direction if arrow key.
 function directionDown(event) {
     var key = event.which || event.keyCode;
@@ -93,6 +92,17 @@ function updateTarget(list) {
     target.y += directionVertical;
 }
 
+function touchInput(touch) {
+    touch.preventDefault();
+    touch.stopPropagation();
+    console.log(touch);
+
+    //if (!directionLock) {
+    target.x = touch.touches[0].clientX - screenWidth / 2;
+    target.y = touch.touches[0].clientY - screenHeight / 2;
+    //  directionLock = true;
+    //}
+}
 
 function directional(key) {
     return horizontal(key) || vertical(key);

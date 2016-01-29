@@ -51,8 +51,7 @@ window.onload = function () {
 
     var nickErrorText = document.querySelector('#startMenu .input-error');
 
-    btn.onclick = function () {
-
+    var setupGame = function () {
         // Checks if the nick is valid.
         if (validNick()) {
             nickErrorText.style.opacity = 0;
@@ -63,16 +62,16 @@ window.onload = function () {
         }
     };
 
+    btn.onclick = function () {
+
+        setupGame();
+    };
+
     playerNameInput.addEventListener('keypress', function (e) {
         var key = e.which || e.keyCode;
 
         if (key === KEY_ENTER) {
-            if (validNick()) {
-                nickErrorText.style.opacity = 0;
-                startGame('player');
-            } else {
-                nickErrorText.style.opacity = 1;
-            }
+            setupGame();
         }
     });
 };

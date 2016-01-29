@@ -76,10 +76,6 @@ function drawPlayers(order) {
 
                 $('#message-info').text('You are now linked to a super vessel');
 
-                if ((screen.orientation.type === "landscape")) {
-                    console.log('Please fucking work !!!!!!!!!!');
-                }
-
                 if ((screenWidth >= 320 && screenWidth <= 767)) {
                     $('#feed').addClass('regroup-sm');
 
