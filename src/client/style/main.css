@@ -533,3 +533,19 @@ Media queries for desktop
     }
 
 }
+
+#blood {
+    display: none;
+    z-index: 9999;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background: url('../img/blood.png') no-repeat fixed center;
+}
+
+.hide {
+    display: none;
+}
+
