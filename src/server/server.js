@@ -183,8 +183,7 @@ io.on('connection', function (socket) {
 
 //shoot, client call this in client/app.js
     socket.on('1', function () {
-        console.log('Fire called');
-        // Fire food.
+
         for (var i = 0; i < currentPlayer.cells.length; i++) {
             var masa = 1;
             if (currentPlayer.munitions > 0) {

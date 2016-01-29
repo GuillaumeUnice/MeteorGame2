@@ -32,7 +32,7 @@ div {
     right: 3%;
     width:80px;
     height:70px;
-    background-size: cover;
+    background-size: 100% 100%;
 }
 
 
@@ -175,6 +175,10 @@ div {
 Media queries for tablets
 **/
 @media only screen  and (min-width: 320px) and (max-width: 767px) {
+    #regroup{
+        width:40px;
+        height:30px;
+    }
     #minimap {
         position: absolute;
         left: 0;
