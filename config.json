@@ -19,7 +19,6 @@
   "gameWidth": 5000,
   "gameHeight": 5000,
   "adminPass": "DEFAULT",
-  "gameMass": 20000,
   "maxFood": 0,
   "maxVirus": 50,
   "slowBase": 4.5,
@@ -31,11 +30,27 @@
   "newPlayerInitialPosition": "farthest",
   "massLossRate": 1,
   "mergeTimer": 15,
-  "objectMax": 20,
+  "objectMax": 70,
   "object": {
-    "fill": "#000000",
-    "stroke": "#2ECC71",
     "strokeWidth": 20,
-    "objectRadius": 20
+    "objectRadius": 20,
+    "lifeType": {
+      "name" : "life",
+      "point" : 10,
+      "fill": "#33ff33",
+      "stroke": "#2ECC71"
+    },
+    "mineType": {
+      "name" : "mine",
+      "point" : 10,
+      "fill": "#FF3030",
+      "stroke": "#FFA9A9"
+    },
+    "bulletType": {
+      "name" : "bullet",
+      "point": 1,
+      "fill": "#060202",
+      "stroke": "#949494"
+    }
   }
 }

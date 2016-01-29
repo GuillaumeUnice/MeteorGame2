@@ -18,6 +18,7 @@ var quadtree = require('../../quadtree');
 
 /* My imports */
 var mapElemImport = require("./mapElements.js");
+var objectImport = require("./object.js");
 
 //game attribute
 var starUpArgs = {x: 0, y: 0, h: gameSettings.gameHeight, w: gameSettings.gameWidth, maxChildren: 1, maxDepth: 5};
@@ -31,6 +32,7 @@ var superVessel = [];
 var massFood = [];
 var food = [];
 var virus = [];
+var object = [];
 var sockets = {};
 
 var leaderboard = [];
@@ -188,6 +190,7 @@ io.on('connection', function (socket) {
             if (currentPlayer.munitions > 0) {
 
                 masa = currentPlayer.cells[i].mass * 0.1;
+
                 currentPlayer.munitions -= 1;
                 socket.emit('fire', currentPlayer);
                 massFood.push({
@@ -431,7 +434,9 @@ function tickPlayer(currentPlayer) {
     }
 
     function eatMass(m) {
+
         if (SAT.pointInCircle(new SATVector(m.x, m.y), playerCircle)) {
+
             if (m.id != currentPlayer.id) {
                 currentPlayer.life -= 5;
                 sockets[currentPlayer.id].emit('wound', currentPlayer);
@@ -472,12 +477,15 @@ function tickPlayer(currentPlayer) {
      }
      */
     function check(user) {
+        //console.log(user.cells);
+        //console.log(playerCircle);
         for (var i = 0; i < user.cells.length; i++) {
             if (user.cells[i].mass > 10 && user.id !== currentPlayer.id) {
                 var response = new SAT.Response();
                 var collided = SAT.testCircleCircle(playerCircle,
                     new SATCircle(new SATVector(user.cells[i].x, user.cells[i].y), user.cells[i].radius),
                     response);
+
                 if (collided) {
                     response.aUser = currentCell;
                     response.bUser = {
@@ -492,13 +500,53 @@ function tickPlayer(currentPlayer) {
                 }
             }
         }
+
+
+        for (var i = 0; i < object.length; i++) {
+            var response = new SAT.Response();
+            var collided = SAT.testCircleCircle(playerCircle,
+                new SATCircle(new SATVector(object[i].x, object[i].y), 20),
+                response);
+            //console.log(playerCircle.pos.x);
+            //console.log((Math.ceil(object[i].x) + " === " + Math.ceil(playerCircle.pos.x)) + " && " + Math.ceil(object[i].y) + " === " + Math.ceil(playerCircle.pos.y));
+            //var collided = false;
+            /*if((Math.ceil(object[i].x) === Math.ceil(playerCircle.pos.x)) && Math.ceil(object[i].y) === Math.ceil(playerCircle.pos.y)) {
+             console.log("coco");
+             }*/
+            //console.log(collided);
+            //
+            if (collided) {
+                var resX = Math.ceil(object[i].x);
+                var resY = Math.ceil(object[i].y);
+                //console.log(resX + " === " + Math.ceil(playerCircle.pos.x) + " && " + resY + " === " + Math.ceil(playerCircle.pos.y));
+
+                //console.log(currentPlayer);
+                if (object[i].type === gameSettings.object.lifeType.name) {
+                    console.log("lifeType");
+                    currentPlayer.life = ((currentPlayer.life + gameSettings.object.lifeType.point) > gameSettings.life) ? gameSettings.life : (currentPlayer.life + gameSettings.object.lifeType.point);
+                    console.log(currentPlayer.life);
+                } else if (object[i].type === gameSettings.object.bulletType.name) {
+                    console.log("bulletType");
+                    currentPlayer.munitions = ((currentPlayer.munitions + gameSettings.object.bulletType.point) > gameSettings.munition) ? gameSettings.munition : (currentPlayer.munitions + gameSettings.object.bulletType.point);
+                    console.log(currentPlayer.munitions);
+                } else {
+                    console.log("mineType");
+                    currentPlayer.life -= gameSettings.object.mineType.point;
+                    if (currentPlayer.life <= 0) {
+                        endGame = true;
+                    }
+
+                }
+                //TODO socket.emit('wound', currentPlayer);
+                object.splice(object.indexOf(object[i]), 1);
+            }
+        }
     }
 
 
     /*....................collision logic..............................*/
     function collisionCheck(collision) {
-
-        console.log("attention, confilt");
+        console.log("collisionCheck");
         //Kill result depends on the ball size of player
         if (collision.aUser.mass > collision.bUser.mass * 1.1 && collision.aUser.radius > Math.sqrt(Math.pow(collision.aUser.x - collision.bUser.x, 2) + Math.pow(collision.aUser.y - collision.bUser.y, 2)) * 1.75) {
             console.log('[DEBUG] Killing user: ' + collision.bUser.id);
@@ -566,12 +614,14 @@ function tickPlayer(currentPlayer) {
 
         //Get all the collision with other users
         var otherUsers = tree.retrieve(currentPlayer, check);
+        for (var i = 0; i < playerCollisions.length; i++) {
+            collisionCheck(playerCollisions[i]);
+        }
 
-
-        playerCollisions.forEach(collisionCheck);
     }
 
 }
+
 /*.................................END OF TICK ..................................................................................*/
 
 /*......................loopS.......................................................*/
@@ -674,6 +724,14 @@ function balanceMass(c, food, users) {
     if (virusToAdd > 0) {
         mapElemImport.addVirus(virusToAdd, c, virus);
     }
+
+    var objectToAdd = gameSettings.objectMax - object.length;
+
+    if (objectToAdd > 0) {
+        objectImport.addObject(objectToAdd, c, object);
+    }
+
+
 }
 
 
@@ -711,6 +769,21 @@ function sendUpdates() {
             .filter(function (f) {
                 return f;
             });
+
+
+        var visibleObject = object
+            .map(function (f) {
+                if (f.x > u.x - u.screenWidth / 2 - f.radius &&
+                    f.x < u.x + u.screenWidth / 2 + f.radius &&
+                    f.y > u.y - u.screenHeight / 2 - f.radius &&
+                    f.y < u.y + u.screenHeight / 2 + f.radius) {
+                    return f;
+                }
+            })
+            .filter(function (f) {
+                return f;
+            });
+
 
         var visibleMass = massFood
             .map(function (f) {
@@ -764,7 +837,7 @@ function sendUpdates() {
                 return f;
             });
 
-        sockets[u.id].emit('serverTellPlayerMove', visibleCells, visibleFood, visibleMass, visibleVirus);
+        sockets[u.id].emit('serverTellPlayerMove', visibleCells, visibleFood, visibleMass, visibleVirus, visibleObject);
         if (leaderboardChanged) {
             sockets[u.id].emit('leaderboard', {
                 players: users.length,

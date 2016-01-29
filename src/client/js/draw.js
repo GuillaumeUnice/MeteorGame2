@@ -12,6 +12,37 @@ var imageRepository = new function () {
 };
 
 
+function drawCircle(centerX, centerY, radius, sides) {
+    var theta = 0;
+    var x = 0;
+    var y = 0;
+
+    graph.beginPath();
+
+    for (var i = 0; i < sides; i++) {
+        theta = (i / sides) * 2 * Math.PI;
+        x = centerX + radius * Math.sin(theta);
+        y = centerY + radius * Math.cos(theta);
+        graph.lineTo(x, y);
+    }
+
+    graph.closePath();
+    graph.stroke();
+    graph.fill();
+}
+
+
+function drawObject(object) {
+    console.log("drawObject");
+    graph.strokeStyle = object.stroke;
+    graph.fillStyle = object.fill;
+    graph.lineWidth = object.strokeWidth;
+
+    drawCircle(object.x - player.x + screenWidth / 2 + 100, object.y - player.y + screenHeight / 2 + 100, 20, 30);
+
+
+}
+
 function drawFireFood(mass) {
 
 

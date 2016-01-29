@@ -51,9 +51,22 @@ function gameLoop() {
             graph.fillStyle = backgroundColor;
             graph.fillRect(0, 0, screenWidth, screenHeight);
 
+            /*if(object.length != 0) {
+                drawCircle(object[0].x - object[0].x + screenWidth / 2, object[0].y - player.y + screenHeight / 2, 20, 30);
+            }*/
+
+
+            console.log(object);
             drawgrid();
-            //foods.forEach(drawFood);
-            //viruses.forEach(drawVirus);
+            
+            /*foods.forEach(drawFood);
+            viruses.forEach(drawVirus);*/
+
+            for (var i = 0; i < object.length; i++) {
+                drawObject(object[i]);
+            }
+            object.forEach(drawObject);
+
             fireFood.forEach(drawFireFood);
 
             if (borderDraw) {
