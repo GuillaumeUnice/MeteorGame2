@@ -142,6 +142,13 @@ function setupSocket(socket) {
         if(currentPlayer.life > player.life) {
             console.log("Animation gain de vie");
         } else if (currentPlayer.life < player.life) {
+            document.getElementById('blood').className = "fadeIn";
+            document.getElementById('blood').style.display = "block";
+            setTimeout(function(){ 
+                document.getElementById('blood').style.display = "none";
+                document.getElementById('blood').className = "";
+            }, 500);
+            /*
             document.getElementById('blood').style.opacity = 0.5;
 
             document.getElementById('blood').style.display = "block";
@@ -153,6 +160,7 @@ function setupSocket(socket) {
             setTimeout(function(){ 
                 document.getElementById('blood').style.display = "none";
             }, 500);
+            */
         }
 
         player.life = currentPlayer.life;
