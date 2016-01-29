@@ -203,13 +203,13 @@ function setupSocket(socket) {
     }
 
 
-    //A DEPLACER
-    socket.on('noAmmo', function () {
-        /*console.log('noammo');
+    //A SUPPRIMER
+    /*socket.on('noAmmo', function () {
+        console.log('noammo');
         var munitionBar = document.getElementById('munitionsBar');
         munitionBar.style.border = '5px solid red';
-        munitionBar.style.width = 500 + 'px';*/
-    });
+        munitionBar.style.width = 500 + 'px';
+    });*/
 
     socket.on('proposeJoin', function (currentPlayer) {
         if (!connectedToOthers) {
