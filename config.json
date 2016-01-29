@@ -48,7 +48,7 @@
     },
     "bulletType": {
       "name" : "bullet",
-      "point": 1,
+      "point": 10,
       "fill": "#060202",
       "stroke": "#949494"
     }
