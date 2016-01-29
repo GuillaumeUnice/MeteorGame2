@@ -48,7 +48,8 @@ function gameLoop() {
          * When the game has started
          */
         if (gameStart) {
-            graph.fillStyle = backgroundColor;
+
+            graph.fillStyle = '#000000';
             graph.fillRect(0, 0, screenWidth, screenHeight);
 
             drawgrid();

@@ -6,6 +6,7 @@ var imageRepository = new function () {
     this.otherPlayerImg = new Image();
     this.bulletImg = new Image();
     this.backgroundImg = new Image();
+    this.starImg = new Image();
 
     this.player_up = "../img/ship_up.png";
     this.player_down = "../img/ship_down.png";
@@ -15,41 +16,14 @@ var imageRepository = new function () {
     this.playerImg.src = this.player_up;
     this.otherPlayerImg.src = this.player_up;
     this.bulletImg.src = "../img/bullet.png";
-    this.backgroundImg.src = "../img/sky.gif";
+    this.backgroundImg.src = "../img/sky.jpg";
+    this.starImg.src = "../img/star.png";
 };
 
 
-window.onresize = function (currentPlayer){
-
-    // partie munition
-
-    var munitionBar = document.getElementById('munitionsBar');
-    if (screenWidth >= 320 && screenWidth <= 767) {
-        munitionBar.style.width = (player.munitions * screenWidth /barRatioSmall) + 'px';
-        munitionBar.style.height = 1 + 'px';
-
-    }
-    if (screenWidth > 768) {
-        munitionBar.style.width = (player.munitions * screenWidth /barRatioBig) + 'px';
-        munitionBar.style.height = 1 + 'px';
-
-    }
-
-    //partie points de vie
-
-    var lifeBar = document.getElementById('lifeBar');
-    if (screenWidth >= 320 && screenWidth <= 767) {
-        lifeBar.style.height = (player.life * screenWidth / barRatioSmall) + 'px';
-        lifeBar.style.width = 1 +'px';
-    }
-    if (screenWidth > 768) {
-        lifeBar.style.width = (player.life  * screenWidth  / barRatioBig) + 'px';
-        lifeBar.style.height = 1 +'px';
-    }
-
-}
-
 function drawCircle(centerX, centerY, radius, sides) {
+    graph.globalAlpha = 1;
+
     var theta = 0;
     var x = 0;
     var y = 0;
@@ -74,6 +48,7 @@ function drawObject(object) {
     graph.strokeStyle = object.stroke;
     graph.fillStyle = object.fill;
     graph.lineWidth = object.strokeWidth;
+    graph.globalAlpha = 1;
 
     drawCircle(object.x - player.x + screenWidth / 2 + 100, object.y - player.y + screenHeight / 2 + 100, 20, 30);
 
@@ -82,6 +57,7 @@ function drawObject(object) {
 
 function drawFireFood(mass) {
 
+    graph.globalAlpha = 1;
 
     var bulletWidth = 30, bulletHeight = 30;
 
@@ -185,7 +161,7 @@ function drawPlayers(order) {
 
     }
 
-    graph.globalAlpha = 0.1;
+    // graph.globalAlpha = 0.1;
 
 }
 
@@ -196,10 +172,33 @@ function valueInRange(min, max, value) {
 
 function drawgrid() {
 
+    //   graph.drawImage(imageRepository.backgroundImg,0,0, screenWidth, screenHeight);
 
-    graph.strokeStyle = starColor;
+    graph.strokeStyle = '#FFFFFF';
+    graph.globalAlpha = 0.08;
 
-    drawCircle(Math.random()*screenWidth, Math.random()*screenHeight, Math.random()*10, starNumber);
+    graph.beginPath();
+
+    for (var x = xoffset - player.x; x < screenWidth; x += screenHeight / 18) {
+        graph.moveTo(x, 0);
+        graph.lineTo(x, screenHeight);
+
+    }
+    for (var y = yoffset - player.y; y < screenHeight; y += screenHeight / 18) {
+        graph.moveTo(0, y);
+        graph.lineTo(screenWidth, y);
+    }
+
+
+    graph.stroke();
+    graph.globalAlpha = 1;
+
+    graph.drawImage(imageRepository.starImg, Math.random() * screenWidth, Math.random() * screenHeight, Math.random() * 20, Math.random() * 20);
+    graph.globalAlpha = 0.1;
+
+
+    ///graph.globalAlpha = 1;
+
 }
 
 function drawborder() {

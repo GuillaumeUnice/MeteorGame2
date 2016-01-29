@@ -41,7 +41,11 @@ function setupSocket(socket) {
         leaderboard = data.leaderboard;
         var status = '<span class="title">Connected</span>';
         miniMapFrame.clearRect(0, 0, gameWidth, gameHeight);
+        var pictoWidth = 8, pictoHeight = 8;
 
+        if (screenWidth >= 320 && screenWidth <= 767) {
+            pictoWidth = pictoHeight = 30;
+        }
         for (var i = 0; i < leaderboard.length; i++) {
             status += '<br />';
             if (leaderboard[i].id == player.id) {
@@ -64,7 +68,7 @@ function setupSocket(socket) {
                 if (leaderboard[i].isDisplayer)
                     miniMapFrame.fillStyle = "#FFFFFF";
 
-                miniMapFrame.fillRect(0.98 * miniMap.width * leaderboard[i].x / gameWidth, 0.97 * miniMap.height * leaderboard[i].y / gameHeight, 8, 8);
+                miniMapFrame.fillRect(0.98 * miniMap.width * leaderboard[i].x / gameWidth, 0.97 * miniMap.height * leaderboard[i].y / gameHeight, pictoWidth, pictoHeight);
             }
         }
         //status += '<br />Players: ' + data.players;
