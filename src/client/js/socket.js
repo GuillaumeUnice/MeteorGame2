@@ -41,7 +41,7 @@ function setupSocket(socket) {
         leaderboard = data.leaderboard;
         var status = '<span class="title">Connected</span>';
         miniMapFrame.clearRect(0, 0, gameWidth, gameHeight);
-        var pictoWidth = 8, pictoHeight = 8;
+        var pictoWidth = 16, pictoHeight = 16;
 
         if (screenWidth >= 320 && screenWidth <= 767) {
             pictoWidth = pictoHeight = 30;
