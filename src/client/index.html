@@ -27,12 +27,11 @@
 		</span>
 	</div>
 	<div class="panel" id="panel-message">
-		<div class="panel-heading text-center" id="message-info" ></div>
+		<div class="panel-heading text-center" id="message-info"></div>
 	</div>
 	<div id="status" class="navbar-collapse collapse"><span class="title">Connected</span></div>
 
 
-	<!--img id="split" class="split hidden-md hidden-lg" src="img/spacebar.png" alt="splitBtn"/-->
 	<img id="feed" class="feed hidden-lg" src="img/feed.png" alt="feedBtn"/>
 
 	<i class="fa fa-heart fa-fw" id="lifeIcon"></i> <span id="lifeBar"></span> <span class="label label-info"
@@ -53,9 +52,9 @@
 		<br>
 
 	</div>
-	<!--img id="split" class="split" src="img/split.png" alt="splitBtn"/-->
+	<!--<canvas id="joystick" width="300" height="300" class="navbar-collapse collapse"></canvas>-->
 
-	<canvas tabindex="1" id="cvs">
+	<canvas tabindex="1" id="gameArea">
 	</canvas>
 
 
@@ -88,9 +87,14 @@
 <script src="js/vendor/leapmotion/leap-0.6.3.js"></script>
 <script src="js/vendor/leapmotion/leap-plugins-0.1.8.js"></script>
 <script src="js/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="js/vendor/hand.minified.js"></script>
+<script src="js/vendor/Collection.js"></script>
+<script src="js/vendor/Vector2.js"></script>
 <script src="js/global.js"></script>
 <script src="js/socket.js"></script>
-<script src="js/delete.js"></script>
+
+<script src="js/touch.js"></script>
+<script src="js/move.js"></script>
 <script src="js/canvas.js"></script>
 
 <script src="js/app.js"></script>

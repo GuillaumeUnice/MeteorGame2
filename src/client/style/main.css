@@ -21,14 +21,6 @@ div {
     -ms-user-select: none; /* IE10+ */
 }
 
-#split {
-    position: absolute;
-    bottom: 10px;
-    left: 10px;
-    width: 15%;
-    height: 10%;
-}
-
 .action-icon {
     cursor: pointer;
 }
@@ -164,7 +156,7 @@ div {
     opacity: 0;
 }
 
-#minimap {
+#minimap, #joystick {
     background-color: #000000;
     border: 3px solid #000000;
 }
@@ -175,7 +167,7 @@ div {
 }
 
 #panel-message {
-    visibility: hidden;
+    display: none;
 }
 
 /**
@@ -189,6 +181,14 @@ Media queries for tablets
         margin-top: 32px;
         width: 100px;
         height: 100px;
+    }
+
+    #joystick {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 15%;
+        height: 25%;
     }
 
     #feed {
@@ -387,6 +387,18 @@ Media queries for tablets
 Media queries for desktop
 **/
 @media only screen  and (min-width: 768px) {
+    #mobileControlArea {
+        display: none;
+    }
+
+    #joystick {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 15%;
+        height: 25%;
+    }
+
     #minimap {
         position: fixed;
         left: 0;

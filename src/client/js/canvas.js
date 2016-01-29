@@ -3,74 +3,18 @@
  * @type {Number}
  */
 // Canvas.
-var screenWidth = window.innerWidth;
-
-var screenHeight = window.innerHeight;
-var gameWidth = 0;
-var gameHeight = 0;
-var munitions = 0;
-var life = 0;
-var gameTop = false;
-var xoffset = -gameWidth;
-var yoffset = -gameHeight;
-
-var gameStart = false;
-var disconnected = false;
-var died = false;
-var kicked = false;
-
-// TODO: Break out into GameControls.
-var continuity = false;
-var startPingTime = 0;
-var toggleMassState = 0;
-var backgroundColor = '#ffffff';
-
-var lineColor = '#000000';
-
-var foodConfig = {
-    border: 0
-};
-
-var playerConfig = {
-    border: 6,
-    textColor: '#FFFFFF',
-    textBorder: '#000000',
-    textBorderSize: 3,
-    defaultSize: 30
-};
-
-var player = {
-    id: -1,
-    x: screenWidth / 2,
-    y: screenHeight / 2,
-    screenWidth: screenWidth,
-    screenHeight: screenHeight,
-    target: {x: screenWidth / 2, y: screenHeight / 2}
-};
-var mySuperVessel = [];
-var foods = [];
-var viruses = [];
-var object = [];
-var fireFood = [];
-var users = [];
-var leaderboard = [];
-var target = {x: player.x, y: player.y};
-var directionLock = false;
-var directions = [];
-
-var c = document.getElementById('cvs');
-c.width = screenWidth;
-c.height = screenHeight;
-//c.addEventListener('mousemove', gameInput, false);
-c.addEventListener('mouseout', outOfBounds, false);
-c.addEventListener('keyup', function (event) {
+gameCanvas.width = screenWidth;
+gameCanvas.height = screenHeight;
+//gameCanvas.addEventListener('mousemove', gameInput, false);
+//gameCanvas.addEventListener('mouseout', outOfBounds, false);
+gameCanvas.addEventListener('keyup', function (event) {
     reenviar = true;
     directionUp(event);
 }, false);
-c.addEventListener('keypress', keyInput, false);
-c.addEventListener('keydown', directionDown, false);
-c.addEventListener('touchstart', touchInput, false);
-c.addEventListener('touchmove', touchInput, false);
+gameCanvas.addEventListener('keypress', keyInput, false);
+gameCanvas.addEventListener('keydown', directionDown, false);
+//gameCanvas.addEventListener('touchstart', touchInput, false);
+//gameCanvas.addEventListener('touchmove', touchInput, false);
 
 // Register when the mouse goes off the canvas.
 function outOfBounds() {
@@ -78,12 +22,6 @@ function outOfBounds() {
         target = {x: 0, y: 0};
     }
 }
-
-var graph = c.getContext('2d');
-
-var miniMap = document.getElementById("minimap");
-var miniMapFrame = miniMap.getContext("2d");
-
 
 function gameInput(mouse) {
     if (!directionLock) {
@@ -103,11 +41,3 @@ function keyInput(event) {
     }
 }
 
-function touchInput(touch) {
-    touch.preventDefault();
-    touch.stopPropagation();
-    if (!directionLock) {
-        target.x = touch.touches[0].clientX - screenWidth / 2;
-        target.y = touch.touches[0].clientY - screenHeight / 2;
-    }
-}

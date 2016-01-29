@@ -8,6 +8,7 @@ var util = require('./lib/util');
 exports.addObject = function (toAdd, c, object) {
     var radius = c.object.objectRadius;
     while (toAdd--) {
+
         var position = c.foodUniformDisposition ? util.uniformPosition(object, radius) : util.randomPosition(radius);
         var random = Math.floor(Math.random() * 3) + 1;
         if(random === 1) {
@@ -53,7 +54,7 @@ exports.addObject = function (toAdd, c, object) {
         
     }
 
-}
+};
 
 
 /**
@@ -62,7 +63,7 @@ exports.addObject = function (toAdd, c, object) {
 **/
 /*exports.balanceObject = function () {
 
-    var objectToAdd = object.length - c.objectMax;
+    var objectToAdd = object.length - gameSettings.objectMax;
 
     if (foodToAdd > 0) {
         addObject(objectToAdd);
@@ -74,13 +75,13 @@ exports.removeObject = function(toRem) {
     while (toRem--) {
         Object.pop();
     }
-}
+};
 /** Test de collision **/
 exports.funcObject = function (f) {
-    return SAT.pointInCircle(new V(f.x, f.y), playerCircle);
-}
+    return SAT.pointInCircle(new SATVector(f.x, f.y), playerCircle);
+};
 /** Suppression d'objet **/
 exports.deleteObject = function (f) {
     object[f] = {};
     object.splice(f, 1);
-}
+};

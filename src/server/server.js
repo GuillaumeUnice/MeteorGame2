@@ -8,11 +8,11 @@ var io = require('socket.io')(http);
 var SAT = require('sat');
 
 // Import game settings.
-var c = require('../../config.json');
+var gameSettings = require('../../config.json');
 
 // Import utilities.
 var util = require('./lib/util');
- 
+
 // Import quadtree.
 var quadtree = require('../../quadtree');
 
@@ -21,11 +21,11 @@ var mapElemImport = require("./mapElements.js");
 var objectImport = require("./object.js");
 
 //game attribute
-var args = {x: 0, y: 0, h: c.gameHeight, w: c.gameWidth, maxChildren: 1, maxDepth: 5};
+var starUpArgs = {x: 0, y: 0, h: gameSettings.gameHeight, w: gameSettings.gameWidth, maxChildren: 1, maxDepth: 5};
 
-console.log(args);
+console.log(starUpArgs);
 
-var tree = quadtree.QUAD.init(args);
+var tree = quadtree.QUAD.init(starUpArgs);
 
 var users = [];
 var superVessel = [];
@@ -38,10 +38,10 @@ var sockets = {};
 var leaderboard = [];
 var leaderboardChanged = false;
 
-var V = SAT.Vector;
-var C = SAT.Circle;
+var SATVector = SAT.Vector;
+var SATCircle = SAT.Circle;
 
-var initMassLog = util.log(c.defaultPlayerMass, c.slowBase);
+var initMassLog = util.log(gameSettings.defaultPlayerMass, gameSettings.slowBase);
 
 app.use(express.static(__dirname + '/../client'));
 
@@ -56,39 +56,37 @@ var endGame = false;
  *All the socket functions.
  * - game global : start , disconnect ect
  * - windows configuration
- * - chat
- * - login autentification
- * - kick a normal player as admin player
- * - play : feed and split
+ * - login authentication
+ * - play : fire
  * - keyboard action
  * - check latency
  **/
 
-//This method is called the first time the user is connected
+//This method is called when user is connected
 io.on('connection', function (socket) {
     console.log('A user connected is !', socket.handshake.query.type);
     //initialize a player
     var type = socket.handshake.query.type;
-    var radius = util.massToRadius(c.defaultPlayerMass);
-    var position = c.newPlayerInitialPosition == 'farthest' ? util.uniformPosition(users, radius) : util.randomPosition(radius);
+    var radius = util.massToRadius(gameSettings.defaultPlayerMass);
+    var position = gameSettings.newPlayerInitialPosition == 'farthest' ? util.uniformPosition(users, radius) : util.randomPosition(radius);
     var cells = [];
     var massTotal = 0;
     if (type === 'player') {
         cells = [{
-            mass: c.defaultPlayerMass,
+            mass: gameSettings.defaultPlayerMass,
             x: position.x,
             y: position.y,
             radius: radius
         }];
-        massTotal = c.defaultPlayerMass;
+        massTotal = gameSettings.defaultPlayerMass;
     }
 
     var currentPlayer = {
         id: socket.id,
         x: position.x,
         y: position.y,
-        munitions: c.munition,
-        life: c.life,
+        munitions: gameSettings.munition,
+        life: gameSettings.life,
         cells: cells,
         isInSuperVessel: false,
         massTotal: massTotal,
@@ -118,15 +116,15 @@ io.on('connection', function (socket) {
         if (util.findIndex(users, player.id) > -1) {
             console.log('[INFO] Player ID is already connected, kicking.');
             socket.disconnect();
-        } else if (!util.validNick(player.name)) {
+        } else if (!util.validNickName(player.name)) {
             socket.emit('kick', 'Invalid username.');
             socket.disconnect();
         } else {
             console.log('[INFO] Player ' + player.name + ' connected!');
             sockets[player.id] = socket;
 
-            var radius = util.massToRadius(c.defaultPlayerMass);
-            var position = c.newPlayerInitialPosition == 'farthest' ? util.uniformPosition(users, radius) : util.randomPosition(radius);
+            var radius = util.massToRadius(gameSettings.defaultPlayerMass);
+            var position = gameSettings.newPlayerInitialPosition == 'farthest' ? util.uniformPosition(users, radius) : util.randomPosition(radius);
 
             player.x = position.x;
             player.y = position.y;
@@ -134,12 +132,12 @@ io.on('connection', function (socket) {
             player.target.y = 0;
             if (type === 'player') {
                 player.cells = [{
-                    mass: c.defaultPlayerMass,
+                    mass: gameSettings.defaultPlayerMass,
                     x: position.x,
                     y: position.y,
                     radius: radius
                 }];
-                player.massTotal = c.defaultPlayerMass;
+                player.massTotal = gameSettings.defaultPlayerMass;
             }
             else {
                 player.cells = [];
@@ -154,8 +152,8 @@ io.on('connection', function (socket) {
             io.emit('playerJoin', {name: currentPlayer.name});
 
             socket.emit('gameSetup', {
-                gameWidth: c.gameWidth,
-                gameHeight: c.gameHeight
+                gameWidth: gameSettings.gameWidth,
+                gameHeight: gameSettings.gameHeight
             });
 
 
@@ -165,7 +163,7 @@ io.on('connection', function (socket) {
 
     });
 
-//if client disconnect
+//if client disconnects
     socket.on('disconnect', function () {
         if (util.findIndex(users, currentPlayer.id) > -1)
             users.splice(util.findIndex(users, currentPlayer.id), 1);
@@ -188,19 +186,13 @@ io.on('connection', function (socket) {
         console.log('Fire called');
         // Fire food.
         for (var i = 0; i < currentPlayer.cells.length; i++) {
-            //if (((currentPlayer.cells[i].mass >= c.defaultPlayerMass + c.fireFood) && c.fireFood > 0) || (currentPlayer.cells[i].mass >= 20 && c.fireFood === 0)) {
             var masa = 1;
             if (currentPlayer.munitions > 0) {
 
                 masa = currentPlayer.cells[i].mass * 0.1;
 
-                /*currentPlayer.cells[i].mass -= masa;
-                 currentPlayer.massTotal -= masa;*/
                 currentPlayer.munitions -= 1;
-                console.log('[INFO] User :: ' + currentPlayer.name + ' :: Remaining munitions : ', currentPlayer.munitions);
-
                 socket.emit('fire', currentPlayer);
-                //  wound(12);
                 massFood.push({
                     id: currentPlayer.id,
                     num: i,
@@ -219,7 +211,6 @@ io.on('connection', function (socket) {
             } else {
                 console.log("No more munitions");
                 socket.emit('noAmmo');
-                endGame = true;
             }
             //}
         }
@@ -228,47 +219,23 @@ io.on('connection', function (socket) {
     /*
      wounds the currentPlayer
      */
-    function wound(nb) {
-        //end the game if the player is dead
-        if (currentPlayer.life - nb <= 0) {
-            endGame = true;
-        } else {
-            //else change the player's life and send info
-            currentPlayer.life -= nb;
-            socket.emit('wound', currentPlayer);
-        }
+    /* function wound(nb) {
+     //end the game if the player is dead
+     if (currentPlayer.life - nb <= 0) {
+     endGame = true;
+     } else {
+     //else change the player's life and send info
+     currentPlayer.life -= nb;
+     socket.emit('wound', currentPlayer);
+     }
 
-    }
-
-//split, client call this in client/app.js
-    socket.on('2', function () {
-        //Split cells.
-        if (currentPlayer.cells.length < c.limitSplit && currentPlayer.massTotal >= c.defaultPlayerMass * 2) {
-            var numMax = currentPlayer.cells.length;
-            for (var d = 0; d < numMax; d++) {
-                if (currentPlayer.cells[d].mass >= c.defaultPlayerMass * 2) {
-                    currentPlayer.cells[d].mass = currentPlayer.cells[d].mass / 2;
-                    currentPlayer.cells[d].radius = util.massToRadius(currentPlayer.cells[d].mass);
-                    currentPlayer.cells.push({
-                        mass: currentPlayer.cells[d].mass,
-                        x: currentPlayer.cells[d].x,
-                        y: currentPlayer.cells[d].y,
-                        radius: currentPlayer.cells[d].radius,
-                        speed: 25
-                    });
-                }
-            }
-            currentPlayer.lastSplit = new Date().getTime();
-        }
-    });
+     }*/
 
     socket.on('regroupPlayers', function () {
 
         if (users.length > 1) {
             console.log(currentPlayer.name + ' asked for a super vessel');
-
             superVessel.push(currentPlayer);
-            superVessel[0].role = 'pilot';
             socket.broadcast.emit('proposeJoin', currentPlayer);
 
         }
@@ -285,30 +252,20 @@ io.on('connection', function (socket) {
 
     /*................................. to test the latency.................................*/
 
-//see also client/app.js (who send 'ping'), and client/chat.js(who receive 'pong')
-    socket.on('ping', function () {
-        socket.emit('pong');
-    });
-
     socket.on('acceptJoin', function () {
         if (superVessel.length < 4) {
 
-
-            console.log('Asking player : ', superVessel[0].name);
-            console.log('Accepting player : ', currentPlayer.name);
-            currentPlayer.isInSuperVessel = true;
-            currentPlayer.isDisplayer = false;
-
             superVessel.push(currentPlayer);
-            console.log('Remaining places : ', 4 - superVessel.length + ' / 4 ');
-            if (superVessel.length == 4) {
-                superVessel[0].isInSuperVessel = true;
-                superVessel[0].isDisplayer = true;
 
-                console.log('The super vessel is now ready');
+            if (superVessel.length == 4) {
+
+                superVessel.forEach(function (vessel) {
+                    vessel.isInSuperVessel = true;
+                    vessel.isDisplayer = true;
+                });
                 var displayer = 0;
                 for (var i = 1; i < superVessel.length; i++) {
-                    if (superVessel[i].screenWidth > superVessel[displayer].screenWidth) {
+                    if (superVessel[i].screenWidth >= superVessel[displayer].screenWidth) {
                         superVessel[displayer].isDisplayer = false;
                         superVessel[i].isDisplayer = true;
                         displayer = i;
@@ -316,8 +273,8 @@ io.on('connection', function (socket) {
                     }
                 }
                 //on affecte les nouvelles positions
-                superVessel[0].x = c.gameWidth / 2;
-                superVessel[0].y = c.gameHeight / 2;
+                superVessel[0].x = gameSettings.gameWidth / 2;
+                superVessel[0].y = gameSettings.gameHeight / 2;
 
 
                 superVessel[1].x = superVessel[0].x + 640;
@@ -366,11 +323,11 @@ function moveMass(mass) {
 
     var borderCalc = mass.radius + 5;
 
-    if (mass.x > c.gameWidth - borderCalc) {
-        mass.x = c.gameWidth - borderCalc;
+    if (mass.x > gameSettings.gameWidth - borderCalc) {
+        mass.x = gameSettings.gameWidth - borderCalc;
     }
-    if (mass.y > c.gameHeight - borderCalc) {
-        mass.y = c.gameHeight - borderCalc;
+    if (mass.y > gameSettings.gameHeight - borderCalc) {
+        mass.y = gameSettings.gameHeight - borderCalc;
     }
     if (mass.x < borderCalc) {
         mass.x = borderCalc;
@@ -395,7 +352,7 @@ function movePlayer(player) {
         var deg = Math.atan2(target.y, target.x);
         var slowDown = 1;
         if (player.cells[i].speed <= 6.25) {
-            slowDown = util.log(player.cells[i].mass, c.slowBase) - initMassLog + 1;
+            slowDown = util.log(player.cells[i].mass, gameSettings.slowBase) - initMassLog + 1;
         }
 
         var deltaY = player.cells[i].speed * Math.sin(deg) / slowDown;
@@ -420,7 +377,7 @@ function movePlayer(player) {
                 var distance = Math.sqrt(Math.pow(player.cells[j].y - player.cells[i].y, 2) + Math.pow(player.cells[j].x - player.cells[i].x, 2));
                 var radiusTotal = (player.cells[i].radius + player.cells[j].radius);
                 if (distance < radiusTotal) {
-                    if (player.lastSplit > new Date().getTime() - 1000 * c.mergeTimer) {
+                    if (player.lastSplit > new Date().getTime() - 1000 * gameSettings.mergeTimer) {
                         if (player.cells[i].x < player.cells[j].x) {
                             player.cells[i].x--;
                         } else if (player.cells[i].x > player.cells[j].x) {
@@ -442,11 +399,11 @@ function movePlayer(player) {
         }
         if (player.cells.length > i) {
             var borderCalc = player.cells[i].radius / 3;
-            if (player.cells[i].x > c.gameWidth - borderCalc) {
-                player.cells[i].x = c.gameWidth - borderCalc;
+            if (player.cells[i].x > gameSettings.gameWidth - borderCalc) {
+                player.cells[i].x = gameSettings.gameWidth - borderCalc;
             }
-            if (player.cells[i].y > c.gameHeight - borderCalc) {
-                player.cells[i].y = c.gameHeight - borderCalc;
+            if (player.cells[i].y > gameSettings.gameHeight - borderCalc) {
+                player.cells[i].y = gameSettings.gameHeight - borderCalc;
             }
             if (player.cells[i].x < borderCalc) {
                 player.cells[i].x = borderCalc;
@@ -464,15 +421,11 @@ function movePlayer(player) {
 
 /*...................START OF TICK, this function is called in moveloop..................................................................................................*/
 function tickPlayer(currentPlayer) {
-    if (currentPlayer.lastHeartbeat < new Date().getTime() - c.maxHeartbeatInterval) {
-        sockets[currentPlayer.id].emit('kick', 'Last heartbeat received over ' + c.maxHeartbeatInterval + ' ago.');
-        sockets[currentPlayer.id].disconnect();
-    }
 
     movePlayer(currentPlayer);
 
     function funcFood(f) {
-        return SAT.pointInCircle(new V(f.x, f.y), playerCircle);
+        return SAT.pointInCircle(new SATVector(f.x, f.y), playerCircle);
     }
 
     function deleteFood(f) {
@@ -481,8 +434,9 @@ function tickPlayer(currentPlayer) {
     }
 
     function eatMass(m) {
-        //console.log("eatMass");
-        if (SAT.pointInCircle(new V(m.x, m.y), playerCircle)) {
+
+        if (SAT.pointInCircle(new SATVector(m.x, m.y), playerCircle)) {
+
             if (m.id != currentPlayer.id) {
                 currentPlayer.life -= 5;
                 sockets[currentPlayer.id].emit('wound', currentPlayer);
@@ -523,13 +477,13 @@ function tickPlayer(currentPlayer) {
      }
      */
     function check(user) {
-    //console.log(user.cells);
-    //console.log(playerCircle);
-        for(var i=0; i<user.cells.length; i++) {
-            if(user.cells[i].mass > 10 && user.id !== currentPlayer.id) {
+        //console.log(user.cells);
+        //console.log(playerCircle);
+        for (var i = 0; i < user.cells.length; i++) {
+            if (user.cells[i].mass > 10 && user.id !== currentPlayer.id) {
                 var response = new SAT.Response();
                 var collided = SAT.testCircleCircle(playerCircle,
-                    new C(new V(user.cells[i].x, user.cells[i].y), user.cells[i].radius),
+                    new SATCircle(new SATVector(user.cells[i].x, user.cells[i].y), user.cells[i].radius),
                     response);
 
                 if (collided) {
@@ -548,43 +502,41 @@ function tickPlayer(currentPlayer) {
         }
 
 
-
-
         for (var i = 0; i < object.length; i++) {
             var response = new SAT.Response();
             var collided = SAT.testCircleCircle(playerCircle,
-                new C(new V(object[i].x , object[i].y), 20),
+                new SATCircle(new SATVector(object[i].x, object[i].y), 20),
                 response);
-        //console.log(playerCircle.pos.x);
-        //console.log((Math.ceil(object[i].x) + " === " + Math.ceil(playerCircle.pos.x)) + " && " + Math.ceil(object[i].y) + " === " + Math.ceil(playerCircle.pos.y));
-        //var collided = false;
-        /*if((Math.ceil(object[i].x) === Math.ceil(playerCircle.pos.x)) && Math.ceil(object[i].y) === Math.ceil(playerCircle.pos.y)) {
-                console.log("coco");
-        }*/
-        //console.log(collided);
-        //
+            //console.log(playerCircle.pos.x);
+            //console.log((Math.ceil(object[i].x) + " === " + Math.ceil(playerCircle.pos.x)) + " && " + Math.ceil(object[i].y) + " === " + Math.ceil(playerCircle.pos.y));
+            //var collided = false;
+            /*if((Math.ceil(object[i].x) === Math.ceil(playerCircle.pos.x)) && Math.ceil(object[i].y) === Math.ceil(playerCircle.pos.y)) {
+             console.log("coco");
+             }*/
+            //console.log(collided);
+            //
             if (collided) {
                 var resX = Math.ceil(object[i].x);
                 var resY = Math.ceil(object[i].y);
                 //console.log(resX + " === " + Math.ceil(playerCircle.pos.x) + " && " + resY + " === " + Math.ceil(playerCircle.pos.y));
-                
+
                 //console.log(currentPlayer);
-                if(object[i].type === c.object.lifeType.name) {
+                if (object[i].type === gameSettings.object.lifeType.name) {
                     console.log("lifeType");
-                    currentPlayer.life = ((currentPlayer.life + c.object.lifeType.point) > c.life) ? c.life : (currentPlayer.life + c.object.lifeType.point);
+                    currentPlayer.life = ((currentPlayer.life + gameSettings.object.lifeType.point) > gameSettings.life) ? gameSettings.life : (currentPlayer.life + gameSettings.object.lifeType.point);
                     console.log(currentPlayer.life);
-                } else if (object[i].type === c.object.bulletType.name) {
+                } else if (object[i].type === gameSettings.object.bulletType.name) {
                     console.log("bulletType");
-                    currentPlayer.munitions = ((currentPlayer.munitions + c.object.bulletType.point) > c.munition) ? c.munition : (currentPlayer.munitions + c.object.bulletType.point);
+                    currentPlayer.munitions = ((currentPlayer.munitions + gameSettings.object.bulletType.point) > gameSettings.munition) ? gameSettings.munition : (currentPlayer.munitions + gameSettings.object.bulletType.point);
                     console.log(currentPlayer.munitions);
                     sockets[currentPlayer.id].emit('fire', currentPlayer);
                 } else {
                     console.log("mineType");
-                    currentPlayer.life -= c.object.mineType.point;
-                    if(currentPlayer.life <= 0) {
+                    currentPlayer.life -= gameSettings.object.mineType.point;
+                    if (currentPlayer.life <= 0) {
                         endGame = true;
-                    }   
-                    
+                    }
+
                 }
                 sockets[currentPlayer.id].emit('wound', currentPlayer);
                 object.splice(object.indexOf(object[i]), 1);
@@ -620,8 +572,8 @@ function tickPlayer(currentPlayer) {
 
     for (var z = 0; z < currentPlayer.cells.length; z++) {
         var currentCell = currentPlayer.cells[z];
-        var playerCircle = new C(
-            new V(currentCell.x, currentCell.y), 250
+        var playerCircle = new SATCircle(
+            new SATVector(currentCell.x, currentCell.y), 250
             //  currentCell.radius
         );
 
@@ -651,7 +603,7 @@ function tickPlayer(currentPlayer) {
 
         if (typeof(currentCell.speed) == "undefined")
             currentCell.speed = 6.25;
-        masaGanada += (foodEaten.length * c.foodMass);
+        masaGanada += (foodEaten.length * gameSettings.foodMass);
         currentCell.mass += masaGanada;
         currentPlayer.massTotal += masaGanada;
         currentCell.radius = util.massToRadius(currentCell.mass);
@@ -663,13 +615,14 @@ function tickPlayer(currentPlayer) {
 
         //Get all the collision with other users
         var otherUsers = tree.retrieve(currentPlayer, check);
-        for(var i = 0; i < playerCollisions.length; i++) {
-            collisionCheck(playerCollisions[i]); 
+        for (var i = 0; i < playerCollisions.length; i++) {
+            collisionCheck(playerCollisions[i]);
         }
-        
+
     }
 
 }
+
 /*.................................END OF TICK ..................................................................................*/
 
 /*......................loopS.......................................................*/
@@ -719,8 +672,8 @@ function gameloop() {
             }
             for (i = 0; i < users.length; i++) {
                 for (var z = 0; z < users[i].cells.length; z++) {
-                    if (users[i].cells[z].mass * (1 - (c.massLossRate / 1000)) > c.defaultPlayerMass) {
-                        var massLoss = users[i].cells[z].mass * (1 - (c.massLossRate / 1000));
+                    if (users[i].cells[z].mass * (1 - (gameSettings.massLossRate / 1000)) > gameSettings.defaultPlayerMass) {
+                        var massLoss = users[i].cells[z].mass * (1 - (gameSettings.massLossRate / 1000));
                         users[i].massTotal -= users[i].cells[z].mass - massLoss;
                         users[i].cells[z].mass = massLoss;
                     }
@@ -734,7 +687,7 @@ function gameloop() {
         });
         endGame = false;
     }
-    balanceMass(c, food, users);
+    balanceMass(gameSettings, food, users);
 }
 
 
@@ -773,7 +726,7 @@ function balanceMass(c, food, users) {
         mapElemImport.addVirus(virusToAdd, c, virus);
     }
 
-    var objectToAdd = c.objectMax - object.length;
+    var objectToAdd = gameSettings.objectMax - object.length;
 
     if (objectToAdd > 0) {
         objectImport.addObject(objectToAdd, c, object);
@@ -789,8 +742,8 @@ function sendUpdates() {
 
 
         // center the view if x/y is undefined, this will happen for spectators
-        u.x = u.x || c.gameWidth / 2;
-        u.y = u.y || c.gameHeight / 2;
+        u.x = u.x || gameSettings.gameWidth / 2;
+        u.y = u.y || gameSettings.gameHeight / 2;
 
         var visibleFood = food
             .map(function (f) {
@@ -831,7 +784,7 @@ function sendUpdates() {
             .filter(function (f) {
                 return f;
             });
-        
+
 
         var visibleMass = massFood
             .map(function (f) {
@@ -899,19 +852,19 @@ function sendUpdates() {
 /*.........................HERE WE CALL ALL THE FUNCTION ABOVE...........................................................................................*/
 setInterval(moveloop, 1000 / 60);
 setInterval(gameloop, 1000);
-setInterval(sendUpdates, 1000 / c.networkUpdateFactor);
+setInterval(sendUpdates, 1000 / gameSettings.networkUpdateFactor);
 
 /*........................................ Don't touch, IP configurations..........................................*/
 //Bind to this IP address in order to receive traffic from the routing layer
 var ipaddress = process.env.OPENSHIFT_NODEJS_IP || process.env.IP || '127.0.0.1';
 //Listen on this port to recieve traffic from the routing layer
-var serverport = process.env.OPENSHIFT_NODEJS_PORT || process.env.PORT || c.port;
+var serverport = process.env.OPENSHIFT_NODEJS_PORT || process.env.PORT || gameSettings.port;
 if (process.env.OPENSHIFT_NODEJS_IP !== undefined) {
     http.listen(serverport, ipaddress, function () {
         console.log('[DEBUG] Listening on *:' + serverport);
     });
 } else {
     http.listen(serverport, function () {
-        console.log('[DEBUG] Listening on *:' + c.port);
+        console.log('[DEBUG] Listening on *:' + gameSettings.port);
     });
 }

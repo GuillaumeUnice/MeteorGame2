@@ -1,3 +1,17 @@
+var imageRepository = new function () {
+    this.playerImg = new Image();
+    this.bulletImg = new Image();
+
+    this.player_up = "../img/ship_up.png";
+    this.player_down = "../img/ship_down.png";
+    this.player_left = "../img/ship_left.png";
+    this.player_right = "../img/ship_right.png";
+
+    this.playerImg.src = this.player_up;
+    this.bulletImg.src = "../img/bullet.png";
+};
+
+
 function drawCircle(centerX, centerY, radius, sides) {
     var theta = 0;
     var x = 0;
@@ -17,67 +31,28 @@ function drawCircle(centerX, centerY, radius, sides) {
     graph.fill();
 }
 
-function drawTriangle(centerX, centerY, radius, sides) {
-
-    size = 5;
-
-    graph.beginPath();
-
-    graph.lineTo(centerX + 30 * size, centerY + 0);
-
-    graph.lineTo(centerX + 15 * size, centerY + 40 * size);
-
-    graph.lineTo(centerX + 45 * size, centerY + 40 * size);
-
-    graph.closePath();
-    graph.fill();
-}
-
-
-function drawFood(food) {
-    graph.strokeStyle = 'hsl(' + food.hue + ', 100%, 45%)';
-    graph.fillStyle = 'hsl(' + food.hue + ', 100%, 50%)';
-    graph.lineWidth = foodConfig.border;
-    drawCircle(food.x - player.x + screenWidth / 2, food.y - player.y + screenHeight / 2, food.radius, foodSides);
-}
-
-function drawVirus(virus) {
-    graph.strokeStyle = virus.stroke;
-    graph.fillStyle = virus.fill;
-    graph.lineWidth = virus.strokeWidth;
-
-}
 
 function drawObject(object) {
     console.log("drawObject");
-   /*graph.strokeStyle = 'hsl(' + 100 + ', 100%, 45%)';
-    graph.fillStyle = 'hsl(' + 100 + ', 100%, 50%)';
-    graph.lineWidth = foodConfig.border;
-    graph.rect(300,300,150,100);
-     */
-    
-    //drawCircle(object.x - object.x + screenWidth / 2, object.y - player.y + screenHeight / 2, 20, 30);
-
     graph.strokeStyle = object.stroke;
     graph.fillStyle = object.fill;
     graph.lineWidth = object.strokeWidth;
 
     drawCircle(object.x - player.x + screenWidth / 2 + 100, object.y - player.y + screenHeight / 2 + 100, 20, 30);
-    
-    
+
+
 }
 
 function drawFireFood(mass) {
 
-    var img = new Image();
-    img.src = "../img/bullet.png";
+
     var bulletWidth = 30, bulletHeight = 30;
 
     if ((screenWidth >= 320 && screenWidth <= 767) || (screenWidth >= 320 && screenWidth <= 1024)) {
         bulletHeight = bulletWidth = 15;
     }
 
-    graph.drawImage(img, mass.x - player.x + 105 + screenWidth / 2, mass.y - player.y + 100 + screenHeight / 2, bulletWidth, bulletHeight);
+    graph.drawImage(imageRepository.bulletImg, mass.x - player.x + 105 + screenWidth / 2, mass.y - player.y + 100 + screenHeight / 2, bulletWidth, bulletHeight);
 
 }
 
@@ -89,9 +64,7 @@ function drawPlayers(order) {
         y: player.y - (screenHeight / 2)
     };
 
-    // var playerImg = new Image();
-    var playerImg = document.createElement("img"), playerImgWidth = 250, playerImgHeight = 250;
-    playerImg.src = "../img/vaisseaux.png";
+    var playerImgWidth = 250, playerImgHeight = 250;
 
     if ((screenWidth >= 320 && screenWidth <= 767) || (screenWidth >= 320 && screenWidth <= 1024)) {
         playerImgWidth = playerImgHeight = 75;
@@ -121,22 +94,18 @@ function drawPlayers(order) {
 
         if (!userCurrent.isInSuperVessel) {
 
-            graph.drawImage(playerImg, circle.x, circle.y, playerImgWidth, playerImgHeight);
+            graph.drawImage(imageRepository.playerImg, circle.x, circle.y, playerImgWidth, playerImgHeight);
             graph.fillText(nameCell, circle.x + playerImgWidth / 2, circle.y);
         }
         else {
 
-            $('#panel-message').css('visibility', 'visible');
+            $('#panel-message').css('display', 'block');
             if (userCurrent.isInSuperVessel && !userCurrent.isDisplayer) {
 
 
                 var messageInfo = document.getElementById('#message-info');
 
                 $('#message-info').text('You are now linked to a super vessel');
-
-                if ((screen.orientation.type === "landscape")) {
-                    console.log('Please fucking work !!!!!!!!!!');
-                }
 
                 if ((screenWidth >= 320 && screenWidth <= 767)) {
                     $('#feed').addClass('regroup-sm');
@@ -164,7 +133,7 @@ function drawPlayers(order) {
                 $('#minimap').addClass('regroup-ds');
                 //}
                 mySuperVessel.forEach(function (vessel) {
-                    graph.drawImage(playerImg, vessel.x * screenWidth / gameWidth, vessel.y * screenHeight / gameHeight, playerImgWidth, playerImgHeight);
+                    graph.drawImage(imageRepository.playerImg, vessel.x * screenWidth / gameWidth, vessel.y * screenHeight / gameHeight, playerImgWidth, playerImgHeight);
                     graph.fillText(vessel.name, vessel.x * screenWidth / gameWidth + playerImgWidth / 2, vessel.y * screenHeight / gameHeight);
 
                 });
@@ -178,26 +147,18 @@ function drawPlayers(order) {
 
 }
 
-function isMemberOfASuperVessel(playerName) {
-    if (mySuperVessel.length == 0)
-        return false;
-    var isIn = false;
-    mySuperVessel.forEach(function (vessel) {
-        if (vessel.name === playerName)
-            isIn = true;
-    });
-
-    return isIn;
-}
-
 function valueInRange(min, max, value) {
     return Math.min(max, Math.max(min, value));
 }
 
+
 function drawgrid() {
+
     graph.lineWidth = 1;
+
+
     graph.strokeStyle = lineColor;
-    graph.globalAlpha = 0.15;
+    graph.globalAlpha = 1;
     graph.beginPath();
 
     for (var x = xoffset - player.x; x < screenWidth; x += screenHeight / 18) {
@@ -212,6 +173,8 @@ function drawgrid() {
 
     graph.stroke();
     graph.globalAlpha = 1;
+    //graph.globalAlpha = 1;
+
 }
 
 function drawborder() {

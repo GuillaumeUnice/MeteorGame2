@@ -44,6 +44,9 @@ function gameLoop() {
     }
 
     else if (!disconnected) {
+        /**
+         * When the game has started
+         */
         if (gameStart) {
             graph.fillStyle = backgroundColor;
             graph.fillRect(0, 0, screenWidth, screenHeight);
