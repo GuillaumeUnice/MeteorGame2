@@ -63,6 +63,9 @@ function resetCanvas(e) {
 
 function drawTouch() {
     graph.clearRect(0, 0, screenWidth, screenHeight);
+    graph.fillStyle = "#000000";
+    graph.fillRect(0, 0, screenWidth, screenHeight);
+
     /*
 
      with (player) {
@@ -76,25 +79,27 @@ function drawTouch() {
 
 
     pointers.forEach(function (pointer) {
-        graph.globalAlpha = 0.5;
+        graph.globalAlpha = 0.7;
 
         if (pointer.identifier == leftPointerID) {
             graph.beginPath();
-            graph.strokeStyle = "black";
+            graph.strokeStyle = "white";
             graph.lineWidth = 6;
             graph.arc(leftPointerStartPos.x, leftPointerStartPos.y, 40, 0, Math.PI * 2, true);
             graph.stroke();
             graph.beginPath();
-            graph.strokeStyle = "black";
+            graph.strokeStyle = "white";
             graph.lineWidth = 2;
             graph.arc(leftPointerStartPos.x, leftPointerStartPos.y, 60, 0, Math.PI * 2, true);
             graph.stroke();
             graph.beginPath();
-            graph.strokeStyle = "black";
+            graph.strokeStyle = "white";
             graph.arc(leftPointerPos.x, leftPointerPos.y, 40, 0, Math.PI * 2, true);
             graph.stroke();
 
         }
+        //graph.globalAlpha = 1;
+
         /*else {
          graph.beginPath();
          graph.fillStyle = "black";
@@ -130,6 +135,9 @@ function onPointerDown(e) {
     e.preventDefault();
     console.log('Pointer down + Fire');
     _pressed = true;
+
+    socket.emit('1');
+    reenviar = false;
 
     var newPointer = {identifier: e.pointerId, x: e.clientX, y: e.clientY, type: givePointerType(e)};
     if ((leftPointerID < 0) && (e.clientX < halfWidth)) {

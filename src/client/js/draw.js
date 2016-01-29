@@ -174,31 +174,26 @@ function drawgrid() {
 
     //   graph.drawImage(imageRepository.backgroundImg,0,0, screenWidth, screenHeight);
 
-    graph.strokeStyle = lineColor;
-    graph.globalAlpha = 0.1;
-    /*
-     graph.beginPath();
+    graph.strokeStyle = '#FFFFFF';
+    graph.globalAlpha = 0.08;
 
-     for (var x = xoffset - player.x; x < screenWidth; x += screenHeight / 18) {
-     graph.moveTo(x, 0);
-     graph.lineTo(x, screenHeight);
-     graph.globalAlpha = 1;
+    graph.beginPath();
 
-     }
-     for (var y = yoffset - player.y; y < screenHeight; y += screenHeight / 18) {
-     graph.moveTo(0, y);
-     graph.lineTo(screenWidth, y);
-     }
-     */
+    for (var x = xoffset - player.x; x < screenWidth; x += screenHeight / 18) {
+        graph.moveTo(x, 0);
+        graph.lineTo(x, screenHeight);
+
+    }
+    for (var y = yoffset - player.y; y < screenHeight; y += screenHeight / 18) {
+        graph.moveTo(0, y);
+        graph.lineTo(screenWidth, y);
+    }
+
+
+    graph.stroke();
     graph.globalAlpha = 1;
 
-
-    for (var i = 0; i < 10; i++) {
-
-
-        graph.drawImage(imageRepository.starImg, Math.random() * screenWidth, Math.random() * screenHeight, Math.random() * 20, Math.random() * 20);
-    }
-    graph.stroke();
+    graph.drawImage(imageRepository.starImg, Math.random() * screenWidth, Math.random() * screenHeight, Math.random() * 20, Math.random() * 20);
     graph.globalAlpha = 0.1;
 
 
