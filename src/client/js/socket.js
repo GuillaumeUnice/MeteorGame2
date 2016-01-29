@@ -124,9 +124,13 @@ function setupSocket(socket) {
         var munitionBar = document.getElementById('munitionsBar');
         if (screenWidth >= 320 && screenWidth <= 767) {
             munitionBar.style.height = (player.munitions * screenWidth /150) + 'px';
+            munitionBar.style.width = 1 + 'px';
+
         }
         if (screenWidth > 768) {
             munitionBar.style.width = (player.munitions * screenWidth /150) + 'px';
+            munitionBar.style.height = 1 + 'px';
+
         }
         document.getElementById('munitionPoint').innerHTML = player.munitions;
     });
@@ -150,9 +154,11 @@ function setupSocket(socket) {
         var lifeBar = document.getElementById('lifeBar');
         if (screenWidth >= 320 && screenWidth <= 767) {
             lifeBar.style.height = (player.life * screenWidth / 150) + 'px';
+            lifeBar.style.width = 1 + 'px';
         }
         if (screenWidth > 768) {
             lifeBar.style.width = (player.life  * screenWidth  / 150) + 'px';
+            lifeBar.style.height = 1 + 'px';
         }
     });
 
@@ -161,26 +167,27 @@ function setupSocket(socket) {
         // partie munition
         
         var munitionBar = document.getElementById('munitionsBar');
-        if (screenWidth >= 320 && screenWidth <= 767) {
+        if (screenWidth >= 320 && screenWidth <= 767) { 
             munitionBar.style.height = (player.munitions * screenWidth /150) + 'px';
+            munitionBar.style.height = 1 + 'px';
+
         }
         if (screenWidth > 768) {
             munitionBar.style.width = (player.munitions * screenWidth /150) + 'px';
+            munitionBar.style.height = 1 + 'px';
+
         }
-        document.getElementById('munitionPoint').innerHTML = player.munitions;
-
-
 
         //partie points de vie
-
-        document.getElementById('lifePoint').innerHTML = player.life;
 
         var lifeBar = document.getElementById('lifeBar');
         if (screenWidth >= 320 && screenWidth <= 767) {
             lifeBar.style.height = (player.life * screenWidth / 150) + 'px';
+            lifeBar.style.width = 1 +'px';
         }
         if (screenWidth > 768) {
             lifeBar.style.width = (player.life  * screenWidth  / 150) + 'px';
+            lifeBar.style.height = 1 +'px';
         }
 
     }

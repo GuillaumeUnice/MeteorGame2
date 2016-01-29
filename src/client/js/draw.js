@@ -12,6 +12,36 @@ var imageRepository = new function () {
 };
 
 
+window.onresize = function (currentPlayer){
+    
+    // partie munition
+    
+    var munitionBar = document.getElementById('munitionsBar');
+    if (screenWidth >= 320 && screenWidth <= 767) { 
+        munitionBar.style.width = (player.munitions * screenWidth /barRatioSmall) + 'px';
+        munitionBar.style.height = 1 + 'px';
+
+    }
+    if (screenWidth > 768) {
+        munitionBar.style.width = (player.munitions * screenWidth /barRatioBig) + 'px';
+        munitionBar.style.height = 1 + 'px';
+
+    }
+
+    //partie points de vie
+
+    var lifeBar = document.getElementById('lifeBar');
+    if (screenWidth >= 320 && screenWidth <= 767) {
+        lifeBar.style.height = (player.life * screenWidth / barRatioSmall) + 'px';
+        lifeBar.style.width = 1 +'px';
+    }
+    if (screenWidth > 768) {
+        lifeBar.style.width = (player.life  * screenWidth  / barRatioBig) + 'px';
+        lifeBar.style.height = 1 +'px';
+    }
+
+}
+
 function drawCircle(centerX, centerY, radius, sides) {
     var theta = 0;
     var x = 0;
