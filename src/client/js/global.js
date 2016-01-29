@@ -44,7 +44,7 @@ var continuity = false;
 var backgroundColor = '#010117';
 
 var lineColor = '#000000';
-var borderColor = '#FF0000';
+var borderColor = '#FFFFFF';
 var starColor = '#F2EC65';
 var starNumber = 1000 ;
 

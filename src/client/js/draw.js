@@ -7,6 +7,7 @@ var imageRepository = new function () {
     this.bulletImg = new Image();
     this.backgroundImg = new Image();
     this.starImg = new Image();
+    this.bombImg = new Image();
 
     this.player_up = "../img/ship_up.png";
     this.player_down = "../img/ship_down.png";
@@ -18,6 +19,7 @@ var imageRepository = new function () {
     this.bulletImg.src = "../img/bullet.png";
     this.backgroundImg.src = "../img/sky.jpg";
     this.starImg.src = "../img/star.png";
+    this.bombImg.src = "../img/bomb.png";
 };
 
 
@@ -44,14 +46,16 @@ function drawCircle(centerX, centerY, radius, sides) {
 
 
 function drawObject(object) {
-    /// console.log("drawObject");
-    graph.strokeStyle = object.stroke;
-    graph.fillStyle = object.fill;
-    graph.lineWidth = object.strokeWidth;
-    graph.globalAlpha = 1;
 
-    drawCircle(object.x - player.x + screenWidth / 2 + 100, object.y - player.y + screenHeight / 2 + 100, 20, 30);
-
+        var img = new Image();
+        img.src = object.imageUrl;
+        console.log(img.src);
+        graph.strokeStyle = object.stroke;
+        graph.fillStyle = object.fill;
+        graph.lineWidth = object.strokeWidth;
+        graph.globalAlpha = 1;
+    //    drawCircle(object.x - player.x + screenWidth / 2 + 100, object.y - player.y + screenHeight / 2 + 100, 20, 30);
+        graph.drawImage(img, object.x - player.x + screenWidth / 2 + 100, object.y - player.y + screenHeight / 2 + 100, 70, 70);
 
 }
 
@@ -193,9 +197,10 @@ function drawgrid() {
     graph.stroke();
     graph.globalAlpha = 1;
 
-    graph.drawImage(imageRepository.starImg, Math.random() * screenWidth, Math.random() * screenHeight, Math.random() * 20, Math.random() * 20);
-    graph.globalAlpha = 0.1;
-
+    for(var i=0;i<=3;i++) {
+        graph.drawImage(imageRepository.starImg, Math.random() * screenWidth, Math.random() * screenHeight, Math.random() * 20, Math.random() * 20);
+        graph.globalAlpha = 0.1;
+    }
 
     ///graph.globalAlpha = 1;
 

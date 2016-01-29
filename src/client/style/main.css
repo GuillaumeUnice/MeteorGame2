@@ -27,10 +27,15 @@ div {
 
 #regroup {
     position: fixed;
-    top: 35%;
-    right: 2%;
-    color: #FFFFFF;
+    background-image: url("../img/regroup.png");
+    top: 40%;
+    right: 3%;
+    width:80px;
+    height:70px;
+    background-size: cover;
 }
+
+
 
 #acceptJoin {
     color: #00FF00;

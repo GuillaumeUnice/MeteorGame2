@@ -22,7 +22,8 @@ exports.addObject = function (toAdd, c, object) {
                 fill: c.object.mineType.fill,
                 stroke: c.object.mineType.stroke,
                 strokeWidth: c.object.strokeWidth,
-                type: c.object.mineType.name
+                type: c.object.mineType.name,
+                imageUrl: 'img/bomb.png'
             });
         } else if(random === 2) {
             object.push({
@@ -35,7 +36,8 @@ exports.addObject = function (toAdd, c, object) {
                 fill: c.object.bulletType.fill,
                 stroke: c.object.bulletType.stroke,
                 strokeWidth: c.object.strokeWidth,
-                type: c.object.bulletType.name
+                type: c.object.bulletType.name,
+                imageUrl: 'img/diamond.png'
             });
         } else {
             object.push({
@@ -48,7 +50,8 @@ exports.addObject = function (toAdd, c, object) {
                 fill: c.object.lifeType.fill,
                 stroke: c.object.lifeType.stroke,
                 strokeWidth: c.object.strokeWidth,
-                type: c.object.lifeType.name
+                type: c.object.lifeType.name,
+                imageUrl: 'img/life.png'
             });
         }
         
@@ -61,14 +64,6 @@ exports.addObject = function (toAdd, c, object) {
     Fonction s'occupant de la generation d'objet en fonction des objets restant
     fait un ratio entre objet max et objet restant.
 **/
-/*exports.balanceObject = function () {
-
-    var objectToAdd = object.length - gameSettings.objectMax;
-
-    if (foodToAdd > 0) {
-        addObject(objectToAdd);
-    }
-}*/
 
 /** Simple suppression d'objet **/
 exports.removeObject = function(toRem) {
