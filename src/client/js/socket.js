@@ -138,20 +138,26 @@ function setupSocket(socket) {
     //A DEPLACER
     //Player gets wounded
     socket.on('wound', function (currentPlayer) {
-        
+
         if(currentPlayer.life > player.life) {
             console.log("Animation gain de vie");
         } else if (currentPlayer.life < player.life) {
+            document.getElementById('blood').style.opacity = 0.5;
+
             document.getElementById('blood').style.display = "block";
+
+            setTimeout(function(){ 
+                document.getElementById('blood').style.opacity = 1;
+            }, 200);
+
             setTimeout(function(){ 
                 document.getElementById('blood').style.display = "none";
             }, 500);
-            console.log("Animation perte de vie");
         }
 
         player.life = currentPlayer.life;
 
-        console.log(player.life);
+        //console.log(player.life);
 
         document.getElementById('lifePoint').innerHTML = player.life;
 
