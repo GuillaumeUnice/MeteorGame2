@@ -308,36 +308,38 @@ io.on('connection', function (socket) {
 /******/
 
 
-function moveMass(mass) {
-    var deg = Math.atan2(mass.target.y, mass.target.x);
-    var deltaY = mass.speed * Math.sin(deg);
-    var deltaX = mass.speed * Math.cos(deg);
+function moveMass() {
+    var i;
+    for (i = 0; i < massFood.length; i++) {
+        if (massFood[i].speed > 0) {
 
-    mass.speed -= 0.5;
-    if (mass.speed < 0) {
-        mass.speed = 0;
-    }
-    if (!isNaN(deltaY)) {
-        mass.y += deltaY;
-    }
-    if (!isNaN(deltaX)) {
-        mass.x += deltaX;
-    }
+            var mass = massFood[i];
 
-    var borderCalc = mass.radius + 5;
+            var deg = Math.atan2(mass.target.y, mass.target.x);
+            var deltaY = mass.speed * Math.sin(deg);
+            var deltaX = mass.speed * Math.cos(deg);
 
-    if (mass.x > gameSettings.gameWidth - borderCalc) {
-        mass.x = gameSettings.gameWidth - borderCalc;
-    }
-    if (mass.y > gameSettings.gameHeight - borderCalc) {
-        mass.y = gameSettings.gameHeight - borderCalc;
-    }
-    if (mass.x < borderCalc) {
-        mass.x = borderCalc;
-    }
-    if (mass.y < borderCalc) {
-        mass.y = borderCalc;
-    }
+            //mass.speed -= 0.5;
+            if (mass.speed < 0) {
+                mass.speed = 0;
+            }
+            if (!isNaN(deltaY)) {
+                mass.y += deltaY;
+            }
+            if (!isNaN(deltaX)) {
+                mass.x += deltaX;
+            }
+
+            var borderCalc = mass.radius + 5;
+
+
+            if (mass.x > gameSettings.gameWidth - borderCalc || mass.y > gameSettings.gameHeight - borderCalc || mass.x < borderCalc || mass.y < borderCalc) {
+                massFood.splice(i, 1);
+                }
+
+            }
+        }
+
 }
 
 
@@ -402,11 +404,11 @@ function movePlayer(player) {
         }
         if (player.cells.length > i) {
             var borderCalc = player.cells[i].radius / 3;
-            if (player.cells[i].x > gameSettings.gameWidth - borderCalc) {
-                player.cells[i].x = gameSettings.gameWidth - borderCalc;
+            if (player.cells[i].x > gameSettings.gameWidth - borderCalc -220) {
+                player.cells[i].x = gameSettings.gameWidth - borderCalc -220;
             }
-            if (player.cells[i].y > gameSettings.gameHeight - borderCalc) {
-                player.cells[i].y = gameSettings.gameHeight - borderCalc;
+            if (player.cells[i].y > gameSettings.gameHeight - borderCalc -250) {
+                player.cells[i].y = gameSettings.gameHeight - borderCalc -250;
             }
             if (player.cells[i].x < borderCalc) {
                 player.cells[i].x = borderCalc;
@@ -502,7 +504,7 @@ function tickPlayer(currentPlayer) {
                     //console.log("bulletType");
                     currentPlayer.munitions = ((currentPlayer.munitions + gameSettings.object.bulletType.point) > gameSettings.munition) ? gameSettings.munition : (currentPlayer.munitions + gameSettings.object.bulletType.point);
                     console.log(currentPlayer.munitions);
-                    sockets[currentPlayer.id].emit('fire', currentPlayer);
+                    sockets[currentPlayer.id].emit('dropBullet', currentPlayer);
                 } else {
                     //console.log("mineType");
                     currentPlayer.life -= gameSettings.object.mineType.point;
@@ -603,9 +605,8 @@ function moveloop() {
     for (var i = 0; i < users.length; i++) {
         tickPlayer(users[i]);
     }
-    for (i = 0; i < massFood.length; i++) {
-        if (massFood[i].speed > 0) moveMass(massFood[i]);
-    }
+    moveMass();
+    
 }
 
 function gameloop() {

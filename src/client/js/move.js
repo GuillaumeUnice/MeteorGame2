@@ -80,7 +80,7 @@ function updateTarget(list) {
     var directionVertical = 0;
     for (var i = 0, len = list.length; i < len; i++) {
         if (directionHorizontal === 0) {
-            if (list[i] == KEY_LEFT) directionHorizontal -= Number.MAX_VALUE;
+            if (list[i] == KEY_LEFT) directionHorizontal -= Number.MAX_VALUE ;
             else if (list[i] == KEY_RIGHT) directionHorizontal += Number.MAX_VALUE;
         }
         if (directionVertical === 0) {
