@@ -123,14 +123,10 @@ function setupSocket(socket) {
         //The munitionBar
         var munitionBar = document.getElementById('munitionsBar');
         if (screenWidth >= 320 && screenWidth <= 767) {
-            munitionBar.style.height = (player.munitions * screenWidth /150) + 'px';
-            munitionBar.style.width = 1 + 'px';
-
+            munitionBar.style.height = (player.munitions * 150 / 100) + 'px';
         }
-        if (screenWidth > 768) {
-            munitionBar.style.width = (player.munitions * screenWidth /150) + 'px';
-            munitionBar.style.height = 1 + 'px';
-
+        if (screenWidth >= 768) {
+            munitionBar.style.width = (player.munitions * 500 / 100) + 'px';
         }
         document.getElementById('munitionPoint').innerHTML = player.munitions;
     });
@@ -138,73 +134,53 @@ function setupSocket(socket) {
     //A DEPLACER
     //Player gets wounded
     socket.on('wound', function (currentPlayer) {
-        
-        if(currentPlayer.life > player.life) {
+
+        if (currentPlayer.life > player.life) {
             console.log("Animation gain de vie");
-        } else if (currentPlayer.life < player.life) {
-            document.getElementById('blood').style.display = "block";
-            setTimeout(function(){ 
-                document.getElementById('blood').style.display = "none";
-            }, 500);
+        } else {
             console.log("Animation perte de vie");
         }
 
         player.life = currentPlayer.life;
 
         console.log(player.life);
-
-        document.getElementById('lifePoint').innerHTML = player.life;
-
         var lifeBar = document.getElementById('lifeBar');
         if (screenWidth >= 320 && screenWidth <= 767) {
-            lifeBar.style.height = (player.life * screenWidth / 150) + 'px';
-            lifeBar.style.width = 1 + 'px';
+            lifeBar.style.height = (player.munitions * 150 / 100) + 'px';
         }
-        if (screenWidth > 768) {
-            lifeBar.style.width = (player.life  * screenWidth  / 150) + 'px';
-            lifeBar.style.height = 1 + 'px';
+        if (screenWidth >= 768) {
+            lifeBar.style.width = (player.munitions * 500 / 100) + 'px';
         }
+        document.getElementById('lifePoint').innerHTML = player.life;
     });
 
-    window.onresize = function (currentPlayer){
-        
+    window.onresize = function (currentPlayer) {
+
         // partie munition
-        
+
         var munitionBar = document.getElementById('munitionsBar');
-        if (screenWidth >= 320 && screenWidth <= 767) { 
-            munitionBar.style.height = (player.munitions * screenWidth /150) + 'px';
-            munitionBar.style.height = 1 + 'px';
-
+        if (screenWidth >= 320 && screenWidth <= 767) {
+            munitionBar.style.width = '0';
         }
-        if (screenWidth > 768) {
-            munitionBar.style.width = (player.munitions * screenWidth /150) + 'px';
-            munitionBar.style.height = 1 + 'px';
-
+        if (screenWidth >= 768) {
+            munitionBar.style.height = '0';
         }
+        //document.getElementById('munitionPoint').innerHTML = player.munitions;
+
 
         //partie points de vie
 
+        //document.getElementById('lifePoint').innerHTML = player.life;
+
         var lifeBar = document.getElementById('lifeBar');
         if (screenWidth >= 320 && screenWidth <= 767) {
-            lifeBar.style.height = (player.life * screenWidth / 150) + 'px';
-            lifeBar.style.width = 1 +'px';
+            lifeBar.style.width = '0';
         }
-        if (screenWidth > 768) {
-            lifeBar.style.width = (player.life  * screenWidth  / 150) + 'px';
-            lifeBar.style.height = 1 +'px';
+        if (screenWidth >= 768) {
+            lifeBar.style.height = '0';
         }
 
-    }
-
-
-    //A DEPLACER
-    socket.on('noAmmo', function () {
-        console.log('noammo');
-        var munitionBar = document.getElementById('munitionsBar');
-        munitionBar.style.border = '5px solid red';
-        munitionBar.style.width = 500 + 'px';
-    });
-
+    };
     socket.on('proposeJoin', function (currentPlayer) {
         if (!connectedToOthers) {
             $('#regroup').css("visibility", "hidden");

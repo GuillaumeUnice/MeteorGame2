@@ -3,6 +3,7 @@
  */
 var imageRepository = new function () {
     this.playerImg = new Image();
+    this.otherPlayerImg = new Image();
     this.bulletImg = new Image();
     this.backgroundImg = new Image();
 
@@ -12,6 +13,7 @@ var imageRepository = new function () {
     this.player_right = "../img/ship_right.png";
 
     this.playerImg.src = this.player_up;
+    this.otherPlayerImg.src = this.player_up;
     this.bulletImg.src = "../img/bullet.png";
     this.backgroundImg.src = "../img/sky.gif";
 };
@@ -128,9 +130,12 @@ function drawPlayers(order) {
         graph.font = 'bold ' + fontSize + 'px sans-serif';
         graph.fillStyle = '#FF0000';
 
-        if (!userCurrent.isInSuperVessel) {
-
+        if (typeof userCurrent.id == "undefined") {
             graph.drawImage(imageRepository.playerImg, circle.x, circle.y, playerImgWidth, playerImgHeight);
+            graph.fillText(nameCell, circle.x + playerImgWidth / 2, circle.y);
+        }
+        else if (!userCurrent.isInSuperVessel) {
+            graph.drawImage(imageRepository.otherPlayerImg, circle.x, circle.y, playerImgWidth, playerImgHeight);
             graph.fillText(nameCell, circle.x + playerImgWidth / 2, circle.y);
         }
         else {
@@ -169,7 +174,7 @@ function drawPlayers(order) {
                 $('#minimap').addClass('regroup-ds');
                 //}
                 mySuperVessel.forEach(function (vessel) {
-                    graph.drawImage(imageRepository.playerImg, vessel.x * screenWidth / gameWidth, vessel.y * screenHeight / gameHeight, playerImgWidth, playerImgHeight);
+                    graph.drawImage(imageRepository.otherPlayerImg, vessel.x * screenWidth / gameWidth, vessel.y * screenHeight / gameHeight, playerImgWidth, playerImgHeight);
                     graph.fillText(vessel.name, vessel.x * screenWidth / gameWidth + playerImgWidth / 2, vessel.y * screenHeight / gameHeight);
 
                 });

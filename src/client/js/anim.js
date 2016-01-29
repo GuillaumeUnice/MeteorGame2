@@ -50,11 +50,14 @@ function gameLoop() {
         if (gameStart) {
             graph.fillStyle = backgroundColor;
             graph.fillRect(0, 0, screenWidth, screenHeight);
+
             drawgrid();
-            for (var i = 0; i < object.length; i++) {
-                drawObject(object[i]);
+            if (object) {
+                for (var i = 0; i < object.length; i++) {
+                    drawObject(object[i]);
+                }
             }
-            object.forEach(drawObject);
+            //  object.forEach(drawObject);
 
             fireFood.forEach(drawFireFood);
 
@@ -113,3 +116,6 @@ function gameLoop() {
 }
 
 window.addEventListener('resize', resize);
+/**
+ * Created by Ying on 29/01/2016.
+ */

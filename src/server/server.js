@@ -208,11 +208,14 @@ io.on('connection', function (socket) {
                     speed: 50
                 });
 
+
+            /* A SUPPRIMER
             } else {
                 console.log("No more munitions");
-                socket.emit('noAmmo');
+                //socket.emit('noAmmo');
             }
-            //}
+            */
+           }
         }
     });
 
@@ -439,7 +442,13 @@ function tickPlayer(currentPlayer) {
 
             if (m.id != currentPlayer.id) {
                 currentPlayer.life -= 5;
-                sockets[currentPlayer.id].emit('wound', currentPlayer);
+                if(currentPlayer.life <1 ){
+                    sockets[currentPlayer.id].emit('RIP', currentPlayer);
+                    users.splice(currentPlayer.id, 1);
+                    
+                }else {
+                    sockets[currentPlayer.id].emit('wound', currentPlayer);
+                }
             }
 
             if (m.id == currentPlayer.id && m.speed > 0 && z == m.num)
