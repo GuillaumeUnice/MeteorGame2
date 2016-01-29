@@ -13,7 +13,7 @@ var imageRepository = new function () {
 
     this.playerImg.src = this.player_up;
     this.bulletImg.src = "../img/bullet.png";
-    this.backgroundImg.src = "../img/sky.jpg";
+    this.backgroundImg.src = "../img/sky.gif";
 };
 
 
@@ -191,24 +191,10 @@ function valueInRange(min, max, value) {
 
 function drawgrid() {
 
-    graph.drawImage(imageRepository.backgroundImg,0,0, screenWidth, screenHeight);
 
-    //   graph.strokeStyle = lineColor;
-    //   graph.globalAlpha = 1;
-    //   graph.beginPath();
+    graph.strokeStyle = starColor;
 
-    //   for (var x = xoffset - player.x; x < screenWidth; x += screenHeight / 18) {
-    //       graph.moveTo(x, 0);
-    //       graph.lineTo(x, screenHeight);
-    //   }
-    //   for (var y = yoffset - player.y; y < screenHeight; y += screenHeight / 18) {
-    //       graph.moveTo(0, y);
-    //       graph.lineTo(screenWidth, y);
-    //   }
-
-    //   graph.stroke();
-    //   graph.globalAlpha = 1;
-
+    drawCircle(Math.random()*screenWidth, Math.random()*screenHeight, Math.random()*10, starNumber);
 }
 
 function drawborder() {
