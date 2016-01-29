@@ -56,7 +56,7 @@ function gameLoop() {
             }*/
 
 
-            console.log(object);
+            //console.log(object);
             drawgrid();
             
             /*foods.forEach(drawFood);

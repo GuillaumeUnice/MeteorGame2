@@ -63,7 +63,7 @@ function drawCircle(centerX, centerY, radius, sides) {
 
 
 function drawObject(object) {
-    console.log("drawObject");
+   /// console.log("drawObject");
     graph.strokeStyle = object.stroke;
     graph.fillStyle = object.fill;
     graph.lineWidth = object.strokeWidth;
@@ -88,6 +88,7 @@ function drawFireFood(mass) {
 
 function drawPlayers(order) {
 
+    graph.globalAlpha = 1;
 
     var start = {
         x: player.x - (screenWidth / 2),
@@ -174,6 +175,7 @@ function drawPlayers(order) {
 
     }
 
+    graph.globalAlpha = 0.1;
 
 }
 
@@ -202,7 +204,7 @@ function drawgrid() {
     }
 
     graph.stroke();
-    graph.globalAlpha = 1;
+    graph.globalAlpha = 0.1;
     //graph.globalAlpha = 1;
 
 }
