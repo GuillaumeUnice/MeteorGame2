@@ -69,7 +69,6 @@ function drawTouch() {
     pointers.forEach(function (pointer) {
         if (pointer.identifier == leftPointerID) {
             console.log('Fucking work');
-
             graph.beginPath();
             graph.strokeStyle = "#FF0000";
             graph.lineWidth = 6;
