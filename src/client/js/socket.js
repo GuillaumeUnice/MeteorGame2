@@ -122,19 +122,41 @@ function setupSocket(socket) {
     });
 
 
-    socket.on('fire', function (player) {
+    socket.on('fire', function (players) {
         console.log('fire');
+
         //The munitionBar
         var munitionBar = document.getElementById('munitionsBar');
+                console.log(munitionBar.style.height);
         if (screenWidth >= 320 && screenWidth <= 767) {
-            munitionBar.style.height = (player.munitions * 150 / 100) + 'px';
+            munitionBar.style.height = (players.munitions * 150 / 100) + 'px';
             munitionBar.style.width = 5 + 'px';
         }
         if (screenWidth >= 768) {
-            munitionBar.style.width = (player.munitions * 500 / 100) + 'px';
+            munitionBar.style.width = (players.munitions * 500 / 100) + 'px';
             munitionBar.style.height = 5 + 'px';
         }
-        document.getElementById('munitionPoint').innerHTML = player.munitions;
+        var audio = new Audio('../sounds/bullet.mp3');
+        audio.play(); 
+        document.getElementById('munitionPoint').innerHTML = players.munitions;
+    });
+
+    socket.on('dropBullet', function (players) {
+        //The munitionBar
+        var munitionBar = document.getElementById('munitionsBar');
+                console.log(munitionBar.style.height);
+        if (screenWidth >= 320 && screenWidth <= 767) {
+            munitionBar.style.height = (players.munitions * 150 / 100) + 'px';
+            munitionBar.style.width = 5 + 'px';
+        }
+        if (screenWidth >= 768) {
+            munitionBar.style.width = (players.munitions * 500 / 100) + 'px';
+            munitionBar.style.height = 5 + 'px';
+        }
+
+        var audio = new Audio('../sounds/dropBullet.mp3');
+        audio.play(); 
+        document.getElementById('munitionPoint').innerHTML = players.munitions;
     });
 
     //A DEPLACER
@@ -143,9 +165,12 @@ function setupSocket(socket) {
 
         if (currentPlayer.life > player.life) {
             console.log("Animation gain de vie");
-
+            var audio = new Audio('../sounds/life.mp3');
+            audio.play(); 
         } 
         else if (currentPlayer.life < player.life) {
+            var audio = new Audio('../sounds/looseLife.mp3');
+            audio.play(); 
             document.getElementById('blood').className = "fadeIn";
             document.getElementById('blood').style.display = "block";
             setTimeout(function(){ 
