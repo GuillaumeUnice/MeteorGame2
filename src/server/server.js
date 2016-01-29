@@ -214,7 +214,8 @@ io.on('connection', function (socket) {
                 console.log("No more munitions");
                 //socket.emit('noAmmo');
             }
-            //}*/
+            */
+           }
         }
     });
 
