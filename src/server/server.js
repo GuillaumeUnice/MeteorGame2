@@ -502,7 +502,7 @@ function tickPlayer(currentPlayer) {
                     //console.log("bulletType");
                     currentPlayer.munitions = ((currentPlayer.munitions + gameSettings.object.bulletType.point) > gameSettings.munition) ? gameSettings.munition : (currentPlayer.munitions + gameSettings.object.bulletType.point);
                     console.log(currentPlayer.munitions);
-                    sockets[currentPlayer.id].emit('fire', currentPlayer);
+                    sockets[currentPlayer.id].emit('dropBullet', currentPlayer);
                 } else {
                     //console.log("mineType");
                     currentPlayer.life -= gameSettings.object.mineType.point;
