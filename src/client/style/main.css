@@ -211,7 +211,7 @@ Media queries for tablets
         top: 150px;
         width: 5px;
         height: 150px;
-        border: 1px solid #000000;
+        border: 1px solid #FFFFFF;
         background-color: #FFFF00;
     }
 
@@ -320,7 +320,6 @@ When we use the video projector
         background-color: #000000;
     }
 
-
     #lifeIcon {
         position: absolute;
         left: 17%;
@@ -351,7 +350,6 @@ When we use the video projector
         right: 20%;
         bottom: 10px;
         width: 500px;
-        background-color: #FFFF00;
         border: 1px solid #000000;
     }
 
@@ -457,7 +455,7 @@ Media queries for desktop
         right: 20%;
         bottom: 10px;
         width: 500px;
-        height:5px;
+
         background-color: #FFFF00;
         border: 1px solid #000000;
     }
@@ -555,12 +553,16 @@ Media queries for desktop
 
 .fadeIn {
 
-    animation: damage_taken 1s infinite;    
+    animation: damage_taken 1s infinite;
 }
 
 @keyframes damage_taken {
-  0%    { opacity: 0; }
-  100%  { opacity: 1; }
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
 }
 
 .hide {
