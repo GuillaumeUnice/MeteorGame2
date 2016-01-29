@@ -123,10 +123,14 @@ function setupSocket(socket) {
         //The munitionBar
         var munitionBar = document.getElementById('munitionsBar');
         if (screenWidth >= 320 && screenWidth <= 767) {
-            munitionBar.style.height = (player.munitions * 150 / 10) + 'px';
+            munitionBar.style.height = (player.munitions * screenWidth /150) + 'px';
+            munitionBar.style.width = 1 + 'px';
+
         }
         if (screenWidth > 768) {
-            munitionBar.style.width = (player.munitions * 500 / 10) + 'px';
+            munitionBar.style.width = (player.munitions * screenWidth /150) + 'px';
+            munitionBar.style.height = 1 + 'px';
+
         }
         document.getElementById('munitionPoint').innerHTML = player.munitions;
     });
@@ -149,12 +153,45 @@ function setupSocket(socket) {
 
         var lifeBar = document.getElementById('lifeBar');
         if (screenWidth >= 320 && screenWidth <= 767) {
-            lifeBar.style.height = (player.life * 150 / 100) + 'px';
+            lifeBar.style.height = (player.life * screenWidth / 150) + 'px';
+            lifeBar.style.width = 1 + 'px';
         }
         if (screenWidth > 768) {
-            lifeBar.style.width = (player.life * 500 / 100) + 'px';
+            lifeBar.style.width = (player.life  * screenWidth  / 150) + 'px';
+            lifeBar.style.height = 1 + 'px';
         }
     });
+
+    window.onresize = function (currentPlayer){
+        
+        // partie munition
+        
+        var munitionBar = document.getElementById('munitionsBar');
+        if (screenWidth >= 320 && screenWidth <= 767) { 
+            munitionBar.style.height = (player.munitions * screenWidth /150) + 'px';
+            munitionBar.style.height = 1 + 'px';
+
+        }
+        if (screenWidth > 768) {
+            munitionBar.style.width = (player.munitions * screenWidth /150) + 'px';
+            munitionBar.style.height = 1 + 'px';
+
+        }
+
+        //partie points de vie
+
+        var lifeBar = document.getElementById('lifeBar');
+        if (screenWidth >= 320 && screenWidth <= 767) {
+            lifeBar.style.height = (player.life * screenWidth / 150) + 'px';
+            lifeBar.style.width = 1 +'px';
+        }
+        if (screenWidth > 768) {
+            lifeBar.style.width = (player.life  * screenWidth  / 150) + 'px';
+            lifeBar.style.height = 1 +'px';
+        }
+
+    }
+
 
     //A DEPLACER
     socket.on('noAmmo', function () {

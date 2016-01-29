@@ -52,5 +52,7 @@
       "fill": "#060202",
       "stroke": "#949494"
     }
-  }
+  },
+  "barRatioSmall":200,
+  "barRatioBig":150  
 }

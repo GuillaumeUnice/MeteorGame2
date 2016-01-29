@@ -1,3 +1,6 @@
+/**
+ * Created by Ying on 29/01/2016.
+ */
 var imageRepository = new function () {
     this.playerImg = new Image();
     this.bulletImg = new Image();
@@ -13,6 +16,36 @@ var imageRepository = new function () {
     this.backgroundImg.src = "../img/sky.jpg";
 };
 
+
+window.onresize = function (currentPlayer){
+
+    // partie munition
+
+    var munitionBar = document.getElementById('munitionsBar');
+    if (screenWidth >= 320 && screenWidth <= 767) {
+        munitionBar.style.width = (player.munitions * screenWidth /barRatioSmall) + 'px';
+        munitionBar.style.height = 1 + 'px';
+
+    }
+    if (screenWidth > 768) {
+        munitionBar.style.width = (player.munitions * screenWidth /barRatioBig) + 'px';
+        munitionBar.style.height = 1 + 'px';
+
+    }
+
+    //partie points de vie
+
+    var lifeBar = document.getElementById('lifeBar');
+    if (screenWidth >= 320 && screenWidth <= 767) {
+        lifeBar.style.height = (player.life * screenWidth / barRatioSmall) + 'px';
+        lifeBar.style.width = 1 +'px';
+    }
+    if (screenWidth > 768) {
+        lifeBar.style.width = (player.life  * screenWidth  / barRatioBig) + 'px';
+        lifeBar.style.height = 1 +'px';
+    }
+
+}
 
 function drawCircle(centerX, centerY, radius, sides) {
     var theta = 0;
@@ -35,7 +68,7 @@ function drawCircle(centerX, centerY, radius, sides) {
 
 
 function drawObject(object) {
-    console.log("drawObject");
+    /// console.log("drawObject");
     graph.strokeStyle = object.stroke;
     graph.fillStyle = object.fill;
     graph.lineWidth = object.strokeWidth;
@@ -60,6 +93,7 @@ function drawFireFood(mass) {
 
 function drawPlayers(order) {
 
+    graph.globalAlpha = 1;
 
     var start = {
         x: player.x - (screenWidth / 2),
@@ -146,6 +180,7 @@ function drawPlayers(order) {
 
     }
 
+    graph.globalAlpha = 0.1;
 
 }
 
@@ -155,27 +190,24 @@ function valueInRange(min, max, value) {
 
 
 function drawgrid() {
-    console.log("sky begin§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§");
-        graph.drawImage(imageRepository.backgroundImg,0,0, screenWidth, screenHeight);
-    console.log("sky finish§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§");
- //   graph.lineWidth = 1;
- //   graph.strokeStyle = lineColor;
- //   graph.globalAlpha = 1;
- //   graph.beginPath();
 
- //   for (var x = xoffset - player.x; x < screenWidth; x += screenHeight / 18) {
- //       graph.moveTo(x, 0);
- //       graph.lineTo(x, screenHeight);
- //   }
+    graph.drawImage(imageRepository.backgroundImg,0,0, screenWidth, screenHeight);
 
- //   for (var y = yoffset - player.y; y < screenHeight; y += screenHeight / 18) {
- //       graph.moveTo(0, y);
- //       graph.lineTo(screenWidth, y);
- //   }
+    //   graph.strokeStyle = lineColor;
+    //   graph.globalAlpha = 1;
+    //   graph.beginPath();
 
- //   graph.stroke();
- //   graph.globalAlpha = 1;
-    //graph.globalAlpha = 1;
+    //   for (var x = xoffset - player.x; x < screenWidth; x += screenHeight / 18) {
+    //       graph.moveTo(x, 0);
+    //       graph.lineTo(x, screenHeight);
+    //   }
+    //   for (var y = yoffset - player.y; y < screenHeight; y += screenHeight / 18) {
+    //       graph.moveTo(0, y);
+    //       graph.lineTo(screenWidth, y);
+    //   }
+
+    //   graph.stroke();
+    //   graph.globalAlpha = 1;
 
 }
 
