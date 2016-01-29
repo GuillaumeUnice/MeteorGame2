@@ -29,7 +29,7 @@ div {
     position: fixed;
     top: 35%;
     right: 2%;
-    color: #000000;
+    color: #FFFFFF;
 }
 
 #acceptJoin {
@@ -154,7 +154,7 @@ div {
 
 #minimap {
     background-color: #000000;
-    border: 3px solid #000000;
+    border: 3px solid #FF0000;
 }
 
 #message-info {
