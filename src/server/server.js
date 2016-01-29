@@ -577,6 +577,7 @@ function tickPlayer(currentPlayer) {
                     console.log("bulletType");
                     currentPlayer.munitions = ((currentPlayer.munitions + c.object.bulletType.point) > c.munition) ? c.munition : (currentPlayer.munitions + c.object.bulletType.point);
                     console.log(currentPlayer.munitions);
+                    sockets[currentPlayer.id].emit('fire', currentPlayer);
                 } else {
                     console.log("mineType");
                     currentPlayer.life -= c.object.mineType.point;
@@ -585,7 +586,7 @@ function tickPlayer(currentPlayer) {
                     }   
                     
                 }
-                //TODO socket.emit('wound', currentPlayer);
+                sockets[currentPlayer.id].emit('wound', currentPlayer);
                 object.splice(object.indexOf(object[i]), 1);
             }
         }

@@ -134,6 +134,13 @@ function setupSocket(socket) {
     //A DEPLACER
     //Player gets wounded
     socket.on('wound', function (currentPlayer) {
+        
+        if(currentPlayer.life > player.life) {
+            console.log("Animation gain de vie");
+        } else {
+            console.log("Animation perte de vie");
+        }
+
         player.life = currentPlayer.life;
 
         console.log(player.life);
