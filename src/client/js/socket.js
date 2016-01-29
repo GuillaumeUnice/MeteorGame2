@@ -48,6 +48,7 @@ function setupSocket(socket) {
         }
         for (var i = 0; i < leaderboard.length; i++) {
             status += '<br />';
+            //The point in miniMap that present me
             if (leaderboard[i].id == player.id) {
                 if (leaderboard[i].name.length !== 0) {
                     status += '<span class="me">' + (i + 1) + '. ' + leaderboard[i].name + "</span>";
@@ -56,7 +57,9 @@ function setupSocket(socket) {
                 } else {
                     status += '<span class="me">' + (i + 1) + ". An unnamed cell</span>";
                 }
-            } else {
+            }
+            //The point in miniMap that present the other players
+            else {
                 if (leaderboard[i].name.length !== 0) {
                     status += (i + 1) + '. ' + leaderboard[i].name;
                     miniMapFrame.fillStyle = "#FF0000";
@@ -64,6 +67,7 @@ function setupSocket(socket) {
                 } else
                     status += (i + 1) + '. An unnamed cell';
             }
+            //The point in miniMap that present the super vaisseau
             if (!leaderboard[i].isInSuperVessel || leaderboard[i].isDisplayer) {
                 if (leaderboard[i].isDisplayer)
                     miniMapFrame.fillStyle = "#FFFFFF";
