@@ -451,34 +451,7 @@ function tickPlayer(currentPlayer) {
     }
 
     //Detecter the confilt
-    /*    function check(user) {
-     for (var i = 0; i < user.cells.length; i++) {
-     //      if (user.cells[i].mass > 10 && user.id !== currentPlayer.id) {
-     if(user.id !== currentPlayer.id){
-     var response = new SAT.Response();
-     var collided = SAT.testCircleCircle(
-     new C(new V(currentPlayer.x, currentPlayer.y), 150),
-     new C(new V(user.cells[i].x, user.cells[i].y), 150),
-     response);
-     if (collided) {
-     response.aUser = currentCell;
-     response.bUser = {
-     id: user.id,
-     name: user.name,
-     x: user.cells[i].x,
-     y: user.cells[i].y,
-     num: i,
-     mass: user.cells[i].mass
-     };
-     playerCollisions.push(response);
-     }
-     }
-     }
-     }
-     */
     function check(user) {
-        //console.log(user.cells);
-        //console.log(playerCircle);
         for (var i = 0; i < user.cells.length; i++) {
             if (user.cells[i].mass > 10 && user.id !== currentPlayer.id) {
                 var response = new SAT.Response();
@@ -507,38 +480,29 @@ function tickPlayer(currentPlayer) {
             var collided = SAT.testCircleCircle(playerCircle,
                 new SATCircle(new SATVector(object[i].x, object[i].y), 20),
                 response);
-            //console.log(playerCircle.pos.x);
-            //console.log((Math.ceil(object[i].x) + " === " + Math.ceil(playerCircle.pos.x)) + " && " + Math.ceil(object[i].y) + " === " + Math.ceil(playerCircle.pos.y));
-            //var collided = false;
-            /*if((Math.ceil(object[i].x) === Math.ceil(playerCircle.pos.x)) && Math.ceil(object[i].y) === Math.ceil(playerCircle.pos.y)) {
-             console.log("coco");
-             }*/
-            //console.log(collided);
-            //
+
             if (collided) {
                 var resX = Math.ceil(object[i].x);
                 var resY = Math.ceil(object[i].y);
-                //console.log(resX + " === " + Math.ceil(playerCircle.pos.x) + " && " + resY + " === " + Math.ceil(playerCircle.pos.y));
 
-                //console.log(currentPlayer);
                 if (object[i].type === gameSettings.object.lifeType.name) {
-                    console.log("lifeType");
+                    //console.log("lifeType");
                     currentPlayer.life = ((currentPlayer.life + gameSettings.object.lifeType.point) > gameSettings.life) ? gameSettings.life : (currentPlayer.life + gameSettings.object.lifeType.point);
-                    console.log(currentPlayer.life);
+                    sockets[currentPlayer.id].emit('wound', currentPlayer);
                 } else if (object[i].type === gameSettings.object.bulletType.name) {
-                    console.log("bulletType");
+                    //console.log("bulletType");
                     currentPlayer.munitions = ((currentPlayer.munitions + gameSettings.object.bulletType.point) > gameSettings.munition) ? gameSettings.munition : (currentPlayer.munitions + gameSettings.object.bulletType.point);
                     console.log(currentPlayer.munitions);
                     sockets[currentPlayer.id].emit('fire', currentPlayer);
                 } else {
-                    console.log("mineType");
+                    //console.log("mineType");
                     currentPlayer.life -= gameSettings.object.mineType.point;
                     if (currentPlayer.life <= 0) {
                         endGame = true;
                     }
-
+                    sockets[currentPlayer.id].emit('wound', currentPlayer);
                 }
-                sockets[currentPlayer.id].emit('wound', currentPlayer);
+                
                 object.splice(object.indexOf(object[i]), 1);
             }
         }
