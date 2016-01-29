@@ -17,7 +17,7 @@ var socket;
 var connectedToOthers = false;
 var reason;
 var reenviar = true;
-var borderDraw = false;
+var borderDraw = true;
 var animLoopHandle;
 var spin = -Math.PI;
 var mobile = false;
@@ -44,6 +44,7 @@ var continuity = false;
 var backgroundColor = '#ffffff';
 
 var lineColor = '#000000';
+var borderColor = '#FF0000';
 
 var foodConfig = {
     border: 0
@@ -52,8 +53,8 @@ var foodConfig = {
 var playerConfig = {
     border: 6,
     textColor: '#FFFFFF',
-    textBorder: '#000000',
-    textBorderSize: 3,
+    textBorder: '#FF0000',
+    textBorderSize: 4,
     defaultSize: 30
 };
 

@@ -1,6 +1,10 @@
+/**
+ * Created by Ying on 29/01/2016.
+ */
 var imageRepository = new function () {
     this.playerImg = new Image();
     this.bulletImg = new Image();
+    this.backgroundImg = new Image();
 
     this.player_up = "../img/ship_up.png";
     this.player_down = "../img/ship_down.png";
@@ -9,15 +13,16 @@ var imageRepository = new function () {
 
     this.playerImg.src = this.player_up;
     this.bulletImg.src = "../img/bullet.png";
+    this.backgroundImg.src = "../img/sky.jpg";
 };
 
 
 window.onresize = function (currentPlayer){
-    
+
     // partie munition
-    
+
     var munitionBar = document.getElementById('munitionsBar');
-    if (screenWidth >= 320 && screenWidth <= 767) { 
+    if (screenWidth >= 320 && screenWidth <= 767) {
         munitionBar.style.width = (player.munitions * screenWidth /barRatioSmall) + 'px';
         munitionBar.style.height = 1 + 'px';
 
@@ -63,7 +68,7 @@ function drawCircle(centerX, centerY, radius, sides) {
 
 
 function drawObject(object) {
-   /// console.log("drawObject");
+    /// console.log("drawObject");
     graph.strokeStyle = object.stroke;
     graph.fillStyle = object.fill;
     graph.lineWidth = object.strokeWidth;
@@ -186,39 +191,35 @@ function valueInRange(min, max, value) {
 
 function drawgrid() {
 
-    graph.lineWidth = 1;
+    graph.drawImage(imageRepository.backgroundImg,0,0, screenWidth, screenHeight);
 
+    //   graph.strokeStyle = lineColor;
+    //   graph.globalAlpha = 1;
+    //   graph.beginPath();
 
-    graph.strokeStyle = lineColor;
-    graph.globalAlpha = 1;
-    graph.beginPath();
+    //   for (var x = xoffset - player.x; x < screenWidth; x += screenHeight / 18) {
+    //       graph.moveTo(x, 0);
+    //       graph.lineTo(x, screenHeight);
+    //   }
+    //   for (var y = yoffset - player.y; y < screenHeight; y += screenHeight / 18) {
+    //       graph.moveTo(0, y);
+    //       graph.lineTo(screenWidth, y);
+    //   }
 
-    for (var x = xoffset - player.x; x < screenWidth; x += screenHeight / 18) {
-        graph.moveTo(x, 0);
-        graph.lineTo(x, screenHeight);
-    }
-
-    for (var y = yoffset - player.y; y < screenHeight; y += screenHeight / 18) {
-        graph.moveTo(0, y);
-        graph.lineTo(screenWidth, y);
-    }
-
-    graph.stroke();
-    graph.globalAlpha = 0.1;
-    //graph.globalAlpha = 1;
+    //   graph.stroke();
+    //   graph.globalAlpha = 1;
 
 }
 
 function drawborder() {
     graph.lineWidth = 1;
-    graph.strokeStyle = playerConfig.borderColor;
+    graph.strokeStyle = borderColor;
 
     // Left-vertical.
     if (player.x <= screenWidth / 2) {
         graph.beginPath();
         graph.moveTo(screenWidth / 2 - player.x, 0 ? player.y > screenHeight / 2 : screenHeight / 2 - player.y);
         graph.lineTo(screenWidth / 2 - player.x, gameHeight + screenHeight / 2 - player.y);
-        graph.strokeStyle = lineColor;
         graph.stroke();
     }
 
@@ -227,7 +228,6 @@ function drawborder() {
         graph.beginPath();
         graph.moveTo(0 ? player.x > screenWidth / 2 : screenWidth / 2 - player.x, screenHeight / 2 - player.y);
         graph.lineTo(gameWidth + screenWidth / 2 - player.x, screenHeight / 2 - player.y);
-        graph.strokeStyle = lineColor;
         graph.stroke();
     }
 
@@ -236,7 +236,6 @@ function drawborder() {
         graph.beginPath();
         graph.moveTo(gameWidth + screenWidth / 2 - player.x, screenHeight / 2 - player.y);
         graph.lineTo(gameWidth + screenWidth / 2 - player.x, gameHeight + screenHeight / 2 - player.y);
-        graph.strokeStyle = lineColor;
         graph.stroke();
     }
 
@@ -245,7 +244,6 @@ function drawborder() {
         graph.beginPath();
         graph.moveTo(gameWidth + screenWidth / 2 - player.x, gameHeight + screenHeight / 2 - player.y);
         graph.lineTo(screenWidth / 2 - player.x, gameHeight + screenHeight / 2 - player.y);
-        graph.strokeStyle = lineColor;
         graph.stroke();
     }
 }
