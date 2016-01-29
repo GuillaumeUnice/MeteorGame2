@@ -58,6 +58,7 @@ function drawFireFood(mass) {
 
 function drawPlayers(order) {
 
+    graph.globalAlpha = 1;
 
     var start = {
         x: player.x - (screenWidth / 2),
@@ -144,6 +145,7 @@ function drawPlayers(order) {
 
     }
 
+    graph.globalAlpha = 0.1;
 
 }
 
@@ -172,7 +174,7 @@ function drawgrid() {
     }
 
     graph.stroke();
-    graph.globalAlpha = 1;
+    graph.globalAlpha = 0.1;
     //graph.globalAlpha = 1;
 
 }

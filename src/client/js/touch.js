@@ -67,7 +67,10 @@ function drawTouch() {
 
 
     pointers.forEach(function (pointer) {
+
         if (pointer.identifier == leftPointerID) {
+            graph.globalAlpha = 1;
+
             console.log('Fucking work');
             graph.beginPath();
             graph.strokeStyle = "#FF0000";
