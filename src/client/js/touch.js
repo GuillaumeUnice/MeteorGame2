@@ -80,17 +80,17 @@ function drawTouch() {
 
         if (pointer.identifier == leftPointerID) {
             graph.beginPath();
-            graph.strokeStyle = "cyan";
+            graph.strokeStyle = "black";
             graph.lineWidth = 6;
             graph.arc(leftPointerStartPos.x, leftPointerStartPos.y, 40, 0, Math.PI * 2, true);
             graph.stroke();
             graph.beginPath();
-            graph.strokeStyle = "cyan";
+            graph.strokeStyle = "black";
             graph.lineWidth = 2;
             graph.arc(leftPointerStartPos.x, leftPointerStartPos.y, 60, 0, Math.PI * 2, true);
             graph.stroke();
             graph.beginPath();
-            graph.strokeStyle = "cyan";
+            graph.strokeStyle = "black";
             graph.arc(leftPointerPos.x, leftPointerPos.y, 40, 0, Math.PI * 2, true);
             graph.stroke();
 
@@ -128,7 +128,7 @@ function givePointerType(event) {
 
 function onPointerDown(e) {
     e.preventDefault();
-    console.log('Pointer down');
+    console.log('Pointer down + Fire');
     _pressed = true;
 
     var newPointer = {identifier: e.pointerId, x: e.clientX, y: e.clientY, type: givePointerType(e)};
