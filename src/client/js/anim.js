@@ -52,16 +52,7 @@ function gameLoop() {
             graph.fillStyle = '#000000';
             graph.fillRect(0, 0, screenWidth, screenHeight);
 
-            /*if(object.length != 0) {
-             drawCircle(object[0].x - object[0].x + screenWidth / 2, object[0].y - player.y + screenHeight / 2, 20, 30);
-             }*/
-
-
             drawgrid();
-
-            /*foods.forEach(drawFood);
-             viruses.forEach(drawVirus);*/
-
             if (object) {
                 for (var i = 0; i < object.length; i++) {
                     drawObject(object[i]);
@@ -126,3 +117,6 @@ function gameLoop() {
 }
 
 window.addEventListener('resize', resize);
+/**
+ * Created by Ying on 29/01/2016.
+ */

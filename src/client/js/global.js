@@ -41,10 +41,12 @@ var kicked = false;
 
 // TODO: Break out into GameControls.
 var continuity = false;
-var backgroundColor = '#ffffff';
+var backgroundColor = '#010117';
 
 var lineColor = '#000000';
 var borderColor = '#FF0000';
+var starColor = '#F2EC65';
+var starNumber = 1000 ;
 
 var foodConfig = {
     border: 0
