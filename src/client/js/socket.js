@@ -122,17 +122,41 @@ function setupSocket(socket) {
     });
 
 
-    socket.on('fire', function (player) {
+    socket.on('fire', function (players) {
         console.log('fire');
+
         //The munitionBar
         var munitionBar = document.getElementById('munitionsBar');
+                console.log(munitionBar.style.height);
         if (screenWidth >= 320 && screenWidth <= 767) {
-            munitionBar.style.height = (player.munitions * 150 / 100) + 'px';
+            munitionBar.style.height = (players.munitions * 150 / 100) + 'px';
+            munitionBar.style.width = 5 + 'px';
         }
         if (screenWidth >= 768) {
-            munitionBar.style.width = (player.munitions * 500 / 100) + 'px';
+            munitionBar.style.width = (players.munitions * 500 / 100) + 'px';
+            munitionBar.style.height = 5 + 'px';
         }
-        document.getElementById('munitionPoint').innerHTML = player.munitions;
+        var audio = new Audio('../sounds/bullet.mp3');
+        audio.play(); 
+        document.getElementById('munitionPoint').innerHTML = players.munitions;
+    });
+
+    socket.on('dropBullet', function (players) {
+        //The munitionBar
+        var munitionBar = document.getElementById('munitionsBar');
+                console.log(munitionBar.style.height);
+        if (screenWidth >= 320 && screenWidth <= 767) {
+            munitionBar.style.height = (players.munitions * 150 / 100) + 'px';
+            munitionBar.style.width = 5 + 'px';
+        }
+        if (screenWidth >= 768) {
+            munitionBar.style.width = (players.munitions * 500 / 100) + 'px';
+            munitionBar.style.height = 5 + 'px';
+        }
+
+        var audio = new Audio('../sounds/dropBullet.mp3');
+        audio.play(); 
+        document.getElementById('munitionPoint').innerHTML = players.munitions;
     });
 
     //A DEPLACER
@@ -141,8 +165,19 @@ function setupSocket(socket) {
 
         if (currentPlayer.life > player.life) {
             console.log("Animation gain de vie");
-        } else {
-            console.log("Animation perte de vie");
+            var audio = new Audio('../sounds/life.mp3');
+            audio.play(); 
+        } 
+        else if (currentPlayer.life < player.life) {
+            var audio = new Audio('../sounds/looseLife.mp3');
+            audio.play(); 
+            document.getElementById('blood').className = "fadeIn";
+            document.getElementById('blood').style.display = "block";
+            setTimeout(function(){ 
+                document.getElementById('blood').style.display = "none";
+                document.getElementById('blood').className = "";
+            }, 500);
+            
         }
 
         player.life = currentPlayer.life;
@@ -150,10 +185,12 @@ function setupSocket(socket) {
         console.log(player.life);
         var lifeBar = document.getElementById('lifeBar');
         if (screenWidth >= 320 && screenWidth <= 767) {
-            lifeBar.style.height = (player.munitions * 150 / 100) + 'px';
+            lifeBar.style.height = (player.life * 150 / 100) + 'px';
+            lifeBar.style.width = 5 +'px';
         }
         if (screenWidth >= 768) {
-            lifeBar.style.width = (player.munitions * 500 / 100) + 'px';
+            lifeBar.style.width = (player.life * 500 / 100) + 'px';
+            lifeBar.style.height = 5 + 'px';
         }
         document.getElementById('lifePoint').innerHTML = player.life;
     });
@@ -164,10 +201,12 @@ function setupSocket(socket) {
 
         var munitionBar = document.getElementById('munitionsBar');
         if (screenWidth >= 320 && screenWidth <= 767) {
-            munitionBar.style.width = '0';
+            munitionBar.style.height = (player.munitions * 150 / 100) + 'px';
+            munitionBar.style.width = 5 + 'px'
         }
         if (screenWidth >= 768) {
-            munitionBar.style.height = '0';
+            munitionBar.style.width = (player.munitions * 500 / 100) + 'px';
+            munitionBar.style.height = 5 + 'px';
         }
         //document.getElementById('munitionPoint').innerHTML = player.munitions;
 
@@ -178,10 +217,12 @@ function setupSocket(socket) {
 
         var lifeBar = document.getElementById('lifeBar');
         if (screenWidth >= 320 && screenWidth <= 767) {
-            lifeBar.style.width = '0';
+            lifeBar.style.height = (player.life * 150 / 100) + 'px';
+            lifeBar.style.width = '5';
         }
         if (screenWidth >= 768) {
-            lifeBar.style.height = '0';
+            lifeBar.style.width = (player.life * 500 / 100) + 'px';
+            lifeBar.style.height = '5';
         }
 
     };

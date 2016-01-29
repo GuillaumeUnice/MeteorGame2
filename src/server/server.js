@@ -402,11 +402,11 @@ function movePlayer(player) {
         }
         if (player.cells.length > i) {
             var borderCalc = player.cells[i].radius / 3;
-            if (player.cells[i].x > gameSettings.gameWidth - borderCalc) {
-                player.cells[i].x = gameSettings.gameWidth - borderCalc;
+            if (player.cells[i].x > gameSettings.gameWidth - borderCalc -220) {
+                player.cells[i].x = gameSettings.gameWidth - borderCalc -220;
             }
-            if (player.cells[i].y > gameSettings.gameHeight - borderCalc) {
-                player.cells[i].y = gameSettings.gameHeight - borderCalc;
+            if (player.cells[i].y > gameSettings.gameHeight - borderCalc -250) {
+                player.cells[i].y = gameSettings.gameHeight - borderCalc -250;
             }
             if (player.cells[i].x < borderCalc) {
                 player.cells[i].x = borderCalc;
@@ -502,7 +502,7 @@ function tickPlayer(currentPlayer) {
                     //console.log("bulletType");
                     currentPlayer.munitions = ((currentPlayer.munitions + gameSettings.object.bulletType.point) > gameSettings.munition) ? gameSettings.munition : (currentPlayer.munitions + gameSettings.object.bulletType.point);
                     console.log(currentPlayer.munitions);
-                    sockets[currentPlayer.id].emit('fire', currentPlayer);
+                    sockets[currentPlayer.id].emit('dropBullet', currentPlayer);
                 } else {
                     //console.log("mineType");
                     currentPlayer.life -= gameSettings.object.mineType.point;
