@@ -208,11 +208,14 @@ io.on('connection', function (socket) {
                     speed: 50
                 });
 
+
+            /* A SUPPRIMER
             } else {
                 console.log("No more munitions");
-                socket.emit('noAmmo');
+                //socket.emit('noAmmo');
             }
-            //}
+            */
+           }
         }
     });
 
