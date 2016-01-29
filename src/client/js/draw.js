@@ -33,7 +33,7 @@ function drawCircle(centerX, centerY, radius, sides) {
 
 
 function drawObject(object) {
-    console.log("drawObject");
+   /// console.log("drawObject");
     graph.strokeStyle = object.stroke;
     graph.fillStyle = object.fill;
     graph.lineWidth = object.strokeWidth;

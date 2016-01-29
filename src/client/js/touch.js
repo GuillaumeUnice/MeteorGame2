@@ -30,7 +30,16 @@ document.addEventListener("DOMContentLoaded", init);
 window.onorientationchange = resetCanvas;
 window.onresize = resetCanvas;
 
+var _baseX, _stickX;
+var _baseY, _stickY;
+var _pressed = false;
+
+var _stationaryBase = false;
+
+_baseX = stickX = _baseY = _stickY = 0;
 function init() {
+
+
     setupCanvas();
     pointers = new Collection();
     gameCanvas.addEventListener('pointerdown', onPointerDown, false);
@@ -67,39 +76,37 @@ function drawTouch() {
 
 
     pointers.forEach(function (pointer) {
+        graph.globalAlpha = 0.5;
 
         if (pointer.identifier == leftPointerID) {
-            graph.globalAlpha = 1;
-
-            console.log('Fucking work');
             graph.beginPath();
-            graph.strokeStyle = "#FF0000";
+            graph.strokeStyle = "cyan";
             graph.lineWidth = 6;
             graph.arc(leftPointerStartPos.x, leftPointerStartPos.y, 40, 0, Math.PI * 2, true);
             graph.stroke();
             graph.beginPath();
-            graph.strokeStyle = "#FF0000";
+            graph.strokeStyle = "cyan";
             graph.lineWidth = 2;
             graph.arc(leftPointerStartPos.x, leftPointerStartPos.y, 60, 0, Math.PI * 2, true);
             graph.stroke();
             graph.beginPath();
-            graph.strokeStyle = "#FF0000";
+            graph.strokeStyle = "cyan";
             graph.arc(leftPointerPos.x, leftPointerPos.y, 40, 0, Math.PI * 2, true);
             graph.stroke();
 
-        } else {
-
-            graph.beginPath();
-            graph.fillStyle = "#00FF00";
-            graph.fillText("type : " + pointer.type + " id : " + pointer.identifier + " x:" + pointer.x +
-                " y:" + pointer.y, pointer.x + 30, pointer.y - 30);
-
-            graph.beginPath();
-            graph.strokeStyle = "#0000FF";
-            graph.lineWidth = "6";
-            graph.arc(pointer.x, pointer.y, 40, 0, Math.PI * 2, true);
-            graph.stroke();
         }
+        /*else {
+         graph.beginPath();
+         graph.fillStyle = "black";
+         // graph.fillText("type : " + pointer.type + " id : " + pointer.identifier + " x:" + pointer.x +
+         //   " y:" + pointer.y, pointer.x + 30, pointer.y - 30);
+
+         graph.beginPath();
+         graph.strokeStyle = "red";
+         graph.lineWidth = "6";
+         graph.arc(pointer.x, pointer.y, 40, 0, Math.PI * 2, true);
+         graph.stroke();
+         }*/
     });
 
     requestAnimFrame(drawTouch);
@@ -120,7 +127,10 @@ function givePointerType(event) {
 }
 
 function onPointerDown(e) {
+    e.preventDefault();
     console.log('Pointer down');
+    _pressed = true;
+
     var newPointer = {identifier: e.pointerId, x: e.clientX, y: e.clientY, type: givePointerType(e)};
     if ((leftPointerID < 0) && (e.clientX < halfWidth)) {
         leftPointerID = e.pointerId;
@@ -128,53 +138,126 @@ function onPointerDown(e) {
         leftPointerPos.copyFrom(leftPointerStartPos);
         leftVector.reset(0, 0);
     }
+
+    if (_stationaryBase == false) {
+        _baseX = e.clientX;
+        _baseY = e.clientY;
+
+    }
+
+    _stickX = e.clientX;
+    _stickY = e.clientY;
+
     pointers.add(e.pointerId, newPointer);
+
+    directionLock = true;
 }
 
 function onPointerMove(e) {
     console.log('Pointer move');
+    if (_pressed) {
 
-    if (leftPointerID == e.pointerId) {
-        leftPointerPos.reset(e.clientX, e.clientY);
-        leftVector.copyFrom(leftPointerPos);
-        leftVector.minusEq(leftPointerStartPos);
-    }
-    else {
-        if (pointers.item(e.pointerId)) {
-            pointers.item(e.pointerId).x = e.clientX;
-            pointers.item(e.pointerId).y = e.clientY;
+
+        if (leftPointerID == e.pointerId) {
+            leftPointerPos.reset(e.clientX, e.clientY);
+            leftVector.copyFrom(leftPointerPos);
+            leftVector.minusEq(leftPointerStartPos);
         }
-    }
+        else {
+            if (pointers.item(e.pointerId)) {
+                pointers.item(e.pointerId).x = e.clientX;
+                pointers.item(e.pointerId).y = e.clientY;
+            }
+        }
 
-    if (e.clientX - screenWidth / 2 > target.x) {
-        imageRepository.playerImg.src = imageRepository.player_right;
-    }
-    else if (e.clientX - screenWidth / 2 < target.x) {
-        imageRepository.playerImg.src = imageRepository.player_left;
-    }
-    else if (e.clientY - screenHeight / 2 > target.y) {
-        imageRepository.playerImg.src = imageRepository.player_down;
-    }
-    else {
-        imageRepository.playerImg.src = imageRepository.player_up;
-    }
+        _stickX = e.clientX;
+        _stickY = e.clientY;
 
-    target.x = e.clientX - screenWidth / 2;
-    target.y = e.clientY - screenHeight / 2;
+
+        console.log('');
+
+        if (right) {
+            imageRepository.playerImg.src = imageRepository.player_right;
+        }
+        if (left()) {
+            imageRepository.playerImg.src = imageRepository.player_left;
+        }
+        if (down()) {
+            imageRepository.playerImg.src = imageRepository.player_down;
+        }
+        if (up()) {
+            imageRepository.playerImg.src = imageRepository.player_up;
+        }
+
+
+        console.log((right() ? 'Right' : '') + ( left() ? 'Left' : '' ) + (up() ? 'Up' : '') + (down() ? 'Down' : ''));
+
+        target.x = e.clientX - screenWidth / 2;
+        target.y = e.clientY - screenHeight / 2;
+        directionLock = true;
+    }
 }
 
 function onPointerUp(e) {
     console.log('Pointer up');
+    _pressed = false;
 
     if (leftPointerID == e.pointerId) {
         leftPointerID = -1;
         leftVector.reset(0, 0);
 
     }
-    leftVector.reset(0, 0);
 
+
+    leftVector.reset(0, 0);
+    if (!_stationaryBase) {
+        this._baseX = this._baseY = 0;
+        this._stickX = this._stickY = 0;
+    }
     pointers.remove(e.pointerId);
+    directionLock = true;
 }
+
+function __deltaX() {
+    return _stickX - _baseX;
+}
+function __deltaY() {
+    return _stickY - _baseY;
+}
+var right = function () {
+    if (_pressed === false)    return false;
+    var deltaX = __deltaX();
+    var deltaY = __deltaY();
+    if (deltaX <= 0)                return false;
+    return Math.abs(deltaY) <= 2 * Math.abs(deltaX);
+
+};
+
+var up = function () {
+    if (_pressed === false)    return false;
+    var deltaX = __deltaX();
+    var deltaY = __deltaY();
+    if (deltaY >= 0)                return false;
+    return Math.abs(deltaX) <= 2 * Math.abs(deltaY);
+
+};
+var down = function () {
+    if (_pressed === false)    return false;
+    var deltaX = __deltaX();
+    var deltaY = __deltaY();
+    if (deltaY <= 0)                return false;
+    return Math.abs(deltaX) <= 2 * Math.abs(deltaY);
+
+};
+
+var left = function () {
+    if (_pressed === false)    return false;
+    var deltaX = __deltaX();
+    var deltaY = __deltaY();
+    if (deltaX >= 0)                return false;
+    return Math.abs(deltaY) <= 2 * Math.abs(deltaX);
+
+};
 
 function setupCanvas() {
     //canvas = document.getElementById('gameArea');
