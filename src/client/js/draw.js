@@ -46,7 +46,7 @@ function drawCircle(centerX, centerY, radius, sides) {
 
 
 function drawObject(object) {
-        var objectSize = 70;
+        var objectSize = 80;
         if (screenWidth >= 320 && screenWidth <= 1024) {
             objectSize = 30;
         }
@@ -54,12 +54,11 @@ function drawObject(object) {
         var img = new Image();
         img.src = object.imageUrl;
         graph.globalAlpha = 1;
-    //    drawCircle(object.x - player.x + screenWidth / 2 + 100, object.y - player.y + screenHeight / 2 + 100, 20, 30);
         graph.drawImage(img, object.x - player.x + screenWidth / 2 + 100, object.y - player.y + screenHeight / 2 + 100, objectSize, objectSize);
 
 }
 
-function drawFireFood(mass) {
+function drawBullet(mass) {
 
     graph.globalAlpha = 1;
     var offset=0;
@@ -85,7 +84,7 @@ function drawPlayers(order) {
         y: player.y - (screenHeight / 2)
     };
 
-    var playerImgWidth = 250, playerImgHeight = 250;
+    var playerImgWidth = 200, playerImgHeight = 200;
 
     if (screenWidth >= 320 && screenWidth <= 1024) {
         playerImgWidth = playerImgHeight = 75;

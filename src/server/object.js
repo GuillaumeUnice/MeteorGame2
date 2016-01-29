@@ -37,7 +37,7 @@ exports.addObject = function (toAdd, c, object) {
                 stroke: c.object.bulletType.stroke,
                 strokeWidth: c.object.strokeWidth,
                 type: c.object.bulletType.name,
-                imageUrl: 'img/diamond.png'
+                imageUrl: 'img/treature.png'
             });
         } else {
             object.push({

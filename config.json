@@ -42,7 +42,7 @@
     },
     "mineType": {
       "name" : "mine",
-      "point" : 10,
+      "point" : 30,
       "fill": "#FF3030",
       "stroke": "#FFA9A9"
     },

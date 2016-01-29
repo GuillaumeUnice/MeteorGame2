@@ -60,7 +60,7 @@ function gameLoop() {
             }
             //  object.forEach(drawObject);
 
-            fireFood.forEach(drawFireFood);
+            fireFood.forEach(drawBullet);
 
             if (borderDraw) {
                 drawborder();

@@ -207,31 +207,9 @@ io.on('connection', function (socket) {
                     speed: 50
                 });
 
-
-            /* A SUPPRIMER
-            } else {
-                console.log("No more munitions");
-                //socket.emit('noAmmo');
-            }
-            */
            }
         }
     });
-
-    /*
-     wounds the currentPlayer
-     */
-    /* function wound(nb) {
-     //end the game if the player is dead
-     if (currentPlayer.life - nb <= 0) {
-     endGame = true;
-     } else {
-     //else change the player's life and send info
-     currentPlayer.life -= nb;
-     socket.emit('wound', currentPlayer);
-     }
-
-     }*/
 
     socket.on('regroupPlayers', function () {
 
@@ -437,12 +415,13 @@ function tickPlayer(currentPlayer) {
         food.splice(f, 1);
     }
 
+    //Get wounded by bullet of enemie
     function eatMass(m) {
 
         if (SAT.pointInCircle(new SATVector(m.x, m.y), playerCircle)) {
 
             if (m.id != currentPlayer.id) {
-                currentPlayer.life -= 5;
+                currentPlayer.life -= 10;
                 if(currentPlayer.life <1 ){
                     sockets[currentPlayer.id].emit('RIP', currentPlayer);
                     users.splice(currentPlayer.id, 1);
@@ -462,6 +441,7 @@ function tickPlayer(currentPlayer) {
 
     //Detecter the confilt
     function check(user) {
+
         for (var i = 0; i < user.cells.length; i++) {
             if (user.cells[i].mass > 10 && user.id !== currentPlayer.id) {
                 var response = new SAT.Response();
@@ -488,24 +468,24 @@ function tickPlayer(currentPlayer) {
         for (var i = 0; i < object.length; i++) {
             var response = new SAT.Response();
             var collided = SAT.testCircleCircle(playerCircle,
-                new SATCircle(new SATVector(object[i].x, object[i].y), 20),
+                new SATCircle(new SATVector(object[i].x, object[i].y), 50),
                 response);
 
             if (collided) {
-                var resX = Math.ceil(object[i].x);
-                var resY = Math.ceil(object[i].y);
-
+                // Get points of life
                 if (object[i].type === gameSettings.object.lifeType.name) {
-                    //console.log("lifeType");
-                    currentPlayer.life = ((currentPlayer.life + gameSettings.object.lifeType.point) > gameSettings.life) ? gameSettings.life : (currentPlayer.life + gameSettings.object.lifeType.point);
+                    var currentLift = currentPlayer.life + gameSettings.object.lifeType.point;
+                    currentPlayer.life = (currentLift > gameSettings.life) ? gameSettings.life : currentLift;
                     sockets[currentPlayer.id].emit('wound', currentPlayer);
-                } else if (object[i].type === gameSettings.object.bulletType.name) {
-                    //console.log("bulletType");
-                    currentPlayer.munitions = ((currentPlayer.munitions + gameSettings.object.bulletType.point) > gameSettings.munition) ? gameSettings.munition : (currentPlayer.munitions + gameSettings.object.bulletType.point);
-                    console.log(currentPlayer.munitions);
+                }
+                //Get points of bullet
+                else if (object[i].type === gameSettings.object.bulletType.name) {
+                    var currentBullet = currentPlayer.munitions + gameSettings.object.bulletType.point;
+                    currentPlayer.munitions = (currentBullet > gameSettings.munition) ? gameSettings.munition : currentBullet;
                     sockets[currentPlayer.id].emit('dropBullet', currentPlayer);
-                } else {
-                    //console.log("mineType");
+                }
+                //Lost points of lift
+                else {
                     currentPlayer.life -= gameSettings.object.mineType.point;
                     if (currentPlayer.life <= 0) {
                         endGame = true;
@@ -521,7 +501,7 @@ function tickPlayer(currentPlayer) {
 
     /*....................collision logic..............................*/
     function collisionCheck(collision) {
-        console.log("collisionCheck");
+
         //Kill result depends on the ball size of player
         if (collision.aUser.mass > collision.bUser.mass * 1.1 && collision.aUser.radius > Math.sqrt(Math.pow(collision.aUser.x - collision.bUser.x, 2) + Math.pow(collision.aUser.y - collision.bUser.y, 2)) * 1.75) {
             console.log('[DEBUG] Killing user: ' + collision.bUser.id);

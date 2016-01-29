@@ -125,11 +125,9 @@ function setupSocket(socket) {
         }, 2500);
     });
 
-
+    //Bullet bar, lost bullet
     socket.on('fire', function (players) {
-        console.log('fire');
 
-        //The munitionBar
         var munitionBar = document.getElementById('munitionsBar');
                 console.log(munitionBar.style.height);
         if (screenWidth >= 320 && screenWidth <= 767) {
@@ -137,7 +135,7 @@ function setupSocket(socket) {
             munitionBar.style.width = 5 + 'px';
         }
         if (screenWidth >= 768) {
-            munitionBar.style.width = (players.munitions * 500 / 100) + 'px';
+            munitionBar.style.width = (players.munitions * 10) + 'px';
             munitionBar.style.height = 5 + 'px';
         }
         var audio = new Audio('../sounds/bullet.mp3');
@@ -145,6 +143,7 @@ function setupSocket(socket) {
         document.getElementById('munitionPoint').innerHTML = players.munitions;
     });
 
+    //Bullet bar, add bullet
     socket.on('dropBullet', function (players) {
         //The munitionBar
         var munitionBar = document.getElementById('munitionsBar');
@@ -154,7 +153,7 @@ function setupSocket(socket) {
             munitionBar.style.width = 5 + 'px';
         }
         if (screenWidth >= 768) {
-            munitionBar.style.width = (players.munitions * 500 / 100) + 'px';
+            munitionBar.style.width = (players.munitions * 10) + 'px';
             munitionBar.style.height = 5 + 'px';
         }
 
@@ -164,7 +163,7 @@ function setupSocket(socket) {
     });
 
     //A DEPLACER
-    //Player gets wounded
+    //Gestion of the lift barre
     socket.on('wound', function (currentPlayer) {
 
         if (currentPlayer.life > player.life) {
@@ -193,10 +192,10 @@ function setupSocket(socket) {
             lifeBar.style.width = 5 +'px';
         }
         if (screenWidth >= 768) {
-            lifeBar.style.width = (player.life * 500 / 100) + 'px';
+            lifeBar.style.width = (player.life * 10) + 'px';
             lifeBar.style.height = 5 + 'px';
         }
-        document.getElementById('lifePoint').innerHTML = player.life;
+       document.getElementById('lifePoint').innerHTML = player.life;
     });
 
     window.onresize = function (currentPlayer) {

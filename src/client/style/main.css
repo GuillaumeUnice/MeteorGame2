@@ -329,6 +329,15 @@ When we use the video projector
         background-color: #000000;
     }
 
+    #munitionsBar {
+        position: absolute;
+        left: 20%;
+        right: 20%;
+        bottom: 10px;
+        width: 500px;
+        border: 1px solid #000000;
+    }
+
     #lifeIcon {
         position: absolute;
         left: 17%;
@@ -353,14 +362,6 @@ When we use the video projector
         bottom: 10px;
     }
 
-    #munitionsBar {
-        position: absolute;
-        left: 20%;
-        right: 20%;
-        bottom: 10px;
-        width: 500px;
-        border: 1px solid #000000;
-    }
 
     #joinDiv {
         position: fixed;
