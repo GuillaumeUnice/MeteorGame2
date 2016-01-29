@@ -141,7 +141,11 @@ function setupSocket(socket) {
         
         if(currentPlayer.life > player.life) {
             console.log("Animation gain de vie");
-        } else {
+        } else if (currentPlayer.life < player.life) {
+            document.getElementById('blood').style.display = "block";
+            setTimeout(function(){ 
+                document.getElementById('blood').style.display = "none";
+            }, 500);
             console.log("Animation perte de vie");
         }
 
