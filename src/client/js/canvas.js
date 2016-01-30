@@ -1,26 +1,18 @@
 /**
- *
+ *This file is made for setting up the canvas
  * @type {Number}
  */
 // Canvas.
 gameCanvas.width = screenWidth;
 gameCanvas.height = screenHeight;
-//gameCanvas.addEventListener('mousemove', gameInput, false);
-//gameCanvas.addEventListener('mouseout', outOfBounds, false);
-gameCanvas.addEventListener('keyup', function (event) {
-    reenviar = true;
-    directionUp(event);
-}, false);
+
+gameCanvas.addEventListener('keyup', onKeyUp, false);
 gameCanvas.addEventListener('keypress', keyInput, false);
 gameCanvas.addEventListener('keydown', directionDown, false);
-//gameCanvas.addEventListener('touchstart', touchInput, false);
-//gameCanvas.addEventListener('touchmove', touchInput, false);
 
-// Register when the mouse goes off the canvas.
-function outOfBounds() {
-    if (!continuity) {
-        target = {x: 0, y: 0};
-    }
+function onKeyUp(event) {
+    reenviar = true;
+    directionUp(event);
 }
 
 function gameInput(mouse) {

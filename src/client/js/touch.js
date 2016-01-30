@@ -1,5 +1,5 @@
 /**
- * Created by Falou on 29/01/2016.
+ * Created by Falou on 29/01/2016. based on Seb's joystick for Ipad. It handles the moves on digital devices mainly phones or tablets
  */
 // shim layer with setTimeout fallback
 window.requestAnimFrame = (function () {

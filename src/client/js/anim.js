@@ -94,6 +94,7 @@ function gameLoop() {
             graph.fillText('Game Over!', screenWidth / 2, screenHeight / 2);
         }
     } else {
+
         graph.fillStyle = '#333333';
         graph.fillRect(0, 0, screenWidth, screenHeight);
 
@@ -117,6 +118,3 @@ function gameLoop() {
 }
 
 window.addEventListener('resize', resize);
-/**
- * Created by Ying on 29/01/2016.
- */

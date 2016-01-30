@@ -1,3 +1,8 @@
+/***
+ * This file allows to control the super vessel with the LeapMotion
+ * @type {{}}
+ */
+
 var cats = {};
 
 var i = true;

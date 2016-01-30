@@ -1,3 +1,8 @@
+/**
+ * This file essentially deals with the game's setup on startup
+ * @type {lookup|exports|module.exports}
+ */
+
 var io = require('socket.io-client');
 
 /**

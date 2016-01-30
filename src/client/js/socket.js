@@ -1,4 +1,7 @@
-/// / socket stuff.
+/**
+ * All the matters related to the socket's responses
+ * @param socket
+ */
 function setupSocket(socket) {
 
     // Handle error.

@@ -1,5 +1,5 @@
 /************
- *
+ *Very bad. We apologize. Here are all the global variables we use
  * Command keys
  */
 var KEY_ENTER = 13;
@@ -46,7 +46,7 @@ var backgroundColor = '#010117';
 var lineColor = '#000000';
 var borderColor = '#FFFFFF';
 var starColor = '#F2EC65';
-var starNumber = 1000 ;
+var starNumber = 1000;
 
 var foodConfig = {
     border: 0

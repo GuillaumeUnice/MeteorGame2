@@ -1,4 +1,5 @@
 /**
+ * In this file, there are all the functions made for drawing the different elements displayed in  the arena
  * Created by Ying on 29/01/2016.
  */
 var imageRepository = new function () {
@@ -46,24 +47,24 @@ function drawCircle(centerX, centerY, radius, sides) {
 
 
 function drawObject(object) {
-        var objectSize = 80;
-        if (screenWidth >= 320 && screenWidth <= 1024) {
-            objectSize = 30;
-        }
-        console.log($(window).width())
-        var img = new Image();
-        img.src = object.imageUrl;
-        graph.globalAlpha = 1;
-        graph.drawImage(img, object.x - player.x + screenWidth / 2 + 100, object.y - player.y + screenHeight / 2 + 100, objectSize, objectSize);
+    var objectSize = 80;
+    if (screenWidth >= 320 && screenWidth <= 1024) {
+        objectSize = 30;
+    }
+    console.log($(window).width())
+    var img = new Image();
+    img.src = object.imageUrl;
+    graph.globalAlpha = 1;
+    graph.drawImage(img, object.x - player.x + screenWidth / 2 + 100, object.y - player.y + screenHeight / 2 + 100, objectSize, objectSize);
 
 }
 
 function drawBullet(mass) {
 
     graph.globalAlpha = 1;
-    var offset=0;
+    var offset = 0;
     if (screenWidth >= 320 && screenWidth <= 1024) {
-       offset = -70;
+        offset = -70;
     }
     var bulletWidth = 30, bulletHeight = 30;
 
@@ -71,7 +72,7 @@ function drawBullet(mass) {
         bulletHeight = bulletWidth = 15;
     }
 
-    graph.drawImage(imageRepository.bulletImg, mass.x - player.x + 105 + screenWidth / 2+offset, mass.y - player.y + 100 + screenHeight / 2+offset, bulletWidth, bulletHeight);
+    graph.drawImage(imageRepository.bulletImg, mass.x - player.x + 105 + screenWidth / 2 + offset, mass.y - player.y + 100 + screenHeight / 2 + offset, bulletWidth, bulletHeight);
 
 }
 
@@ -199,7 +200,7 @@ function drawgrid() {
     graph.stroke();
     graph.globalAlpha = 1;
 
-    for(var i=0;i<=3;i++) {
+    for (var i = 0; i <= 3; i++) {
         graph.drawImage(imageRepository.starImg, Math.random() * screenWidth, Math.random() * screenHeight, Math.random() * 20, Math.random() * 20);
         graph.globalAlpha = 0.1;
     }
