@@ -83,15 +83,6 @@ function gameLoop() {
             socket.emit('0', target); // playerSendTarget "Heartbeat".
 
         }
-        /*else {
-         graph.fillStyle = '#333333';
-         graph.fillRect(0, 0, screenWidth, screenHeight);
-
-         graph.textAlign = 'center';
-         graph.fillStyle = '#FFFFFF';
-         graph.font = 'bold 30px sans-serif';
-         graph.fillText('Game Over!', screenWidth / 2, screenHeight / 2);
-         }*/
     } else {
 
         graph.fillStyle = '#333333';

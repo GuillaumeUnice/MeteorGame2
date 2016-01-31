@@ -28,11 +28,10 @@ var imageRepository = new function () {
 
 function drawObject(object) {
     var objectSize = 80;
+
     if (screenWidth >= 320 && screenWidth <= 1024) {
         objectSize = 30;
     }
-
-    console.log($(window).width());
 
     imageRepository.objectImg.src = object.imageUrl;
 

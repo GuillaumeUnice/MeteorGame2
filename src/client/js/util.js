@@ -8,6 +8,11 @@ var KEY_UP = 38;
 var KEY_RIGHT = 39;
 var KEY_DOWN = 40;
 
+var MIN_SM_WIDTH = 320;
+var MAX_SM_WIDTH = 767;
+var MIN_MD_WIDTH = 768;
+
+
 var askingPlayer = false;
 var playerName;
 var playerType;
@@ -82,11 +87,11 @@ var miniMapFrame = miniMap.getContext("2d");
 var updateLifeBar = function () {
     var lifeBar = document.getElementById('lifeBar');
 
-    if (screenWidth >= 320 && screenWidth <= 767) {
+    if (onSmartphoneOrTablet()) {
         lifeBar.style.height = (player.life * 150 / 100) + 'px';
         lifeBar.style.width = '5px';
     }
-    if (screenWidth >= 768) {
+    if (onDesktop()) {
         lifeBar.style.width = (player.life * 500 / 100) + 'px';
         lifeBar.style.height = '5px';
     }
@@ -101,11 +106,11 @@ var updateLifeBar = function () {
 var updateMunitionBar = function () {
     var munitionBar = document.getElementById('munitionBar');
 
-    if (screenWidth >= 320 && screenWidth <= 767) {
+    if (onSmartphoneOrTablet()) {
         munitionBar.style.height = (player.munitions * 150 / 100) + 'px';
         munitionBar.style.width = '5px'
     }
-    if (screenWidth >= 768) {
+    if (onDesktop()) {
         munitionBar.style.width = (player.munitions * 500 / 100) + 'px';
         munitionBar.style.height = '5px';
     }
@@ -125,4 +130,13 @@ var updateMunition = function () {
 var updatePoints = function () {
     updateLifeBar();
     updateMunitionBar();
+};
+
+
+var onSmartphoneOrTablet = function () {
+    return screenWidth >= MIN_SM_WIDTH && screenWidth <= MAX_SM_WIDTH;
+};
+
+var onDesktop = function () {
+    return screenWidth >= MIN_MD_WIDTH;
 };
