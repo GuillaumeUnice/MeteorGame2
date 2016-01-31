@@ -588,7 +588,7 @@ function moveloop() {
 
 }
 
-function gameloop() {
+function gameLoop() {
     if (!endGame) {
 
         if (users.length > 0) {
@@ -644,7 +644,7 @@ function gameloop() {
 }
 
 
-/* TODO : exporter cette fonction dans un autre fichier, mais pas dans mapElements car cela ferai une "dépendance circulaire"*/
+/* TODO : exporter cette fonction dans un autre fichier, mais pas dans mapElements car cela ferair une "dépendance circulaire"*/
 /*.................................................balanceMass,called in gameloop......................................................*/
 function balanceMass(c, food, users) {
     var totalMass = food.length * c.foodMass +
@@ -740,12 +740,12 @@ function sendUpdates() {
 
 
         var visibleMass = massFood
-            .map(function (f) {
-                if (f.x + f.radius > u.x - u.screenWidth / 2 - 20 &&
-                    f.x - f.radius < u.x + u.screenWidth / 2 + 20 &&
-                    f.y + f.radius > u.y - u.screenHeight / 2 - 20 &&
-                    f.y - f.radius < u.y + u.screenHeight / 2 + 20) {
-                    return f;
+            .map(function (mass) {
+                if (mass.x + mass.radius > u.x - u.screenWidth / 2 - 20 &&
+                    mass.x - mass.radius < u.x + u.screenWidth / 2 + 20 &&
+                    mass.y + mass.radius > u.y - u.screenHeight / 2 - 20 &&
+                    mass.y - mass.radius < u.y + u.screenHeight / 2 + 20) {
+                    return mass;
                 }
             })
             .filter(function (f) {
@@ -753,35 +753,35 @@ function sendUpdates() {
             });
 
         var visibleCells = users
-            .map(function (f) {
-                for (var z = 0; z < f.cells.length; z++) {
-                    if (f.cells[z].x + f.cells[z].radius > u.x - u.screenWidth / 2 - 20 &&
-                        f.cells[z].x - f.cells[z].radius < u.x + u.screenWidth / 2 + 20 &&
-                        f.cells[z].y + f.cells[z].radius > u.y - u.screenHeight / 2 - 20 &&
-                        f.cells[z].y - f.cells[z].radius < u.y + u.screenHeight / 2 + 20) {
-                        z = f.cells.lenth;
-                        if (f.id !== u.id) {
+            .map(function (user) {
+                for (var z = 0; z < user.cells.length; z++) {
+                    if (user.cells[z].x + user.cells[z].radius > u.x - u.screenWidth / 2 - 20 &&
+                        user.cells[z].x - user.cells[z].radius < u.x + u.screenWidth / 2 + 20 &&
+                        user.cells[z].y + user.cells[z].radius > u.y - u.screenHeight / 2 - 20 &&
+                        user.cells[z].y - user.cells[z].radius < u.y + u.screenHeight / 2 + 20) {
+                        z = user.cells.lenth;
+                        if (user.id !== u.id) {
                             return {
-                                id: f.id,
-                                x: f.x,
-                                y: f.y,
-                                cells: f.cells,
-                                massTotal: Math.round(f.massTotal),
-                                hue: f.hue,
-                                name: f.name,
-                                isInSuperVessel: f.isInSuperVessel,
-                                isDisplayer: f.isDisplayer
+                                id: user.id,
+                                x: user.x,
+                                y: user.y,
+                                cells: user.cells,
+                                massTotal: Math.round(user.massTotal),
+                                hue: user.hue,
+                                name: user.name,
+                                isInSuperVessel: user.isInSuperVessel,
+                                isDisplayer: user.isDisplayer
                             };
                         } else {
                             //console.log("Nombre: " + f.name + " Es Usuario");
                             return {
-                                x: f.x,
-                                y: f.y,
-                                cells: f.cells,
-                                massTotal: Math.round(f.massTotal),
-                                hue: f.hue,
-                                isInSuperVessel: f.isInSuperVessel,
-                                isDisplayer: f.isDisplayer
+                                x: user.x,
+                                y: user.y,
+                                cells: user.cells,
+                                massTotal: Math.round(user.massTotal),
+                                hue: user.hue,
+                                isInSuperVessel: user.isInSuperVessel,
+                                isDisplayer: user.isDisplayer
                             };
                         }
                     }
@@ -804,7 +804,7 @@ function sendUpdates() {
 
 /*.........................HERE WE CALL ALL THE FUNCTION ABOVE...........................................................................................*/
 setInterval(moveloop, 1000 / 60);
-setInterval(gameloop, 1000);
+setInterval(gameLoop, 1000);
 setInterval(sendUpdates, 1000 / gameSettings.networkUpdateFactor);
 
 /*........................................ Don't touch, IP configurations..........................................*/
