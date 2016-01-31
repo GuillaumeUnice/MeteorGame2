@@ -64,13 +64,6 @@ div {
     box-sizing: border-box;
 }
 
-#startMenu p {
-    padding: 0;
-    text-align: center;
-    font-size: x-large;
-    font-weight: bold;
-}
-
 #playerNameInput {
     width: 100%;
     text-align: center;
@@ -126,30 +119,18 @@ div {
     -o-transition: max-height 1s;
     transition: max-height 1s;
     overflow: hidden;
+    z-index: 2;
+
 }
 
 .img-center {
     margin: 0 auto;
 }
 
-#startMenu h3 {
-    padding-bottom: 0;
-    margin-bottom: 0;
-}
-
-#startMenu ul {
-    padding: 10px;
-    margin: 0 10px 10px;
-}
-
 #startMenu .input-error {
     color: red;
     opacity: 0;
     font-size: 12px;
-}
-
-#startMenuWrapper {
-    z-index: 2;
 }
 
 #gameAreaWrapper {

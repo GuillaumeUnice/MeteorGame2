@@ -14,7 +14,7 @@ var gameSettings = require('../../config.json');
 var util = require('./lib/util');
 
 // Import quadtree.
-var quadtree = require('../../quadtree');
+var quadtree = require('./../../quadtree');
 
 /* My imports */
 var mapElemImport = require("./mapElements.js");
@@ -35,7 +35,7 @@ var virus = [];
 var object = [];
 var sockets = {};
 
-var leaderboard = [];
+var leaderBoard = [];
 var leaderboardChanged = false;
 
 var SATVector = SAT.Vector;
@@ -207,7 +207,7 @@ io.on('connection', function (socket) {
                     speed: 50
                 });
 
-           }
+            }
         }
     });
 
@@ -312,10 +312,10 @@ function moveMass() {
 
             if (mass.x > gameSettings.gameWidth - borderCalc || mass.y > gameSettings.gameHeight - borderCalc || mass.x < borderCalc || mass.y < borderCalc) {
                 massFood.splice(i, 1);
-                }
-
             }
+
         }
+    }
 
 }
 
@@ -381,11 +381,11 @@ function movePlayer(player) {
         }
         if (player.cells.length > i) {
             var borderCalc = player.cells[i].radius / 3;
-            if (player.cells[i].x > gameSettings.gameWidth - borderCalc -220) {
-                player.cells[i].x = gameSettings.gameWidth - borderCalc -220;
+            if (player.cells[i].x > gameSettings.gameWidth - borderCalc - 220) {
+                player.cells[i].x = gameSettings.gameWidth - borderCalc - 220;
             }
-            if (player.cells[i].y > gameSettings.gameHeight - borderCalc -250) {
-                player.cells[i].y = gameSettings.gameHeight - borderCalc -250;
+            if (player.cells[i].y > gameSettings.gameHeight - borderCalc - 250) {
+                player.cells[i].y = gameSettings.gameHeight - borderCalc - 250;
             }
             if (player.cells[i].x < borderCalc) {
                 player.cells[i].x = borderCalc;
@@ -422,11 +422,11 @@ function tickPlayer(currentPlayer) {
 
             if (m.id != currentPlayer.id) {
                 currentPlayer.life -= 10;
-                if(currentPlayer.life <1 ){
+                if (currentPlayer.life < 1) {
                     sockets[currentPlayer.id].emit('RIP', currentPlayer);
                     users.splice(currentPlayer.id, 1);
-                    
-                }else {
+
+                } else {
                     sockets[currentPlayer.id].emit('wound', currentPlayer);
                 }
             }
@@ -492,7 +492,7 @@ function tickPlayer(currentPlayer) {
                     }
                     sockets[currentPlayer.id].emit('wound', currentPlayer);
                 }
-                
+
                 object.splice(object.indexOf(object[i]), 1);
             }
         }
@@ -585,7 +585,7 @@ function moveloop() {
         tickPlayer(users[i]);
     }
     moveMass();
-    
+
 }
 
 function gameloop() {
@@ -610,14 +610,14 @@ function gameloop() {
                     });
                 }
             }
-            if (isNaN(leaderboard) || leaderboard.length !== topUsers.length) {
-                leaderboard = topUsers;
+            if (isNaN(leaderBoard) || leaderBoard.length !== topUsers.length) {
+                leaderBoard = topUsers;
                 leaderboardChanged = true;
             }
             else {
-                for (i = 0; i < leaderboard.length; i++) {
-                    if (leaderboard[i].id !== topUsers[i].id) {
-                        leaderboard = topUsers;
+                for (i = 0; i < leaderBoard.length; i++) {
+                    if (leaderBoard[i].id !== topUsers[i].id) {
+                        leaderBoard = topUsers;
                         leaderboardChanged = true;
                         break;
                     }
@@ -795,7 +795,7 @@ function sendUpdates() {
         if (leaderboardChanged) {
             sockets[u.id].emit('leaderboard', {
                 players: users.length,
-                leaderboard: leaderboard
+                leaderboard: leaderBoard
             });
         }
     });

@@ -50,7 +50,7 @@ function setupSocket(socket) {
     });
 
     socket.on('leaderboard', function (data) {
-        leaderboard = data.leaderboard;
+        leaderBoard = data.leaderboard;
         var status = '<span class="title">Connected</span>';
         miniMapFrame.clearRect(0, 0, gameWidth, gameHeight);
         var pictoWidth = 16, pictoHeight = 16;
@@ -79,7 +79,7 @@ function setupSocket(socket) {
                 } else
                     status += (i + 1) + '. An unnamed cell';
             }
-            //The point in miniMap that present the super vaisseau
+            //The point in miniMap that present the super spaceship
             if (!leaderboard[i].isInSuperVessel || leaderboard[i].isDisplayer) {
                 if (leaderboard[i].isDisplayer)
                     miniMapFrame.fillStyle = "#FFFFFF";
@@ -220,12 +220,6 @@ function setupSocket(socket) {
             munitionBar.style.width = (player.munitions * 500 / 100) + 'px';
             munitionBar.style.height = 5 + 'px';
         }
-        //document.getElementById('munitionPoint').innerHTML = player.munitions;
-
-
-        //partie points de vie
-
-        //document.getElementById('lifePoint').innerHTML = player.life;
 
         var lifeBar = document.getElementById('lifeBar');
         if (screenWidth >= 320 && screenWidth <= 767) {
