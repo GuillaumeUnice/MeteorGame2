@@ -15,16 +15,6 @@ function onKeyUp(event) {
     directionUp(event);
 }
 
-function gameInput(mouse) {
-    if (!directionLock) {
-
-        target.x = mouse.clientX - screenWidth / 2;
-        target.y = mouse.clientY - screenHeight / 2;
-        //TODO : ne pas supprimer
-        //console.log(target);
-    }
-}
-
 function keyInput(event) {
     var key = event.which || event.keyCode;
     if (key === KEY_FIREFOOD && reenviar) {

@@ -17,11 +17,9 @@ window.cancelAnimFrame = (function () {
 })();
 
 function animationLoop() {
-
     animLoopHandle = window.requestAnimFrame(animationLoop);
 
     gameLoop();
-
 }
 
 /**
@@ -97,10 +95,10 @@ function gameLoop() {
 
         graph.fillStyle = '#333333';
         graph.fillRect(0, 0, screenWidth, screenHeight);
-
         graph.textAlign = 'center';
         graph.fillStyle = '#FFFFFF';
         graph.font = 'bold 30px sans-serif';
+
         if (kicked) {
             if (reason !== '') {
                 graph.fillText('You were kicked for:', screenWidth / 2, screenHeight / 2 - 20);
