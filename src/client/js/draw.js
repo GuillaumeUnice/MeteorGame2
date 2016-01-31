@@ -6,7 +6,6 @@ var imageRepository = new function () {
     this.playerImg = new Image();
     this.otherPlayerImg = new Image();
     this.bulletImg = new Image();
-    this.backgroundImg = new Image();
     this.starImg = new Image();
     this.bombImg = new Image();
     this.minimapImg = new Image();
@@ -20,7 +19,6 @@ var imageRepository = new function () {
     this.playerImg.src = this.player_up;
     this.otherPlayerImg.src = this.player_up;
     this.bulletImg.src = "../img/bullet.png";
-    this.backgroundImg.src = "../img/sky.jpg";
     this.starImg.src = "../img/star.png";
     this.bombImg.src = "../img/bomb.png";
     this.minimapImg.src = "../img/ship_up.svg";
@@ -29,7 +27,7 @@ var imageRepository = new function () {
 function drawObject(object) {
     var objectSize = 80;
 
-    if (screenWidth >= 320 && screenWidth <= 1024) {
+    if (onTablet()) {
         objectSize = 30;
     }
 
@@ -43,14 +41,15 @@ function drawObject(object) {
 
 function drawBullet(mass) {
 
+    var offset = 0, bulletWidth = 30, bulletHeight = 30;
+
     graph.globalAlpha = 1;
-    var offset = 0;
-    if (screenWidth >= 320 && screenWidth <= 1024) {
+
+    if (onTablet()) {
         offset = -70;
     }
-    var bulletWidth = 30, bulletHeight = 30;
 
-    if ((screenWidth >= 320 && screenWidth <= 767) || (screenWidth >= 320 && screenWidth <= 1024)) {
+    if (onTablet() || onSmartphone()) {
         bulletHeight = bulletWidth = 15;
     }
 
@@ -60,16 +59,15 @@ function drawBullet(mass) {
 
 function drawPlayers(order) {
 
-    graph.globalAlpha = 1;
 
     var start = {
         x: player.x - (screenWidth / 2),
         y: player.y - (screenHeight / 2)
-    };
+    }, playerImgWidth = 200, playerImgHeight = 200;
 
-    var playerImgWidth = 200, playerImgHeight = 200;
+    graph.globalAlpha = 1;
 
-    if (screenWidth >= 320 && screenWidth <= 1024) {
+    if (onTablet()) {
         playerImgWidth = playerImgHeight = 75;
     }
 
@@ -107,12 +105,9 @@ function drawPlayers(order) {
             $('#panel-message').css('display', 'block');
             if (userCurrent.isInSuperVessel && !userCurrent.isDisplayer) {
 
-
-                var messageInfo = document.getElementById('#message-info');
-
                 $('#message-info').text('You are now linked to a super vessel');
 
-                if ((screenWidth >= 320 && screenWidth <= 767)) {
+                if (onSmartphone()) {
                     $('#fire').addClass('regroup-sm');
 
                     var miniM = $('#minimap');

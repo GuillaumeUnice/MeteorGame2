@@ -11,6 +11,7 @@ var KEY_DOWN = 40;
 var MIN_SM_WIDTH = 320;
 var MAX_SM_WIDTH = 767;
 var MIN_MD_WIDTH = 768;
+var MAX_MD_WIDTH = 1024;
 
 
 var askingPlayer = false;
@@ -87,7 +88,7 @@ var miniMapFrame = miniMap.getContext("2d");
 var updateLifeBar = function () {
     var lifeBar = document.getElementById('lifeBar');
 
-    if (onSmartphoneOrTablet()) {
+    if (onSmartphone()) {
         lifeBar.style.height = (player.life * 150 / 100) + 'px';
         lifeBar.style.width = '5px';
     }
@@ -95,9 +96,7 @@ var updateLifeBar = function () {
         lifeBar.style.width = (player.life * 500 / 100) + 'px';
         lifeBar.style.height = '5px';
     }
-
     document.getElementById('lifePoint').innerHTML = player.life;
-
 };
 
 /**
@@ -106,7 +105,7 @@ var updateLifeBar = function () {
 var updateMunitionBar = function () {
     var munitionBar = document.getElementById('munitionBar');
 
-    if (onSmartphoneOrTablet()) {
+    if (onSmartphone()) {
         munitionBar.style.height = (player.munitions * 150 / 100) + 'px';
         munitionBar.style.width = '5px'
     }
@@ -133,9 +132,13 @@ var updatePoints = function () {
 };
 
 
-var onSmartphoneOrTablet = function () {
+var onSmartphone = function () {
     return screenWidth >= MIN_SM_WIDTH && screenWidth <= MAX_SM_WIDTH;
 };
+
+var onTablet = function () {
+    return screenWidth >= MIN_SM_WIDTH && screenWidth <= MAX_MD_WIDTH;
+}
 
 var onDesktop = function () {
     return screenWidth >= MIN_MD_WIDTH;
