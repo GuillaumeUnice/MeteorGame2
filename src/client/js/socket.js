@@ -132,7 +132,7 @@ function setupSocket(socket) {
     socket.on('fire', function (players) {
 
         var munitionBar = document.getElementById('munitionsBar');
-                console.log(munitionBar.style.height);
+        console.log(munitionBar.style.height);
         if (screenWidth >= 320 && screenWidth <= 767) {
             munitionBar.style.height = (players.munitions * 150 / 100) + 'px';
             munitionBar.style.width = 5 + 'px';
@@ -142,7 +142,7 @@ function setupSocket(socket) {
             munitionBar.style.height = 5 + 'px';
         }
         var audio = new Audio('../sounds/bullet.mp3');
-        audio.play(); 
+        audio.play();
         document.getElementById('munitionPoint').innerHTML = players.munitions;
     });
 
@@ -150,7 +150,7 @@ function setupSocket(socket) {
     socket.on('dropBullet', function (players) {
         //The munitionBar
         var munitionBar = document.getElementById('munitionsBar');
-                console.log(munitionBar.style.height);
+        console.log(munitionBar.style.height);
         if (screenWidth >= 320 && screenWidth <= 767) {
             munitionBar.style.height = (players.munitions * 150 / 100) + 'px';
             munitionBar.style.width = 5 + 'px';
@@ -161,7 +161,7 @@ function setupSocket(socket) {
         }
 
         var audio = new Audio('../sounds/dropBullet.mp3');
-        audio.play(); 
+        audio.play();
         document.getElementById('munitionPoint').innerHTML = players.munitions;
     });
 
@@ -172,18 +172,18 @@ function setupSocket(socket) {
         if (currentPlayer.life > player.life) {
             console.log("Animation gain de vie");
             var audio = new Audio('../sounds/life.mp3');
-            audio.play(); 
-        } 
+            audio.play();
+        }
         else if (currentPlayer.life < player.life) {
             var audio = new Audio('../sounds/looseLife.mp3');
-            audio.play(); 
+            audio.play();
             document.getElementById('blood').className = "fadeIn";
             document.getElementById('blood').style.display = "block";
-            setTimeout(function(){ 
+            setTimeout(function () {
                 document.getElementById('blood').style.display = "none";
                 document.getElementById('blood').className = "";
             }, 500);
-            
+
         }
 
         player.life = currentPlayer.life;
@@ -192,13 +192,13 @@ function setupSocket(socket) {
         var lifeBar = document.getElementById('lifeBar');
         if (screenWidth >= 320 && screenWidth <= 767) {
             lifeBar.style.height = (player.life * 150 / 100) + 'px';
-            lifeBar.style.width = 5 +'px';
+            lifeBar.style.width = 5 + 'px';
         }
         if (screenWidth >= 768) {
             lifeBar.style.width = (player.life * 10) + 'px';
             lifeBar.style.height = 5 + 'px';
         }
-       document.getElementById('lifePoint').innerHTML = player.life;
+        document.getElementById('lifePoint').innerHTML = player.life;
     });
 
     window.onresize = function (currentPlayer) {

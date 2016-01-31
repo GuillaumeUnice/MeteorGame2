@@ -9,6 +9,7 @@ var imageRepository = new function () {
     this.backgroundImg = new Image();
     this.starImg = new Image();
     this.bombImg = new Image();
+    this.minimapImg = new Image();
 
     this.player_up = "../img/ship_up.png";
     this.player_down = "../img/ship_down.png";
@@ -21,6 +22,7 @@ var imageRepository = new function () {
     this.backgroundImg.src = "../img/sky.jpg";
     this.starImg.src = "../img/star.png";
     this.bombImg.src = "../img/bomb.png";
+    this.minimapImg.src = "../img/ship_up.svg";
 };
 
 
