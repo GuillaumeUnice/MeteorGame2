@@ -10,6 +10,7 @@ var imageRepository = new function () {
     this.starImg = new Image();
     this.bombImg = new Image();
     this.minimapImg = new Image();
+    this.objectImg = new Image();
 
     this.player_up = "../img/ship_up.png";
     this.player_down = "../img/ship_down.png";
@@ -25,29 +26,6 @@ var imageRepository = new function () {
     this.minimapImg.src = "../img/ship_up.svg";
 };
 
-
-function drawCircle(centerX, centerY, radius, sides) {
-    graph.globalAlpha = 1;
-
-    var theta = 0;
-    var x = 0;
-    var y = 0;
-
-    graph.beginPath();
-
-    for (var i = 0; i < sides; i++) {
-        theta = (i / sides) * 2 * Math.PI;
-        x = centerX + radius * Math.sin(theta);
-        y = centerY + radius * Math.cos(theta);
-        graph.lineTo(x, y);
-    }
-
-    graph.closePath();
-    graph.stroke();
-    graph.fill();
-}
-
-
 function drawObject(object) {
     var objectSize = 80;
     if (screenWidth >= 320 && screenWidth <= 1024) {
@@ -56,10 +34,11 @@ function drawObject(object) {
 
     console.log($(window).width());
 
-    var img = new Image();
-    img.src = object.imageUrl;
+    imageRepository.objectImg.src = object.imageUrl;
+
     graph.globalAlpha = 1;
-    graph.drawImage(img, object.x - player.x + screenWidth / 2 + 100, object.y - player.y + screenHeight / 2 + 100, objectSize, objectSize);
+
+    graph.drawImage(imageRepository.objectImg, object.x - player.x + screenWidth / 2 + 100, object.y - player.y + screenHeight / 2 + 100, objectSize, objectSize);
 
 }
 
