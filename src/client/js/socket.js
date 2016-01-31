@@ -2,6 +2,15 @@
  * All the matters related to the socket's responses
  * @param socket
  */
+var soundRepository = new function () {
+
+    this.bulletSound = new Audio('../sounds/bullet.mp3');
+    this.dropBulletSound = new Audio('../sounds/dropBullet.mp3');
+    this.lifeSound = new Audio('../sounds/life.mp3');
+    this.loseLifeSound = new Audio('../sounds/looseLife.mp3');
+
+};
+
 function setupSocket(socket) {
 
     // Handle error.
@@ -168,14 +177,14 @@ function setupSocket(socket) {
     //A DEPLACER
     //Gestion of the lift barre
     socket.on('wound', function (currentPlayer) {
-
+        var audio;
         if (currentPlayer.life > player.life) {
             console.log("Animation gain de vie");
-            var audio = new Audio('../sounds/life.mp3');
+            audio = new Audio('../sounds/life.mp3');
             audio.play();
         }
         else if (currentPlayer.life < player.life) {
-            var audio = new Audio('../sounds/looseLife.mp3');
+            audio = new Audio('../sounds/looseLife.mp3');
             audio.play();
             document.getElementById('blood').className = "fadeIn";
             document.getElementById('blood').style.display = "block";
