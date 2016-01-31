@@ -99,12 +99,12 @@ div {
     color: white;
     text-align: center;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
-    background: #2ecc71;
+    background: #000000;
     border: 0;
-    border-bottom: 2px solid #28be68;
+    border-bottom: 2px solid #000000;
     cursor: pointer;
-    -webkit-box-shadow: inset 0 -2px #28be68;
-    box-shadow: inset 0 -2px #28be68;
+    -webkit-box-shadow: inset 0 -2px #000000;
+    box-shadow: inset 0 -2px #000000;
     border-radius: 5px;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
@@ -113,7 +113,7 @@ div {
 
 #startButton:active, #startButton:hover {
     top: 1px;
-    background: #55D88B;
+    background: #000000;
     outline: none;
     -webkit-box-shadow: none;
     box-shadow: none;
@@ -126,6 +126,10 @@ div {
     -o-transition: max-height 1s;
     transition: max-height 1s;
     overflow: hidden;
+}
+
+.img-center {
+    margin: 0 auto;
 }
 
 #startMenu h3 {

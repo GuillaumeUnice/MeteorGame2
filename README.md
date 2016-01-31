@@ -1,4 +1,4 @@
-Vessel control
+PolySpace Ship
 ==============
 
 A vessel control game based on Agar.io.
