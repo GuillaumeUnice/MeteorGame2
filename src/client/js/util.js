@@ -13,6 +13,10 @@ var MAX_SM_WIDTH = 767;
 var MIN_MD_WIDTH = 768;
 var MAX_MD_WIDTH = 1024;
 
+var MAX_ASSET = 100;
+var BAR_WIDTH = 500;
+var BAR_HEIGHT = 150;
+
 var socket;
 var reason;
 var playerName;
@@ -88,11 +92,11 @@ var updateLifeBar = function () {
     var lifeBar = document.getElementById('lifeBar');
 
     if (onSmartphone()) {
-        lifeBar.style.height = (player.life * 150 / 100) + 'px';
+        lifeBar.style.height = (player.life * BAR_HEIGHT / MAX_ASSET) + 'px';
         lifeBar.style.width = '5px';
     }
     if (onDesktop()) {
-        lifeBar.style.width = (player.life * 500 / 100) + 'px';
+        lifeBar.style.width = (player.life * BAR_WIDTH / MAX_ASSET) + 'px';
         lifeBar.style.height = '5px';
     }
     document.getElementById('lifePoint').innerHTML = player.life;
@@ -105,11 +109,11 @@ var updateMunitionBar = function () {
     var munitionBar = document.getElementById('munitionBar');
 
     if (onSmartphone()) {
-        munitionBar.style.height = (player.munitions * 150 / 100) + 'px';
+        munitionBar.style.height = (player.munitions * BAR_HEIGHT / MAX_ASSET) + 'px';
         munitionBar.style.width = '5px'
     }
     if (onDesktop()) {
-        munitionBar.style.width = (player.munitions * 500 / 100) + 'px';
+        munitionBar.style.width = (player.munitions * BAR_WIDTH / MAX_ASSET) + 'px';
         munitionBar.style.height = '5px';
     }
 

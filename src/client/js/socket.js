@@ -70,7 +70,7 @@ function setupSocket(socket) {
         leaderboard = data.leaderboard;
         miniMapFrame.clearRect(0, 0, gameWidth, gameHeight);
 
-        if (screenWidth >= 320 && screenWidth <= 767) {
+        if (onSmartphone()) {
             pictoWidth = pictoHeight = 30;
         }
         for (var i = 0; i < leaderboard.length; i++) {
