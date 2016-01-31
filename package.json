@@ -1,7 +1,7 @@
 {
-  "name": "Vessel",
+  "name": "PolySpaceShip",
   "version": "1.0.0",
-  "description": "A simple vessel control game",
+  "description": "A simple space ship control game",
   "main": "server/server.js",
   "scripts": {
     "build": "gulp build",

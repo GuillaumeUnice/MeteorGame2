@@ -53,7 +53,9 @@ function drawObject(object) {
     if (screenWidth >= 320 && screenWidth <= 1024) {
         objectSize = 30;
     }
-    console.log($(window).width())
+
+    console.log($(window).width());
+
     var img = new Image();
     img.src = object.imageUrl;
     graph.globalAlpha = 1;
