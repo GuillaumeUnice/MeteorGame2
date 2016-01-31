@@ -119,7 +119,6 @@ function onPointerDown(e) {
 }
 
 function onPointerMove(e) {
-    console.log('Pointer move');
     if (_pressed) {
 
 
@@ -155,16 +154,14 @@ function onPointerMove(e) {
         }
 
 
-        console.log((right() ? 'Right' : '') + ( left() ? 'Left' : '' ) + (up() ? 'Up' : '') + (down() ? 'Down' : ''));
-
         target.x = e.clientX - screenWidth / 2;
         target.y = e.clientY - screenHeight / 2;
+
         directionLock = true;
     }
 }
 
 function onPointerUp(e) {
-    console.log('Pointer up');
     _pressed = false;
 
     if (leftPointerID == e.pointerId) {
@@ -172,7 +169,6 @@ function onPointerUp(e) {
         leftVector.reset(0, 0);
 
     }
-
 
     leftVector.reset(0, 0);
     if (!_stationaryBase) {
@@ -225,8 +221,6 @@ var left = function () {
 };
 
 function setupCanvas() {
-    //canvas = document.getElementById('gameArea');
-    //c = canvas.getContext('2d');
     resetCanvas();
     graph.strokeStyle = "#ffffff";
     graph.lineWidth = 2;

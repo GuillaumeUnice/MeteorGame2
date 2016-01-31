@@ -13,14 +13,13 @@ var MAX_SM_WIDTH = 767;
 var MIN_MD_WIDTH = 768;
 var MAX_MD_WIDTH = 1024;
 
-
-var askingPlayer = false;
+var socket;
+var reason;
 var playerName;
 var playerType;
 var playerNameInput = document.getElementById('playerNameInput');
-var socket;
+var askingPlayer = false;
 var connectedToOthers = false;
-var reason;
 var reenviar = true;
 var borderDraw = true;
 var animLoopHandle;
