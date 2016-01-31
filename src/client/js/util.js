@@ -82,29 +82,51 @@ var graph = gameCanvas.getContext('2d');
 var miniMap = document.getElementById("minimap");
 var miniMapFrame = miniMap.getContext("2d");
 
-
-/**
- * ### Functions
- *
- */
-
 /**
  *
  * @param type
  */
-var updatePoints = function (type) {
-    switch (type) {
 
-        case 'life' :
-            document.getElementById('lifePoint').innerHTML = player.life;
-            break;
-        case 'munition' :
-            document.getElementById('munitionPoint').innerHTML = player.munitions;
-            break;
-        case  'all' :
-        default :
-            document.getElementById('munitionPoint').innerHTML = player.munitions;
-            document.getElementById('lifePoint').innerHTML = player.life;
-            break;
+var updateLifeBar = function () {
+    var lifeBar = document.getElementById('lifeBar');
+
+    if (screenWidth >= 320 && screenWidth <= 767) {
+        lifeBar.style.height = (player.life * 150 / 100) + 'px';
+        lifeBar.style.width = '5px';
     }
+    if (screenWidth >= 768) {
+        lifeBar.style.width = (player.life * 500 / 100) + 'px';
+        lifeBar.style.height = '5px';
+    }
+
+    document.getElementById('lifePoint').innerHTML = player.life;
+
+};
+var updateMunitionBar = function () {
+    var munitionBar = document.getElementById('munitionBar');
+
+    if (screenWidth >= 320 && screenWidth <= 767) {
+        munitionBar.style.height = (player.munitions * 150 / 100) + 'px';
+        munitionBar.style.width = '5px'
+    }
+    if (screenWidth >= 768) {
+        munitionBar.style.width = (player.munitions * 500 / 100) + 'px';
+        munitionBar.style.height = '5px';
+    }
+
+    document.getElementById('munitionPoint').innerHTML = player.munitions;
+
+};
+
+var updateLife = function () {
+    updateLifeBar();
+};
+
+var updateMunition = function () {
+    updateMunitionBar();
+};
+
+var updatePoints = function () {
+    updateLifeBar();
+    updateMunitionBar();
 };

@@ -228,7 +228,7 @@ Media queries for tablets
         font-size: 15px;
     }
 
-    #munitionsBar {
+    #munitionBar {
         position: absolute;
         left: 0;
         top: 150px;
@@ -343,7 +343,7 @@ When we use the video projector
         background-color: #000000;
     }
 
-    #munitionsBar {
+    #munitionBar {
         position: absolute;
         left: 20%;
         right: 20%;
@@ -472,7 +472,7 @@ Media queries for desktop
         bottom: 10px;
     }
 
-    #munitionsBar {
+    #munitionBar {
         position: absolute;
         left: 20%;
         right: 20%;
@@ -536,7 +536,7 @@ Media queries for desktop
 
     }
 
-    #munitionsBar {
+    #munitionBar {
         bottom: 10%;
 
     }

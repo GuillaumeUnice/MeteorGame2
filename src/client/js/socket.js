@@ -3,7 +3,6 @@
  * @param socket
  */
 
-
 /**
  * instantiates once for all the different sounds that will be used throughout the game.
  *  @author Falou
@@ -18,12 +17,15 @@ var soundRepository = new function () {
 
 };
 
-
 /**
  * Handles the different exchange cases between client and server
  * @param socket
  */
 function setupSocket(socket) {
+
+    window.onresize = function (currentPlayer) {
+        updateBars();
+    };
 
     // Handle error.
     socket.on('connect_failed', function () {
@@ -44,10 +46,7 @@ function setupSocket(socket) {
         player.screenWidth = screenWidth;
         player.screenHeight = screenHeight;
         player.target = target;
-        /*
-         document.getElementById('munitionPoint').innerHTML = player.munitions;
-         document.getElementById('lifePoint').innerHTML = player.life;
-         */
+
         updatePoints();
 
         socket.emit('gotit', player);
@@ -65,10 +64,11 @@ function setupSocket(socket) {
     });
 
     socket.on('leaderboard', function (data) {
-        leaderboard = data.leaderboard;
         var status = '<span class="title">Connected</span>';
-        miniMapFrame.clearRect(0, 0, gameWidth, gameHeight);
         var pictoWidth = 16, pictoHeight = 16;
+
+        leaderboard = data.leaderboard;
+        miniMapFrame.clearRect(0, 0, gameWidth, gameHeight);
 
         if (screenWidth >= 320 && screenWidth <= 767) {
             pictoWidth = pictoHeight = 30;
@@ -133,7 +133,6 @@ function setupSocket(socket) {
         fireFood = massList;
     });
 
-
     // Death.
     socket.on('RIP', function () {
         gameStart = false;
@@ -150,39 +149,16 @@ function setupSocket(socket) {
     });
 
     //Bullet bar, lost bullet
-    socket.on('fire', function (players) {
-
-        var munitionBar = document.getElementById('munitionsBar');
-        console.log(munitionBar.style.height);
-        if (screenWidth >= 320 && screenWidth <= 767) {
-            munitionBar.style.height = (players.munitions * 150 / 100) + 'px';
-            munitionBar.style.width = 5 + 'px';
-        }
-        if (screenWidth >= 768) {
-            munitionBar.style.width = (players.munitions * 10) + 'px';
-            munitionBar.style.height = 5 + 'px';
-        }
+    socket.on('fire', function (player) {
         soundRepository.bulletSound.play();
-        document.getElementById('munitionPoint').innerHTML = players.munitions;
+        updateMunition();
     });
 
     //Bullet bar, add bullet
     socket.on('dropBullet', function (players) {
         //The munitionBar
-        var munitionBar = document.getElementById('munitionsBar');
-        console.log(munitionBar.style.height);
-        if (screenWidth >= 320 && screenWidth <= 767) {
-            munitionBar.style.height = (players.munitions * 150 / 100) + 'px';
-            munitionBar.style.width = 5 + 'px';
-        }
-        if (screenWidth >= 768) {
-            munitionBar.style.width = (players.munitions * 10) + 'px';
-            munitionBar.style.height = 5 + 'px';
-        }
-
         soundRepository.dropBulletSound.play();
-
-        document.getElementById('munitionPoint').innerHTML = players.munitions;
+        updateMunition();
     });
 
     //A DEPLACER
@@ -205,45 +181,9 @@ function setupSocket(socket) {
         }
 
         player.life = currentPlayer.life;
-
-        console.log(player.life);
-        var lifeBar = document.getElementById('lifeBar');
-        if (screenWidth >= 320 && screenWidth <= 767) {
-            lifeBar.style.height = (player.life * 150 / 100) + 'px';
-            lifeBar.style.width = 5 + 'px';
-        }
-        if (screenWidth >= 768) {
-            lifeBar.style.width = (player.life * 10) + 'px';
-            lifeBar.style.height = 5 + 'px';
-        }
-        document.getElementById('lifePoint').innerHTML = player.life;
+        updateLife();
     });
 
-    window.onresize = function (currentPlayer) {
-
-        // partie munition
-
-        var munitionBar = document.getElementById('munitionsBar');
-        if (screenWidth >= 320 && screenWidth <= 767) {
-            munitionBar.style.height = (player.munitions * 150 / 100) + 'px';
-            munitionBar.style.width = 5 + 'px'
-        }
-        if (screenWidth >= 768) {
-            munitionBar.style.width = (player.munitions * 500 / 100) + 'px';
-            munitionBar.style.height = 5 + 'px';
-        }
-
-        var lifeBar = document.getElementById('lifeBar');
-        if (screenWidth >= 320 && screenWidth <= 767) {
-            lifeBar.style.height = (player.life * 150 / 100) + 'px';
-            lifeBar.style.width = '5';
-        }
-        if (screenWidth >= 768) {
-            lifeBar.style.width = (player.life * 500 / 100) + 'px';
-            lifeBar.style.height = '5';
-        }
-
-    };
     socket.on('proposeJoin', function (currentPlayer) {
         if (!connectedToOthers) {
             $('#regroup').css("visibility", "hidden");
@@ -283,11 +223,9 @@ function setupSocket(socket) {
     });
 }
 
-
 function resize() {
     player.screenWidth = gameCanvas.width = screenWidth = playerType == 'player' ? window.innerWidth : gameWidth;
     player.screenHeight = gameCanvas.height = screenHeight = playerType == 'player' ? window.innerHeight : gameHeight;
     if (socket)
         socket.emit('windowResized', {screenWidth: screenWidth, screenHeight: screenHeight});
 }
-
