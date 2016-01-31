@@ -73,20 +73,6 @@ function drawTouch() {
             graph.stroke();
 
         }
-        //graph.globalAlpha = 1;
-
-        /*else {
-         graph.beginPath();
-         graph.fillStyle = "black";
-         // graph.fillText("type : " + pointer.type + " id : " + pointer.identifier + " x:" + pointer.x +
-         //   " y:" + pointer.y, pointer.x + 30, pointer.y - 30);
-
-         graph.beginPath();
-         graph.strokeStyle = "red";
-         graph.lineWidth = "6";
-         graph.arc(pointer.x, pointer.y, 40, 0, Math.PI * 2, true);
-         graph.stroke();
-         }*/
     });
 
     requestAnimFrame(drawTouch);
@@ -108,11 +94,7 @@ function givePointerType(event) {
 
 function onPointerDown(e) {
     e.preventDefault();
-    console.log('Pointer down + Fire');
     _pressed = true;
-
-    socket.emit('1');
-    reenviar = false;
 
     var newPointer = {identifier: e.pointerId, x: e.clientX, y: e.clientY, type: givePointerType(e)};
     if ((leftPointerID < 0) && (e.clientX < halfWidth)) {
