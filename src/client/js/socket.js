@@ -150,8 +150,7 @@ function setupSocket(socket) {
             munitionBar.style.width = (players.munitions * 10) + 'px';
             munitionBar.style.height = 5 + 'px';
         }
-        var audio = new Audio('../sounds/bullet.mp3');
-        audio.play();
+        soundRepository.bulletSound.play();
         document.getElementById('munitionPoint').innerHTML = players.munitions;
     });
 
@@ -169,8 +168,8 @@ function setupSocket(socket) {
             munitionBar.style.height = 5 + 'px';
         }
 
-        var audio = new Audio('../sounds/dropBullet.mp3');
-        audio.play();
+        soundRepository.dropBulletSound.play();
+
         document.getElementById('munitionPoint').innerHTML = players.munitions;
     });
 
@@ -180,12 +179,12 @@ function setupSocket(socket) {
         var audio;
         if (currentPlayer.life > player.life) {
             console.log("Animation gain de vie");
-            audio = new Audio('../sounds/life.mp3');
-            audio.play();
+            soundRepository.lifeSound.play();
+
         }
         else if (currentPlayer.life < player.life) {
-            audio = new Audio('../sounds/looseLife.mp3');
-            audio.play();
+            soundRepository.loseLifeSound.play();
+
             document.getElementById('blood').className = "fadeIn";
             document.getElementById('blood').style.display = "block";
             setTimeout(function () {
