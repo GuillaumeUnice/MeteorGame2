@@ -20,11 +20,11 @@ gulp.task('lint', function () {
         .pipe(jshint({
             esnext: true
         }))
-        .pipe(jshint.reporter('default', { verbose: true}))
+        .pipe(jshint.reporter('default', {verbose: true}))
         .pipe(jshint.reporter('fail'));
 });
 
-gulp.task('build-client', [ 'move-client'], function () {
+gulp.task('build-client', ['move-client'], function () {
     return gulp.src(['src/client/js/app.js'])
         .pipe(webpack(require('./webpack.config.js')))
         //.pipe(uglify())

@@ -1,6 +1,6 @@
 {
-  "name": "Vessel control",
-  "description": "A simple game for vessel control",
+  "name": "PolySpace ship",
+  "description": "Have fun, fight against other space ships",
   "scripts": {
     "build": "gulp build",
     "start": "gulp run",

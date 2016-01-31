@@ -1,5 +1,5 @@
 {
-  "name": "Vessel",
+  "name": "PolySpace Ship",
   "description": "A simple game designed for vessel fighting based on Agar.Io",
   "main": "server/server.js",
   "authors": [
@@ -10,7 +10,7 @@
   ],
   "license": "MIT",
   "keywords": [
-    "Vessels",
+    "PolySpace Ships",
     "Game",
     "Borg",
     "Chabert",
