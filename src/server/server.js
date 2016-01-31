@@ -588,7 +588,7 @@ function moveloop() {
 
 }
 
-function gameLoop() {
+function gameloop() {
     if (!endGame) {
 
         if (users.length > 0) {
@@ -804,7 +804,7 @@ function sendUpdates() {
 
 /*.........................HERE WE CALL ALL THE FUNCTION ABOVE...........................................................................................*/
 setInterval(moveloop, 1000 / 60);
-setInterval(gameLoop, 1000);
+setInterval(gameloop, 1000);
 setInterval(sendUpdates, 1000 / gameSettings.networkUpdateFactor);
 
 /*........................................ Don't touch, IP configurations..........................................*/
