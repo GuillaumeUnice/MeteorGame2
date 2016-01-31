@@ -21,32 +21,6 @@ div {
     -ms-user-select: none; /* IE10+ */
 }
 
-.action-icon {
-    cursor: pointer;
-}
-
-#regroup {
-    position: fixed;
-    background-image: url("../img/regroup.png");
-    top: 40%;
-    right: 3%;
-    width: 80px;
-    height: 70px;
-    background-size: 100% 100%;
-}
-
-#acceptJoin {
-    color: #00FF00;
-}
-
-#rejectJoin {
-    color: #ff0000;
-}
-
-.btn-status {
-    color: #000000;
-}
-
 #status .me {
     color: #00FF00;
     font-size: 16px;
@@ -123,10 +97,6 @@ div {
 
 }
 
-.img-center {
-    margin: 0 auto;
-}
-
 #startMenu .input-error {
     color: red;
     opacity: 0;
@@ -140,6 +110,36 @@ div {
     opacity: 0;
 }
 
+.action-icon {
+    cursor: pointer;
+}
+
+#regroup {
+    position: fixed;
+    background-image: url("../img/regroup.png");
+    top: 40%;
+    right: 3%;
+    width: 80px;
+    height: 70px;
+    background-size: 100% 100%;
+}
+
+#acceptJoin {
+    color: #00FF00;
+}
+
+#rejectJoin {
+    color: #ff0000;
+}
+
+.btn-status {
+    color: #000000;
+}
+
+.img-center {
+    margin: 0 auto;
+}
+
 #minimap {
     background-color: #000000;
     border: 3px solid #FF0000;
@@ -151,6 +151,36 @@ div {
 }
 
 #panel-message {
+    display: none;
+}
+
+#blood {
+    display: none;
+    z-index: 9999;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background: url('../img/blood.png') no-repeat fixed center;
+
+}
+
+.fadeIn {
+
+    animation: damage_taken 1s infinite;
+}
+
+@keyframes damage_taken {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.hide {
     display: none;
 }
 
@@ -531,34 +561,3 @@ Media queries for desktop
     }
 
 }
-
-#blood {
-    display: none;
-    z-index: 9999;
-    position: absolute;
-    top: 0;
-    right: 0;
-    left: 0;
-    bottom: 0;
-    background: url('../img/blood.png') no-repeat fixed center;
-
-}
-
-.fadeIn {
-
-    animation: damage_taken 1s infinite;
-}
-
-@keyframes damage_taken {
-    0% {
-        opacity: 0;
-    }
-    100% {
-        opacity: 1;
-    }
-}
-
-.hide {
-    display: none;
-}
-
