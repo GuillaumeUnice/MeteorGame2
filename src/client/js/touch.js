@@ -1,6 +1,18 @@
 /**
  * Created by Falou on 29/01/2016. based on Seb's joystick for Ipad. It handles the moves on digital devices mainly phones or tablets
  */
+var gameCanvas,
+    graph, // c is the canvas' context 2D
+    container,
+    halfWidth,
+    halfHeight,
+    leftPointerID = -1,
+    leftPointerPos = new Vector2(0, 0),
+    leftPointerStartPos = new Vector2(0, 0),
+    leftVector = new Vector2(0, 0);
+
+var pointers, _baseX = 0, _stickX = 0, _baseY = 0, _stickY = 0, _pressed = false, _stationaryBase = false;
+
 // shim layer with setTimeout fallback
 window.requestAnimFrame = (function () {
     return window.requestAnimationFrame ||
@@ -12,34 +24,12 @@ window.requestAnimFrame = (function () {
             window.setTimeout(callback, 1000 / 60);
         };
 })();
-
-var gameCanvas,
-    graph, // c is the canvas' context 2D
-    container,
-    halfWidth,
-    halfHeight,
-    leftPointerID = -1,
-    leftPointerPos = new Vector2(0, 0),
-    leftPointerStartPos = new Vector2(0, 0),
-    leftVector = new Vector2(0, 0);
-
-var pointers; // collections of pointers
-
-document.addEventListener("DOMContentLoaded", init);
-
 window.onorientationchange = resetCanvas;
 window.onresize = resetCanvas;
 
-var _baseX, _stickX;
-var _baseY, _stickY;
-var _pressed = false;
+document.addEventListener("DOMContentLoaded", init);
 
-var _stationaryBase = false;
-
-_baseX = stickX = _baseY = _stickY = 0;
 function init() {
-
-
     setupCanvas();
     pointers = new Collection();
     gameCanvas.addEventListener('pointerdown', onPointerDown, false);
@@ -49,10 +39,7 @@ function init() {
     requestAnimFrame(drawTouch);
 }
 
-function resetCanvas(e) {
-    // resize the canvas - but remember - this clears the canvas too.
-    //gameCanvas.width = screenWidth;
-    //gameCanvas.height = screenHeight;
+function resetCanvas() {
 
     halfWidth = gameCanvas.width / 2;
     halfHeight = gameCanvas.height / 2;
@@ -65,18 +52,6 @@ function drawTouch() {
     graph.clearRect(0, 0, screenWidth, screenHeight);
     graph.fillStyle = "#000000";
     graph.fillRect(0, 0, screenWidth, screenHeight);
-
-    /*
-
-     with (player) {
-     if (x < 0) x = gameCanvas.width;
-     else if (x > gameCanvas.width) x = 0;
-     if (y < 0) y = gameCanvas.height;
-     else if (y > gameCanvas.height) y = 0;
-     }*/
-
-    //   ship.draw();
-
 
     pointers.forEach(function (pointer) {
         graph.globalAlpha = 0.7;

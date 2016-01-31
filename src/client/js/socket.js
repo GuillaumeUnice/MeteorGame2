@@ -176,11 +176,9 @@ function setupSocket(socket) {
     //A DEPLACER
     //Gestion of the lift barre
     socket.on('wound', function (currentPlayer) {
-        var audio;
         if (currentPlayer.life > player.life) {
             console.log("Animation gain de vie");
             soundRepository.lifeSound.play();
-
         }
         else if (currentPlayer.life < player.life) {
             soundRepository.loseLifeSound.play();
@@ -249,7 +247,6 @@ function setupSocket(socket) {
     });
 
     socket.on('teamFull', function (superVessel) {
-        var isIn = false;
         mySuperVessel = superVessel;
 
         mySuperVessel.forEach(function (vessel) {
