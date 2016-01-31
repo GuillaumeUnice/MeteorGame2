@@ -114,7 +114,7 @@ function drawPlayers(order) {
                 $('#message-info').text('You are now linked to a super vessel');
 
                 if ((screenWidth >= 320 && screenWidth <= 767)) {
-                    $('#feed').addClass('regroup-sm');
+                    $('#fire').addClass('regroup-sm');
 
                     var miniM = $('#minimap');
                     miniM.removeClass('navbar-collapse collapse');
@@ -123,7 +123,7 @@ function drawPlayers(order) {
                 }
 
                 if (window.orientation === 90) {
-                    $('#feed').addClass('regroup-md');
+                    $('#fire').addClass('regroup-md');
 
                     var miniM2 = $('#minimap');
                     miniM2.removeClass('navbar-collapse collapse');

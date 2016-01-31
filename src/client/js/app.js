@@ -85,7 +85,7 @@ window.onload = function () {
 /**
  * We will use this as gunshots
  */
-$("#feed").click(function () {
+$("#fire").click(function () {
     socket.emit('1');
     reenviar = false;
 });

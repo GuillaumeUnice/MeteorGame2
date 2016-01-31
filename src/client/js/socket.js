@@ -2,6 +2,13 @@
  * All the matters related to the socket's responses
  * @param socket
  */
+
+
+/**
+ * instantiates once for all the different sounds that will be used throughout the game.
+ *  @author Falou
+ * @type {soundRepository}
+ */
 var soundRepository = new function () {
 
     this.bulletSound = new Audio('../sounds/bullet.mp3');
@@ -11,6 +18,11 @@ var soundRepository = new function () {
 
 };
 
+
+/**
+ * Handles the different exchange cases between client and server
+ * @param socket
+ */
 function setupSocket(socket) {
 
     // Handle error.
@@ -50,7 +62,7 @@ function setupSocket(socket) {
     });
 
     socket.on('leaderboard', function (data) {
-        leaderBoard = data.leaderboard;
+        leaderboard = data.leaderboard;
         var status = '<span class="title">Connected</span>';
         miniMapFrame.clearRect(0, 0, gameWidth, gameHeight);
         var pictoWidth = 16, pictoHeight = 16;
@@ -65,12 +77,11 @@ function setupSocket(socket) {
                 if (leaderboard[i].name.length !== 0) {
                     status += '<span class="me">' + (i + 1) + '. ' + leaderboard[i].name + "</span>";
                     miniMapFrame.fillStyle = "#00FF00";
-
                 } else {
                     status += '<span class="me">' + (i + 1) + ". An unnamed cell</span>";
                 }
             }
-            //The point in miniMap that present the other players
+            //The point in miniMap that represents the other players
             else {
                 if (leaderboard[i].name.length !== 0) {
                     status += (i + 1) + '. ' + leaderboard[i].name;
@@ -83,7 +94,6 @@ function setupSocket(socket) {
             if (!leaderboard[i].isInSuperVessel || leaderboard[i].isDisplayer) {
                 if (leaderboard[i].isDisplayer)
                     miniMapFrame.fillStyle = "#FFFFFF";
-
                 miniMapFrame.fillRect(0.98 * miniMap.width * leaderboard[i].x / gameWidth, 0.97 * miniMap.height * leaderboard[i].y / gameHeight, pictoWidth, pictoHeight);
             }
         }

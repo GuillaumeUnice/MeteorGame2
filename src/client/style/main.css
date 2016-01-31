@@ -201,7 +201,7 @@ Media queries for tablets
         height: 100px;
     }
 
-    #feed {
+    #fire {
         position: fixed;
         bottom: 5%;
         right: 10px;
@@ -287,7 +287,7 @@ Media queries for tablets
         right: 25%;
     }
 
-    #feed.regroup-sm {
+    #fire.regroup-sm {
         width: 100px;
         height: 100px;
     }
@@ -507,7 +507,7 @@ Media queries for desktop
 
 @media only screen  and (min-width: 768px) and (orientation: landscape) {
 
-    #feed {
+    #fire {
         position: fixed;
         bottom: 5%;
         right: 10px;
@@ -546,7 +546,7 @@ Media queries for desktop
 
     }
 
-    #feed.regroup-md {
+    #fire.regroup-md {
         visibility: visible;
         display: block;
         width: 150px;
