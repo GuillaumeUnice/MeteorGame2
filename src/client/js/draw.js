@@ -82,7 +82,6 @@ function drawPlayers(order) {
             y: cellCurrent.y - start.y
         };
 
-
         var nameCell = "";
         if (typeof userCurrent.id == "undefined") {
             nameCell = player.name;
@@ -134,7 +133,6 @@ function drawPlayers(order) {
             }
 
             if (userCurrent.isDisplayer) {
-
                 $('#message-info').text('You are now linked to a super vessel that will be displayed here');
                 //if (screenWidth >= 1200) {
                 $('#minimap').addClass('regroup-ds');
@@ -142,25 +140,13 @@ function drawPlayers(order) {
                 mySuperVessel.forEach(function (vessel) {
                     graph.drawImage(imageRepository.otherPlayerImg, vessel.x * screenWidth / gameWidth, vessel.y * screenHeight / gameHeight, playerImgWidth, playerImgHeight);
                     graph.fillText(vessel.name, vessel.x * screenWidth / gameWidth + playerImgWidth / 2, vessel.y * screenHeight / gameHeight);
-
                 });
-
             }
         }
-
-
     }
-
-    // graph.globalAlpha = 0.1;
-
 }
 
-function valueInRange(min, max, value) {
-    return Math.min(max, Math.max(min, value));
-}
-
-
-function drawgrid() {
+function drawGrid() {
 
     //   graph.drawImage(imageRepository.backgroundImg,0,0, screenWidth, screenHeight);
 
@@ -187,12 +173,9 @@ function drawgrid() {
         graph.drawImage(imageRepository.starImg, Math.random() * screenWidth, Math.random() * screenHeight, Math.random() * 20, Math.random() * 20);
         graph.globalAlpha = 0.1;
     }
-
-    ///graph.globalAlpha = 1;
-
 }
 
-function drawborder() {
+function drawBorder() {
     graph.lineWidth = 1;
     graph.strokeStyle = borderColor;
 

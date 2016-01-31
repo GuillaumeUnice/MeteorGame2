@@ -51,7 +51,7 @@ function gameLoop() {
             graph.fillStyle = '#000000';
             graph.fillRect(0, 0, screenWidth, screenHeight);
 
-            drawgrid();
+            drawGrid();
             if (object !== 'undefined') {
                 for (var x = 0; x < object.length; x++) {
                     drawObject(object[x]);
@@ -62,7 +62,7 @@ function gameLoop() {
             fireFood.forEach(drawBullet);
 
             if (borderDraw) {
-                drawborder();
+                drawBorder();
             }
             for (var i = 0; i < users.length; i++) {
                 for (var j = 0; j < users[i].cells.length; j++) {
