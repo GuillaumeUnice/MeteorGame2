@@ -24,7 +24,7 @@ var soundRepository = new function () {
 function setupSocket(socket) {
 
     window.onresize = function (currentPlayer) {
-        updateBars();
+        updatePoints();
     };
 
     // Handle error.

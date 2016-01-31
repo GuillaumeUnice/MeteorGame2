@@ -75,12 +75,14 @@ function newDirection(direction, list, isAddition) {
 
 // Updates the target according to the directions in the directions array.
 function updateTarget(list) {
-    target = {x: 0, y: 0};
     var directionHorizontal = 0;
     var directionVertical = 0;
+
+    target = {x: 0, y: 0};
+
     for (var i = 0, len = list.length; i < len; i++) {
         if (directionHorizontal === 0) {
-            if (list[i] == KEY_LEFT) directionHorizontal -= Number.MAX_VALUE ;
+            if (list[i] == KEY_LEFT) directionHorizontal -= Number.MAX_VALUE;
             else if (list[i] == KEY_RIGHT) directionHorizontal += Number.MAX_VALUE;
         }
         if (directionVertical === 0) {

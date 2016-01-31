@@ -5,10 +5,7 @@
 
 var cats = {};
 
-var i = true;
-
-
-function setLeap (frame) {
+function setLeap(frame) {
     frame.hands.forEach(function (hand, index) {
 
         console.log(hand.screenPosition());

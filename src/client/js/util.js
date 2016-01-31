@@ -138,7 +138,7 @@ var onSmartphone = function () {
 
 var onTablet = function () {
     return screenWidth >= MIN_SM_WIDTH && screenWidth <= MAX_MD_WIDTH;
-}
+};
 
 var onDesktop = function () {
     return screenWidth >= MIN_MD_WIDTH;
