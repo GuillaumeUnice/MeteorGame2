@@ -41,6 +41,9 @@ function startGame(type) {
     socket.emit('respawn');
 }
 
+
+
+
 // Checks if the nick chosen contains valid alphanumeric characters (and underscores).
 function validNick() {
     var regex = /^\w*$/;

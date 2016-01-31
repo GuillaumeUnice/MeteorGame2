@@ -1,6 +1,5 @@
-/************
- *Very bad. We apologize. Here are all the global variables we use
- * Command keys
+/***********
+ * Variables
  */
 var KEY_ENTER = 13;
 var KEY_FIREFOOD = 32;
@@ -82,3 +81,30 @@ var gameCanvas = document.getElementById('gameArea');
 var graph = gameCanvas.getContext('2d');
 var miniMap = document.getElementById("minimap");
 var miniMapFrame = miniMap.getContext("2d");
+
+
+/**
+ * ### Functions
+ *
+ */
+
+/**
+ *
+ * @param type
+ */
+var updatePoints = function (type) {
+    switch (type) {
+
+        case 'life' :
+            document.getElementById('lifePoint').innerHTML = player.life;
+            break;
+        case 'munition' :
+            document.getElementById('munitionPoint').innerHTML = player.munitions;
+            break;
+        case  'all' :
+        default :
+            document.getElementById('munitionPoint').innerHTML = player.munitions;
+            document.getElementById('lifePoint').innerHTML = player.life;
+            break;
+    }
+};

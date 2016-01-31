@@ -44,11 +44,14 @@ function setupSocket(socket) {
         player.screenWidth = screenWidth;
         player.screenHeight = screenHeight;
         player.target = target;
-        console.log('Player');
-        console.log(player);
-        document.getElementById('munitionPoint').innerHTML = player.munitions;
-        document.getElementById('lifePoint').innerHTML = player.life;
+        /*
+         document.getElementById('munitionPoint').innerHTML = player.munitions;
+         document.getElementById('lifePoint').innerHTML = player.life;
+         */
+        updatePoints();
+
         socket.emit('gotit', player);
+
         gameStart = true;
 
         gameCanvas.focus();
@@ -97,7 +100,6 @@ function setupSocket(socket) {
                 miniMapFrame.fillRect(0.98 * miniMap.width * leaderboard[i].x / gameWidth, 0.97 * miniMap.height * leaderboard[i].y / gameHeight, pictoWidth, pictoHeight);
             }
         }
-        //status += '<br />Players: ' + data.players;
         document.getElementById('status').innerHTML = status;
     });
 
