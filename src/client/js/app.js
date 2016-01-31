@@ -35,7 +35,7 @@ function startGame(type) {
         setupSocket(socket);
     }
     if (!animLoopHandle) {
-        animloop();
+        animationLoop();
     }
 
     socket.emit('respawn');

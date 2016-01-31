@@ -16,10 +16,9 @@ window.cancelAnimFrame = (function (handle) {
         window.mozCancelAnimationFrame;
 })();
 
-function animloop() {
+function animationLoop() {
 
-    animLoopHandle = window.requestAnimFrame(animloop);
-
+    animLoopHandle = window.requestAnimFrame(animationLoop);
 
     gameLoop();
 
@@ -44,6 +43,8 @@ function gameLoop() {
     }
 
     else if (!disconnected) {
+        var orderMass = [];
+
         /**
          * When the game has started
          */
@@ -65,7 +66,6 @@ function gameLoop() {
             if (borderDraw) {
                 drawborder();
             }
-            var orderMass = [];
             for (var i = 0; i < users.length; i++) {
                 for (var j = 0; j < users[i].cells.length; j++) {
                     orderMass.push({
