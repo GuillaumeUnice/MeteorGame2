@@ -20,7 +20,6 @@ var borderDraw = true;
 var animLoopHandle;
 var spin = -Math.PI;
 var mobile = false;
-var foodSides = 10;
 
 var screenWidth = window.innerWidth;
 var screenHeight = window.innerHeight;
@@ -44,12 +43,6 @@ var backgroundColor = '#010117';
 
 var lineColor = '#000000';
 var borderColor = '#FFFFFF';
-var starColor = '#F2EC65';
-var starNumber = 1000;
-
-var foodConfig = {
-    border: 0
-};
 
 var playerConfig = {
     border: 6,
@@ -82,11 +75,10 @@ var graph = gameCanvas.getContext('2d');
 var miniMap = document.getElementById("minimap");
 var miniMapFrame = miniMap.getContext("2d");
 
+
 /**
  *
- * @param type
  */
-
 var updateLifeBar = function () {
     var lifeBar = document.getElementById('lifeBar');
 
@@ -102,6 +94,10 @@ var updateLifeBar = function () {
     document.getElementById('lifePoint').innerHTML = player.life;
 
 };
+
+/**
+ *
+ */
 var updateMunitionBar = function () {
     var munitionBar = document.getElementById('munitionBar');
 
