@@ -11,7 +11,7 @@ window.requestAnimFrame = (function () {
         };
 })();
 
-window.cancelAnimFrame = (function (handle) {
+window.cancelAnimFrame = (function () {
     return window.cancelAnimationFrame ||
         window.mozCancelAnimationFrame;
 })();
@@ -55,8 +55,8 @@ function gameLoop() {
 
             drawgrid();
             if (object !== 'undefined') {
-                for (var i = 0; i < object.length; i++) {
-                    drawObject(object[i]);
+                for (var x = 0; x < object.length; x++) {
+                    drawObject(object[x]);
                 }
             }
             //  object.forEach(drawObject);
