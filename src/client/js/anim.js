@@ -53,7 +53,7 @@ function gameLoop() {
             graph.fillRect(0, 0, screenWidth, screenHeight);
 
             drawgrid();
-            if (object) {
+            if (object !== 'undefined') {
                 for (var i = 0; i < object.length; i++) {
                     drawObject(object[i]);
                 }
