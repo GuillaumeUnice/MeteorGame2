@@ -14,10 +14,7 @@ exports.addFood = function (toAdd, configuration, food) {
             // Make IDs unique.
             id: ((new Date()).getTime() + '' + food.length) >>> 0,
             x: position.x,
-            y: position.y,
-            radius: radius,
-            mass: Math.random() + 2,
-            hue: Math.round(Math.random() * 360)
+            y: position.y
         });
     }
 };
@@ -31,12 +28,7 @@ exports.addVirus = function (toAdd, configuration, virus) {
         virus.push({
             id: ((new Date()).getTime() + '' + virus.length) >>> 0,
             x: position.x,
-            y: position.y,
-            radius: radius,
-            mass: mass,
-            fill: configuration.virus.fill,
-            stroke: configuration.virus.stroke,
-            strokeWidth: configuration.virus.strokeWidth
+            y: position.y
         });
     }
 };
