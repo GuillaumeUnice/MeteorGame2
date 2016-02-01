@@ -24,6 +24,7 @@ window.requestAnimFrame = (function () {
             window.setTimeout(callback, 1000 / 60);
         };
 })();
+
 window.onorientationchange = resetCanvas;
 window.onresize = resetCanvas;
 
@@ -121,7 +122,6 @@ function onPointerDown(e) {
 function onPointerMove(e) {
     if (_pressed) {
 
-
         if (leftPointerID == e.pointerId) {
             leftPointerPos.reset(e.clientX, e.clientY);
             leftVector.copyFrom(leftPointerPos);
@@ -136,9 +136,6 @@ function onPointerMove(e) {
 
         _stickX = e.clientX;
         _stickY = e.clientY;
-
-
-        console.log('');
 
         if (right) {
             imageRepository.playerImg.src = imageRepository.player_right;
@@ -182,9 +179,11 @@ function onPointerUp(e) {
 function __deltaX() {
     return _stickX - _baseX;
 }
+
 function __deltaY() {
     return _stickY - _baseY;
 }
+
 var right = function () {
     if (_pressed === false)    return false;
     var deltaX = __deltaX();

@@ -1,57 +1,33 @@
 /***********
  * Variables
  */
-var KEY_ENTER = 13;
-var KEY_FIREFOOD = 32;
-var KEY_LEFT = 37;
-var KEY_UP = 38;
-var KEY_RIGHT = 39;
-var KEY_DOWN = 40;
+var KEY_ENTER = 13, KEY_FIREFOOD = 32, KEY_LEFT = 37, KEY_UP = 38, KEY_RIGHT = 39, KEY_DOWN = 40;
 
-var MIN_SM_WIDTH = 320;
-var MAX_SM_WIDTH = 767;
-var MIN_MD_WIDTH = 768;
-var MAX_MD_WIDTH = 1024;
+var MIN_SM_WIDTH = 320, MAX_SM_WIDTH = 767, MIN_MD_WIDTH = 768, MAX_MD_WIDTH = 1024;
 
-var MAX_ASSET = 100;
-var BAR_WIDTH = 500;
-var BAR_HEIGHT = 150;
+var MAX_ASSET = 100, BAR_WIDTH = 500, BAR_HEIGHT = 150;
 
-var socket;
-var reason;
-var playerName;
-var playerType;
+var socket, playerName, playerType;
+
 var playerNameInput = document.getElementById('playerNameInput');
 var askingPlayer = false;
 var connectedToOthers = false;
-var reenviar = true;
+var reSend = true;
 var borderDraw = true;
 var animLoopHandle;
 var spin = -Math.PI;
 var mobile = false;
 
-var screenWidth = window.innerWidth;
-var screenHeight = window.innerHeight;
+var screenWidth = window.innerWidth, screenHeight = window.innerHeight;
 
-var gameWidth = 0;
-var gameHeight = 0;
+var gameWidth = 0, gameHeight = 0;
 
-var life = 0;
+var xoffset = -gameWidth, yoffset = -gameHeight;
 
-var xoffset = -gameWidth;
-var yoffset = -gameHeight;
-
-var gameStart = false;
-var disconnected = false;
-var died = false;
-var kicked = false;
+var gameStart = false, disconnected = false, died = false, kicked = false;
 
 // TODO: Break out into GameControls.
-var continuity = false;
-var backgroundColor = '#010117';
-
-var lineColor = '#000000';
-var borderColor = '#FFFFFF';
+var continuity = false, backgroundColor = '#010117', lineColor = '#000000', borderColor = '#FFFFFF';
 
 var playerConfig = {
     border: 6,
@@ -59,9 +35,7 @@ var playerConfig = {
     textBorder: '#FF0000',
     textBorderSize: 4,
     defaultSize: 30
-};
-
-var player = {
+}, player = {
     id: -1,
     x: screenWidth / 2,
     y: screenHeight / 2,
@@ -69,6 +43,7 @@ var player = {
     screenHeight: screenHeight,
     target: {x: screenWidth / 2, y: screenHeight / 2}
 };
+
 var mySuperVessel = [];
 var foods = [];
 var viruses = [];
@@ -79,11 +54,9 @@ var target = {x: player.x, y: player.y};
 var directionLock = true;
 var directions = [];
 
-var gameCanvas = document.getElementById('gameArea');
-var graph = gameCanvas.getContext('2d');
-var miniMap = document.getElementById("minimap");
-var miniMapFrame = miniMap.getContext("2d");
+var gameCanvas = document.getElementById('gameArea'), miniMap = document.getElementById("minimap");
 
+var graph = gameCanvas.getContext('2d'), miniMapFrame = miniMap.getContext("2d");
 
 /**
  *

@@ -9,12 +9,10 @@
  * @type {soundRepository}
  */
 var soundRepository = new function () {
-
     this.bulletSound = new Audio('../sounds/bullet.mp3');
     this.dropBulletSound = new Audio('../sounds/dropBullet.mp3');
     this.lifeSound = new Audio('../sounds/life.mp3');
     this.loseLifeSound = new Audio('../sounds/looseLife.mp3');
-
 };
 
 /**
@@ -52,7 +50,6 @@ function setupSocket(socket) {
         socket.emit('gotit', player);
 
         gameStart = true;
-
         gameCanvas.focus();
     });
 
@@ -170,7 +167,6 @@ function setupSocket(socket) {
         }
         else if (currentPlayer.life < player.life) {
             soundRepository.loseLifeSound.play();
-
             document.getElementById('blood').className = "fadeIn";
             document.getElementById('blood').style.display = "block";
             setTimeout(function () {

@@ -90,7 +90,7 @@ window.onload = function () {
  */
 $("#fire").click(function () {
     socket.emit('1');
-    reenviar = false;
+    reSend = false;
 });
 
 $("#regroup").click(function () {
