@@ -4,8 +4,8 @@
  */
 // Function called when a key is pressed, will change direction if arrow key.
 function directionDown(event) {
-    var key = event.which || event.keyCode;
 
+    var key = event.which || event.keyCode;
 
     if (directional(key)) {
 
@@ -20,14 +20,9 @@ function directionDown(event) {
                 imageRepository.playerImg.src = imageRepository.player_right;
                 break;
             case KEY_UP:
-                imageRepository.playerImg.src = imageRepository.player_up;
-                break;
-
             default:
                 imageRepository.playerImg.src = imageRepository.player_up;
                 break;
-
-
         }
 
         directionLock = true;
