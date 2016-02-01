@@ -146,3 +146,12 @@ var onTablet = function () {
 var onDesktop = function () {
     return screenWidth >= MIN_MD_WIDTH;
 };
+
+var printMessage = function (message) {
+    graph.fillStyle = '#333333';
+    graph.fillRect(0, 0, screenWidth, screenHeight);
+    graph.textAlign = 'center';
+    graph.fillStyle = '#FFFFFF';
+    graph.font = 'bold 30px sans-serif';
+    graph.fillText(message, screenWidth / 2, screenHeight / 2);
+};

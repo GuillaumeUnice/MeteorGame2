@@ -26,17 +26,11 @@ function animationLoop() {
  * The game loop
  */
 function gameLoop() {
-
     /**
      * This message is displayed when the player dies
      */
     if (died) {
-        graph.fillStyle = '#333333';
-        graph.fillRect(0, 0, screenWidth, screenHeight);
-        graph.textAlign = 'center';
-        graph.fillStyle = '#FFFFFF';
-        graph.font = 'bold 30px sans-serif';
-        graph.fillText('You died!', screenWidth / 2, screenHeight / 2);
+        printMessage('You died!');
     }
 
     else if (!disconnected) {
@@ -75,21 +69,12 @@ function gameLoop() {
                 return obj1.mass - obj2.mass;
             });
 
-
             drawPlayers(orderMass);
-
             socket.emit('0', target); // playerSendTarget "Heartbeat".
 
         }
     } else {
-
-        graph.fillStyle = '#333333';
-        graph.fillRect(0, 0, screenWidth, screenHeight);
-        graph.textAlign = 'center';
-        graph.fillStyle = '#FFFFFF';
-        graph.font = 'bold 30px sans-serif';
-        graph.fillText('Disconnected!', screenWidth / 2, screenHeight / 2);
-
+        printMessage('Disconnected!');
     }
 }
 
