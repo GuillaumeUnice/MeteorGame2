@@ -20,8 +20,10 @@ function startGame(type) {
 
     playerName = playerNameInput.value.replace(/(<([^>]+)>)/ig, '').substring(0, 25);
     playerType = type;
-    screenWidth = window.innerWidth;
-    screenHeight = window.innerHeight;
+
+    gameCanvas.width = screenWidth = window.innerWidth;
+    gameCanvas.height = screenHeight = window.innerHeight;
+
     /**
      * When the game starts, the start menu disappears
      * @type {string}
@@ -40,8 +42,6 @@ function startGame(type) {
 
     socket.emit('respawn');
 }
-
-
 
 
 // Checks if the nick chosen contains valid alphanumeric characters (and underscores).
