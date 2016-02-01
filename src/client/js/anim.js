@@ -41,8 +41,7 @@ function gameLoop() {
          */
         if (gameStart) {
 
-            graph.fillStyle = '#000000';
-            graph.fillRect(0, 0, screenWidth, screenHeight);
+
 
             drawGrid();
             if (object !== 'undefined') {

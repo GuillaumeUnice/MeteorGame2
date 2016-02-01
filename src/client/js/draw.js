@@ -141,9 +141,8 @@ function drawPlayers(order) {
 }
 
 function drawGrid() {
-
-    //   graph.drawImage(imageRepository.backgroundImg,0,0, screenWidth, screenHeight);
-
+    graph.fillStyle = '#000000';
+    graph.fillRect(0, 0, screenWidth, screenHeight);
     graph.strokeStyle = '#FFFFFF';
     graph.globalAlpha = 0.08;
 
