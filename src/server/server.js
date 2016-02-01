@@ -724,7 +724,6 @@ function sendUpdates() {
                 return element;
             });
 
-
         var visibleObject = object
             .map(function (visObject) {
                 if (visObject.x > userToUpdate.x - userToUpdate.screenWidth / 2 &&
@@ -755,10 +754,10 @@ function sendUpdates() {
         var visibleCells = users
             .map(function (user) {
                 for (var z = 0; z < user.cells.length; z++) {
-                    if (user.cells[z].x + user.cells[z].radius > userToUpdate.x - userToUpdate.screenWidth / 2 - 20 &&
-                        user.cells[z].x - user.cells[z].radius < userToUpdate.x + userToUpdate.screenWidth / 2 + 20 &&
-                        user.cells[z].y + user.cells[z].radius > userToUpdate.y - userToUpdate.screenHeight / 2 - 20 &&
-                        user.cells[z].y - user.cells[z].radius < userToUpdate.y + userToUpdate.screenHeight / 2 + 20) {
+                    if (user.cells[z].x > userToUpdate.x - userToUpdate.screenWidth / 2 - 20 &&
+                        user.cells[z].x < userToUpdate.x + userToUpdate.screenWidth / 2 + 20 &&
+                        user.cells[z].y > userToUpdate.y - userToUpdate.screenHeight / 2 - 20 &&
+                        user.cells[z].y < userToUpdate.y + userToUpdate.screenHeight / 2 + 20) {
                         z = user.cells.lenth;
                         if (user.id !== userToUpdate.id) {
                             return {
