@@ -635,8 +635,8 @@ function gameloop() {
         }
     }
     else {
-        users.forEach(function (u) {
-            sockets[u.id].emit('gameOver');
+        users.forEach(function (user) {
+            sockets[user.id].emit('gameOver');
         });
         endGame = false;
     }
@@ -646,8 +646,8 @@ function gameloop() {
 
 /* TODO : exporter cette fonction dans un autre fichier, mais pas dans mapElements car cela ferair une "dépendance circulaire"*/
 /*.................................................balanceMass,called in gameloop......................................................*/
-function balanceMass(c, food, users) {
-    var totalMass = food.length * c.foodMass +
+function balanceMass(configuration, food, users) {
+    var totalMass = food.length * configuration.foodMass +
         users
             .map(function (u) {
                 return u.massTotal;
@@ -656,15 +656,15 @@ function balanceMass(c, food, users) {
                 return pu + cu;
             }, 0);
 
-    var massDiff = c.gameMass - totalMass;     //gameMass = 20000
-    var maxFoodDiff = c.maxFood - food.length; //maxFood = 20
-    var foodDiff = parseInt(massDiff / c.foodMass) - maxFoodDiff;
+    var massDiff = configuration.gameMass - totalMass;     //gameMass = 20000
+    var maxFoodDiff = configuration.maxFood - food.length; //maxFood = 20
+    var foodDiff = parseInt(massDiff / configuration.foodMass) - maxFoodDiff;
     var foodToAdd = Math.min(foodDiff, maxFoodDiff);
     var foodToRemove = -Math.max(foodDiff, maxFoodDiff);
 
     if (foodToAdd > 0) {
         //console.log('[DEBUG] Adding ' + foodToAdd + ' food to level!');
-        mapElemImport.addFood(foodToAdd, c, food);
+        mapElemImport.addFood(foodToAdd, configuration, food);
         //console.log('[DEBUG] Mass rebalanced!');
     }
     else if (foodToRemove > 0) {
@@ -673,16 +673,16 @@ function balanceMass(c, food, users) {
         //console.log('[DEBUG] Mass rebalanced!');
     }
 
-    var virusToAdd = c.maxVirus - virus.length;
+    var virusToAdd = configuration.maxVirus - virus.length;
 
     if (virusToAdd > 0) {
-        mapElemImport.addVirus(virusToAdd, c, virus);
+        mapElemImport.addVirus(virusToAdd, configuration, virus);
     }
 
     var objectToAdd = gameSettings.objectMax - object.length;
 
     if (objectToAdd > 0) {
-        objectImport.addObject(objectToAdd, c, object);
+        objectImport.addObject(objectToAdd, configuration, object);
     }
 
 
