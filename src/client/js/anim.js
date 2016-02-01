@@ -33,7 +33,6 @@ function gameLoop() {
     if (died) {
         graph.fillStyle = '#333333';
         graph.fillRect(0, 0, screenWidth, screenHeight);
-
         graph.textAlign = 'center';
         graph.fillStyle = '#FFFFFF';
         graph.font = 'bold 30px sans-serif';
@@ -57,7 +56,6 @@ function gameLoop() {
                     drawObject(object[x]);
                 }
             }
-            //  object.forEach(drawObject);
 
             fireFood.forEach(drawBullet);
 
@@ -90,20 +88,8 @@ function gameLoop() {
         graph.textAlign = 'center';
         graph.fillStyle = '#FFFFFF';
         graph.font = 'bold 30px sans-serif';
+        graph.fillText('Disconnected!', screenWidth / 2, screenHeight / 2);
 
-        if (kicked) {
-            if (reason !== '') {
-                graph.fillText('You were kicked for:', screenWidth / 2, screenHeight / 2 - 20);
-                graph.fillText(reason, screenWidth / 2, screenHeight / 2 + 20);
-            }
-            else {
-                graph.fillText('You were kicked!', screenWidth / 2, screenHeight / 2);
-            }
-
-        }
-        else {
-            graph.fillText('Disconnected!', screenWidth / 2, screenHeight / 2);
-        }
     }
 }
 
