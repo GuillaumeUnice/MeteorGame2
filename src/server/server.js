@@ -691,76 +691,76 @@ function balanceMass(c, food, users) {
 
 /*.................................................update canvas..............................................................*/
 function sendUpdates() {
-    users.forEach(function (u) {
+    users.forEach(function (userToUpdate) {
 
 
         // center the view if x/y is undefined, this will happen for spectators
-        u.x = u.x || gameSettings.gameWidth / 2;
-        u.y = u.y || gameSettings.gameHeight / 2;
+        userToUpdate.x = userToUpdate.x || gameSettings.gameWidth / 2;
+        userToUpdate.y = userToUpdate.y || gameSettings.gameHeight / 2;
 
         var visibleFood = food
-            .map(function (f) {
-                if (f.x > u.x - u.screenWidth / 2 - 20 &&
-                    f.x < u.x + u.screenWidth / 2 + 20 &&
-                    f.y > u.y - u.screenHeight / 2 - 20 &&
-                    f.y < u.y + u.screenHeight / 2 + 20) {
-                    return f;
+            .map(function (visFood) {
+                if (visFood.x > userToUpdate.x - userToUpdate.screenWidth / 2 - 20 &&
+                    visFood.x < userToUpdate.x + userToUpdate.screenWidth / 2 + 20 &&
+                    visFood.y > userToUpdate.y - userToUpdate.screenHeight / 2 - 20 &&
+                    visFood.y < userToUpdate.y + userToUpdate.screenHeight / 2 + 20) {
+                    return visFood;
                 }
             })
-            .filter(function (f) {
-                return f;
+            .filter(function (element) {
+                return element;
             });
 
         var visibleVirus = virus
-            .map(function (f) {
-                if (f.x > u.x - u.screenWidth / 2 - f.radius &&
-                    f.x < u.x + u.screenWidth / 2 + f.radius &&
-                    f.y > u.y - u.screenHeight / 2 - f.radius &&
-                    f.y < u.y + u.screenHeight / 2 + f.radius) {
-                    return f;
+            .map(function (visVirus) {
+                if (visVirus.x > userToUpdate.x - userToUpdate.screenWidth / 2 &&
+                    visVirus.x < userToUpdate.x + userToUpdate.screenWidth / 2 &&
+                    visVirus.y > userToUpdate.y - userToUpdate.screenHeight / 2 &&
+                    visVirus.y < userToUpdate.y + userToUpdate.screenHeight / 2) {
+                    return visVirus;
                 }
             })
-            .filter(function (f) {
-                return f;
+            .filter(function (element) {
+                return element;
             });
 
 
         var visibleObject = object
-            .map(function (f) {
-                if (f.x > u.x - u.screenWidth / 2 - f.radius &&
-                    f.x < u.x + u.screenWidth / 2 + f.radius &&
-                    f.y > u.y - u.screenHeight / 2 - f.radius &&
-                    f.y < u.y + u.screenHeight / 2 + f.radius) {
-                    return f;
+            .map(function (visObject) {
+                if (visObject.x > userToUpdate.x - userToUpdate.screenWidth / 2 &&
+                    visObject.x < userToUpdate.x + userToUpdate.screenWidth / 2 &&
+                    visObject.y > userToUpdate.y - userToUpdate.screenHeight / 2 &&
+                    visObject.y < userToUpdate.y + userToUpdate.screenHeight / 2) {
+                    return visObject;
                 }
             })
-            .filter(function (f) {
-                return f;
+            .filter(function (element) {
+                return element;
             });
 
 
         var visibleMass = massFood
-            .map(function (mass) {
-                if (mass.x + mass.radius > u.x - u.screenWidth / 2 - 20 &&
-                    mass.x - mass.radius < u.x + u.screenWidth / 2 + 20 &&
-                    mass.y + mass.radius > u.y - u.screenHeight / 2 - 20 &&
-                    mass.y - mass.radius < u.y + u.screenHeight / 2 + 20) {
-                    return mass;
+            .map(function (visMass) {
+                if (visMass.x > userToUpdate.x - userToUpdate.screenWidth / 2 - 20 &&
+                    visMass.x < userToUpdate.x + userToUpdate.screenWidth / 2 + 20 &&
+                    visMass.y > userToUpdate.y - userToUpdate.screenHeight / 2 - 20 &&
+                    visMass.y < userToUpdate.y + userToUpdate.screenHeight / 2 + 20) {
+                    return visMass;
                 }
             })
-            .filter(function (f) {
-                return f;
+            .filter(function (element) {
+                return element;
             });
 
         var visibleCells = users
             .map(function (user) {
                 for (var z = 0; z < user.cells.length; z++) {
-                    if (user.cells[z].x + user.cells[z].radius > u.x - u.screenWidth / 2 - 20 &&
-                        user.cells[z].x - user.cells[z].radius < u.x + u.screenWidth / 2 + 20 &&
-                        user.cells[z].y + user.cells[z].radius > u.y - u.screenHeight / 2 - 20 &&
-                        user.cells[z].y - user.cells[z].radius < u.y + u.screenHeight / 2 + 20) {
+                    if (user.cells[z].x + user.cells[z].radius > userToUpdate.x - userToUpdate.screenWidth / 2 - 20 &&
+                        user.cells[z].x - user.cells[z].radius < userToUpdate.x + userToUpdate.screenWidth / 2 + 20 &&
+                        user.cells[z].y + user.cells[z].radius > userToUpdate.y - userToUpdate.screenHeight / 2 - 20 &&
+                        user.cells[z].y - user.cells[z].radius < userToUpdate.y + userToUpdate.screenHeight / 2 + 20) {
                         z = user.cells.lenth;
-                        if (user.id !== u.id) {
+                        if (user.id !== userToUpdate.id) {
                             return {
                                 id: user.id,
                                 x: user.x,
@@ -787,13 +787,13 @@ function sendUpdates() {
                     }
                 }
             })
-            .filter(function (f) {
-                return f;
+            .filter(function (element) {
+                return element;
             });
 
-        sockets[u.id].emit('serverTellPlayerMove', visibleCells, visibleFood, visibleMass, visibleVirus, visibleObject);
+        sockets[userToUpdate.id].emit('serverTellPlayerMove', visibleCells, visibleFood, visibleMass, visibleVirus, visibleObject);
         if (leaderboardChanged) {
-            sockets[u.id].emit('leaderboard', {
+            sockets[userToUpdate.id].emit('leaderboard', {
                 players: users.length,
                 leaderboard: leaderBoard
             });
