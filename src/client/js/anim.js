@@ -64,8 +64,8 @@ function gameLoop() {
                     });
                 }
             }
-            orderMass.sort(function (obj1, obj2) {
-                return obj1.mass - obj2.mass;
+            orderMass.sort(function (object1, object2) {
+                return object1.mass - object2.mass;
             });
 
             drawPlayers(orderMass);

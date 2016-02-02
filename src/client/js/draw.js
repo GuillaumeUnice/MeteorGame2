@@ -57,6 +57,10 @@ function drawBullet(mass) {
 
 }
 
+/**
+ * Draws players
+ * @param order
+ */
 function drawPlayers(order) {
 
 
@@ -140,6 +144,10 @@ function drawPlayers(order) {
     }
 }
 
+
+/**
+ * Draws the grid representing the game area
+ */
 function drawGrid() {
     graph.fillStyle = '#000000';
     graph.fillRect(0, 0, screenWidth, screenHeight);
@@ -168,6 +176,9 @@ function drawGrid() {
     }
 }
 
+/**
+ * draws the border of the game area
+ */
 function drawBorder() {
     graph.lineWidth = 1;
     graph.strokeStyle = borderColor;

@@ -13,6 +13,10 @@ function onKeyUp(event) {
 }
 
 
+/**
+ * Handles the events when we press the keyboard
+ * @param event
+ */
 function keyInput(event) {
     var key = event.which || event.keyCode;
     if (key === KEY_FIREFOOD && reSend) {
