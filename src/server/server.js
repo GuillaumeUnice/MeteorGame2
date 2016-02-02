@@ -250,7 +250,8 @@ io.on('connection', function (socket) {
             console.log(usersInRegroup[possibleAlly.id]);
             if (usersInRegroup[possibleAlly.id] == 4) {
                 console.log('The super spaceship lead by ', possibleAlly.name, 'is now full');
-
+                possibleAlly.munitions *= 3;
+                possibleAlly.life *= 2;
                 io.emit('teamFull', possibleAlly);
 
             }

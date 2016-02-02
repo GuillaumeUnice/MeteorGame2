@@ -53,30 +53,33 @@ function drawTouch() {
     graph.clearRect(0, 0, screenWidth, screenHeight);
     graph.fillStyle = "#000000";
     graph.fillRect(0, 0, screenWidth, screenHeight);
+    if (player.isRegrouped)
+        if (!player.isRegrouped.value) {
 
-    pointers.forEach(function (pointer) {
-        graph.globalAlpha = 0.7;
+            pointers.forEach(function (pointer) {
+                graph.globalAlpha = 0.7;
 
-        if (pointer.identifier == leftPointerID) {
-            graph.beginPath();
-            graph.strokeStyle = "white";
-            graph.lineWidth = 6;
-            graph.arc(leftPointerStartPos.x, leftPointerStartPos.y, 40, 0, Math.PI * 2, true);
-            graph.stroke();
-            graph.beginPath();
-            graph.strokeStyle = "white";
-            graph.lineWidth = 2;
-            graph.arc(leftPointerStartPos.x, leftPointerStartPos.y, 60, 0, Math.PI * 2, true);
-            graph.stroke();
-            graph.beginPath();
-            graph.strokeStyle = "white";
-            graph.arc(leftPointerPos.x, leftPointerPos.y, 40, 0, Math.PI * 2, true);
-            graph.stroke();
+                if (pointer.identifier == leftPointerID) {
+                    graph.beginPath();
+                    graph.strokeStyle = "white";
+                    graph.lineWidth = 6;
+                    graph.arc(leftPointerStartPos.x, leftPointerStartPos.y, 40, 0, Math.PI * 2, true);
+                    graph.stroke();
+                    graph.beginPath();
+                    graph.strokeStyle = "white";
+                    graph.lineWidth = 2;
+                    graph.arc(leftPointerStartPos.x, leftPointerStartPos.y, 60, 0, Math.PI * 2, true);
+                    graph.stroke();
+                    graph.beginPath();
+                    graph.strokeStyle = "white";
+                    graph.arc(leftPointerPos.x, leftPointerPos.y, 40, 0, Math.PI * 2, true);
+                    graph.stroke();
 
+                }
+            });
+
+            requestAnimFrame(drawTouch);
         }
-    });
-
-    requestAnimFrame(drawTouch);
 }
 
 function givePointerType(event) {
@@ -95,87 +98,97 @@ function givePointerType(event) {
 
 function onPointerDown(e) {
     e.preventDefault();
-    if (!player.isRegrouped.value) {
-        _pressed = true;
+    if (player.isRegrouped)
 
-        var newPointer = {identifier: e.pointerId, x: e.clientX, y: e.clientY, type: givePointerType(e)};
-        if ((leftPointerID < 0) && (e.clientX < halfWidth)) {
-            leftPointerID = e.pointerId;
-            leftPointerStartPos.reset(e.clientX, e.clientY);
-            leftPointerPos.copyFrom(leftPointerStartPos);
-            leftVector.reset(0, 0);
+        if (!player.isRegrouped.value) {
+            _pressed = true;
+
+            var newPointer = {identifier: e.pointerId, x: e.clientX, y: e.clientY, type: givePointerType(e)};
+            if ((leftPointerID < 0) && (e.clientX < halfWidth)) {
+                leftPointerID = e.pointerId;
+                leftPointerStartPos.reset(e.clientX, e.clientY);
+                leftPointerPos.copyFrom(leftPointerStartPos);
+                leftVector.reset(0, 0);
+            }
+
+            if (_stationaryBase == false) {
+                _baseX = e.clientX;
+                _baseY = e.clientY;
+
+            }
+
+            _stickX = e.clientX;
+            _stickY = e.clientY;
+
+            pointers.add(e.pointerId, newPointer);
+
         }
-
-        if (_stationaryBase == false) {
-            _baseX = e.clientX;
-            _baseY = e.clientY;
-
-        }
-
-        _stickX = e.clientX;
-        _stickY = e.clientY;
-
-        pointers.add(e.pointerId, newPointer);
-
-        directionLock = true;
-    }
 }
 
 function onPointerMove(e) {
-    if (_pressed) {
+    if (player.isRegrouped)
 
-        if (leftPointerID == e.pointerId) {
-            leftPointerPos.reset(e.clientX, e.clientY);
-            leftVector.copyFrom(leftPointerPos);
-            leftVector.minusEq(leftPointerStartPos);
-        }
-        else {
-            if (pointers.item(e.pointerId)) {
-                pointers.item(e.pointerId).x = e.clientX;
-                pointers.item(e.pointerId).y = e.clientY;
+        if (!player.isRegrouped.value) {
+
+            if (_pressed) {
+
+                if (leftPointerID == e.pointerId) {
+                    leftPointerPos.reset(e.clientX, e.clientY);
+                    leftVector.copyFrom(leftPointerPos);
+                    leftVector.minusEq(leftPointerStartPos);
+                }
+                else {
+                    if (pointers.item(e.pointerId)) {
+                        pointers.item(e.pointerId).x = e.clientX;
+                        pointers.item(e.pointerId).y = e.clientY;
+                    }
+                }
+
+                _stickX = e.clientX;
+                _stickY = e.clientY;
+
+                if (right) {
+                    imageRepository.playerImg.src = imageRepository.player_right;
+                }
+                if (left()) {
+                    imageRepository.playerImg.src = imageRepository.player_left;
+                }
+                if (down()) {
+                    imageRepository.playerImg.src = imageRepository.player_down;
+                }
+                if (up()) {
+                    imageRepository.playerImg.src = imageRepository.player_up;
+                }
+
+
+                target.x = e.clientX - screenWidth / 2;
+                target.y = e.clientY - screenHeight / 2;
+
             }
         }
-
-        _stickX = e.clientX;
-        _stickY = e.clientY;
-
-        if (right) {
-            imageRepository.playerImg.src = imageRepository.player_right;
-        }
-        if (left()) {
-            imageRepository.playerImg.src = imageRepository.player_left;
-        }
-        if (down()) {
-            imageRepository.playerImg.src = imageRepository.player_down;
-        }
-        if (up()) {
-            imageRepository.playerImg.src = imageRepository.player_up;
-        }
-
-
-        target.x = e.clientX - screenWidth / 2;
-        target.y = e.clientY - screenHeight / 2;
-
-        directionLock = true;
-    }
 }
 
 function onPointerUp(e) {
-    _pressed = false;
+    if (player.isRegrouped)
 
-    if (leftPointerID == e.pointerId) {
-        leftPointerID = -1;
-        leftVector.reset(0, 0);
+        if (!player.isRegrouped.value) {
 
-    }
+            _pressed = false;
 
-    leftVector.reset(0, 0);
-    if (!_stationaryBase) {
-        this._baseX = this._baseY = 0;
-        this._stickX = this._stickY = 0;
-    }
-    pointers.remove(e.pointerId);
-    directionLock = true;
+            if (leftPointerID == e.pointerId) {
+                leftPointerID = -1;
+                leftVector.reset(0, 0);
+
+            }
+
+            leftVector.reset(0, 0);
+            if (!_stationaryBase) {
+                this._baseX = this._baseY = 0;
+                this._stickX = this._stickY = 0;
+            }
+            pointers.remove(e.pointerId);
+            directionLock = true;
+        }
 }
 
 function __deltaX() {
