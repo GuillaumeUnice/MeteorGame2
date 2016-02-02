@@ -57,10 +57,6 @@ function drawBullet(mass) {
 
 }
 
-/**
- * Draws players
- * @param order
- */
 function drawPlayers(order) {
 
 
@@ -100,14 +96,14 @@ function drawPlayers(order) {
             graph.drawImage(imageRepository.playerImg, circle.x, circle.y, playerImgWidth, playerImgHeight);
             graph.fillText(nameCell, circle.x + playerImgWidth / 2, circle.y);
         }
-        else if (!userCurrent.isRegrouped.value) {
+        else if (!userCurrent.isInSuperVessel) {
             graph.drawImage(imageRepository.otherPlayerImg, circle.x, circle.y, playerImgWidth, playerImgHeight);
             graph.fillText(nameCell, circle.x + playerImgWidth / 2, circle.y);
         }
         else {
 
             $('#panel-message').css('display', 'block');
-            if (userCurrent.isRegrouped.value && userCurrent.isRegrouped.lead !== player.id) {
+            if (userCurrent.isInSuperVessel && !userCurrent.isDisplayer) {
 
                 $('#message-info').text('You are now linked to a super vessel');
 
@@ -130,12 +126,15 @@ function drawPlayers(order) {
                 }
             }
 
-            if (userCurrent.isRegrouped.value && userCurrent.isRegrouped.lead === player.id) {
+            if (userCurrent.isDisplayer) {
                 $('#message-info').text('You are now linked to a super vessel that will be displayed here');
                 //if (screenWidth >= 1200) {
                 $('#minimap').addClass('regroup-ds');
                 //}
-                console.log('The super space ship will be displayed here');
+                mySuperVessel.forEach(function (vessel) {
+                    graph.drawImage(imageRepository.otherPlayerImg, vessel.x * screenWidth / gameWidth, vessel.y * screenHeight / gameHeight, playerImgWidth, playerImgHeight);
+                    graph.fillText(vessel.name, vessel.x * screenWidth / gameWidth + playerImgWidth / 2, vessel.y * screenHeight / gameHeight);
+                });
             }
         }
     }
@@ -143,7 +142,7 @@ function drawPlayers(order) {
 
 
 /**
- * Draws the grid representing the game area
+ * Draws the grid representing the game are
  */
 function drawGrid() {
     graph.fillStyle = '#000000';

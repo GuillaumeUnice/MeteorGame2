@@ -112,11 +112,13 @@ function setupSocket(socket) {
         }
         if (playerType == 'player') {
             if (playerData) {
+                console.log('I am here');
                 var xoffset = player.x - playerData.x;
                 var yoffset = player.y - playerData.y;
                 player.x = playerData.x;
                 player.y = playerData.y;
                 player.hue = playerData.hue;
+                player.isRegrouped = playerData.isRegrouped;
                 player.massTotal = playerData.massTotal;
                 player.cells = playerData.cells;
                 player.xoffset = isNaN(xoffset) ? 0 : xoffset;
@@ -124,7 +126,7 @@ function setupSocket(socket) {
             }
         }
         users = userData;
-        foods = foodsList;
+        assets = foodsList;
         viruses = virusList;
         object = objectList;
         fireFood = massList;

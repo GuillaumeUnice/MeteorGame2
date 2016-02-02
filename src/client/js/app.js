@@ -5,12 +5,6 @@
 
 var io = require('socket.io-client');
 
-/**
- * This will be removed. We will use bootstrap and media queries to resolve mobile issues
- */
-if (/Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent)) {
-    mobile = true;
-}
 
 /**
  * Called when all the settings are checked

@@ -13,7 +13,7 @@ var socket, playerName, playerType;
 
 var playerNameInput = document.getElementById('playerNameInput'), askingPlayer = false, connectedToOthers = false;
 
-var reSend = true, borderDraw = true, animLoopHandle, spin = -Math.PI, mobile = false;
+var reSend = true, borderDraw = true, animLoopHandle;
 
 var screenWidth = window.innerWidth, screenHeight = window.innerHeight;
 
@@ -33,11 +33,7 @@ var continuity = false, backgroundColor = '#010117', lineColor = '#000000', bord
 var possibleAlly = undefined;
 
 var playerConfig = {
-    border: 6,
-    textColor: '#FFFFFF',
-    textBorder: '#FF0000',
-    textBorderSize: 4,
-    defaultSize: 30
+    borderColor: '#000000'
 }, player = {
     id: -1,
     x: screenWidth / 2,
@@ -48,7 +44,7 @@ var playerConfig = {
 };
 
 var mySuperVessel = [];
-var foods = [];
+var assets = [];
 var viruses = [];
 var fireFood = [];
 var users = [];
