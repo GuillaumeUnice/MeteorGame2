@@ -95,28 +95,30 @@ function givePointerType(event) {
 
 function onPointerDown(e) {
     e.preventDefault();
-    _pressed = true;
+    if (!player.isRegrouped.value) {
+        _pressed = true;
 
-    var newPointer = {identifier: e.pointerId, x: e.clientX, y: e.clientY, type: givePointerType(e)};
-    if ((leftPointerID < 0) && (e.clientX < halfWidth)) {
-        leftPointerID = e.pointerId;
-        leftPointerStartPos.reset(e.clientX, e.clientY);
-        leftPointerPos.copyFrom(leftPointerStartPos);
-        leftVector.reset(0, 0);
+        var newPointer = {identifier: e.pointerId, x: e.clientX, y: e.clientY, type: givePointerType(e)};
+        if ((leftPointerID < 0) && (e.clientX < halfWidth)) {
+            leftPointerID = e.pointerId;
+            leftPointerStartPos.reset(e.clientX, e.clientY);
+            leftPointerPos.copyFrom(leftPointerStartPos);
+            leftVector.reset(0, 0);
+        }
+
+        if (_stationaryBase == false) {
+            _baseX = e.clientX;
+            _baseY = e.clientY;
+
+        }
+
+        _stickX = e.clientX;
+        _stickY = e.clientY;
+
+        pointers.add(e.pointerId, newPointer);
+
+        directionLock = true;
     }
-
-    if (_stationaryBase == false) {
-        _baseX = e.clientX;
-        _baseY = e.clientY;
-
-    }
-
-    _stickX = e.clientX;
-    _stickY = e.clientY;
-
-    pointers.add(e.pointerId, newPointer);
-
-    directionLock = true;
 }
 
 function onPointerMove(e) {
