@@ -90,7 +90,7 @@ io.on('connection', function (socket) {
         munitions: gameSettings.munition,
         life: gameSettings.life,
         cells: cells,
-        isInSuperVessel: false,
+        isRegrouped: {value: false, lead: undefined},
         massTotal: massTotal,
         hue: Math.round(Math.random() * 360),
         type: type,
@@ -251,7 +251,7 @@ io.on('connection', function (socket) {
             if (usersInRegroup[possibleAlly.id] == 4) {
                 console.log('The super spaceship lead by ', possibleAlly.name, 'is now full');
 
-              //  io.emit('teamFull');
+                io.emit('teamFull', possibleAlly);
 
             }
         }
