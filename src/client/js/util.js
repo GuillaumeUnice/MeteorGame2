@@ -1,5 +1,7 @@
 /***********
- * Variables
+ *#################
+ *  Variables
+ *  ###############
  */
 var KEY_ENTER = 13, KEY_FIREFOOD = 32, KEY_LEFT = 37, KEY_UP = 38, KEY_RIGHT = 39, KEY_DOWN = 40;
 
@@ -9,14 +11,9 @@ var MAX_ASSET = 100, BAR_WIDTH = 500, BAR_HEIGHT = 150;
 
 var socket, playerName, playerType;
 
-var playerNameInput = document.getElementById('playerNameInput');
-var askingPlayer = false;
-var connectedToOthers = false;
-var reSend = true;
-var borderDraw = true;
-var animLoopHandle;
-var spin = -Math.PI;
-var mobile = false;
+var playerNameInput = document.getElementById('playerNameInput'), askingPlayer = false, connectedToOthers = false;
+
+var reSend = true, borderDraw = true, animLoopHandle, spin = -Math.PI, mobile = false;
 
 var screenWidth = window.innerWidth, screenHeight = window.innerHeight;
 
@@ -59,7 +56,9 @@ var gameCanvas = document.getElementById('gameArea'), miniMap = document.getElem
 var graph = gameCanvas.getContext('2d'), miniMapFrame = miniMap.getContext("2d");
 
 /**
- *
+ *#############
+ * Functions
+ * ############
  */
 var updateLifeBar = function () {
     var lifeBar = document.getElementById('lifeBar');
