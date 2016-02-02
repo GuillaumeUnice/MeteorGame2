@@ -12,7 +12,6 @@ function onKeyUp(event) {
     directionUp(event);
 }
 
-
 /**
  * Handles the events when we press the keyboard
  * @param event
@@ -26,32 +25,34 @@ function keyInput(event) {
 }
 
 function directionDown(event) {
-
     var key = event.which || event.keyCode;
+    if (!player.isRegrouped.value) {
+        if (directional(key)) {
 
-    if (directional(key)) {
+            switch (key) {
+                case KEY_DOWN:
+                    imageRepository.playerImg.src = imageRepository.player_down;
+                    break;
+                case KEY_LEFT:
+                    imageRepository.playerImg.src = imageRepository.player_left;
+                    break;
+                case KEY_RIGHT:
+                    imageRepository.playerImg.src = imageRepository.player_right;
+                    break;
+                case KEY_UP:
+                default:
+                    imageRepository.playerImg.src = imageRepository.player_up;
+                    break;
+            }
 
-        switch (key) {
-            case KEY_DOWN:
-                imageRepository.playerImg.src = imageRepository.player_down;
-                break;
-            case KEY_LEFT:
-                imageRepository.playerImg.src = imageRepository.player_left;
-                break;
-            case KEY_RIGHT:
-                imageRepository.playerImg.src = imageRepository.player_right;
-                break;
-            case KEY_UP:
-            default:
-                imageRepository.playerImg.src = imageRepository.player_up;
-                break;
+            directionLock = true;
+            if (newDirection(key, directions, true)) {
+                updateTarget(directions);
+                socket.emit('0', target);
+            }
         }
-
-        directionLock = true;
-        if (newDirection(key, directions, true)) {
-            updateTarget(directions);
-            socket.emit('0', target);
-        }
+    }else{
+        console.log('You are now in a super space ship. Directions with arrow keys are disabled');
     }
 }
 // Function called when a key is lifted, will change direction if arrow key.

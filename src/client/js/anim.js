@@ -18,7 +18,6 @@ window.cancelAnimFrame = (function () {
 
 function animationLoop() {
     animLoopHandle = window.requestAnimFrame(animationLoop);
-
     gameLoop();
 }
 
@@ -32,16 +31,12 @@ function gameLoop() {
     if (died) {
         printMessage('You died!');
     }
-
     else if (!disconnected) {
         var orderMass = [];
-
         /**
          * When the game has started
          */
         if (gameStart) {
-
-
 
             drawGrid();
             if (object !== 'undefined') {
@@ -55,6 +50,7 @@ function gameLoop() {
             if (borderDraw) {
                 drawBorder();
             }
+
             for (var i = 0; i < users.length; i++) {
                 for (var j = 0; j < users[i].cells.length; j++) {
                     orderMass.push({
@@ -67,10 +63,8 @@ function gameLoop() {
             orderMass.sort(function (object1, object2) {
                 return object1.mass - object2.mass;
             });
-
             drawPlayers(orderMass);
             socket.emit('0', target); // playerSendTarget "Heartbeat".
-
         }
     } else {
         printMessage('Disconnected!');

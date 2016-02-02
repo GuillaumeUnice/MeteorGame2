@@ -11,20 +11,16 @@ var io = require('socket.io-client');
  * @param type
  */
 function startGame(type) {
-
     playerName = playerNameInput.value.replace(/(<([^>]+)>)/ig, '').substring(0, 25);
     playerType = type;
-
     gameCanvas.width = screenWidth = window.innerWidth;
     gameCanvas.height = screenHeight = window.innerHeight;
-
     /**
      * When the game starts, the start menu disappears
      * @type {string}
      */
     document.getElementById('startMenuWrapper').style.maxHeight = '0px';
     document.getElementById('gameAreaWrapper').style.opacity = 1;
-
 
     if (!socket) {
         socket = io({query: "type=" + type});
@@ -65,13 +61,11 @@ window.onload = function () {
     };
 
     btn.onclick = function () {
-
         setupGame();
     };
 
     playerNameInput.addEventListener('keypress', function (e) {
         var key = e.which || e.keyCode;
-
         if (key === KEY_ENTER) {
             setupGame();
         }

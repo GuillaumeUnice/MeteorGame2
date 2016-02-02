@@ -58,8 +58,6 @@ function drawBullet(mass) {
 }
 
 function drawPlayers(order) {
-
-
     var start = {
         x: player.x - (screenWidth / 2),
         y: player.y - (screenHeight / 2)
@@ -86,7 +84,6 @@ function drawPlayers(order) {
             nameCell = userCurrent.name;
         }
 
-
         var fontSize = Math.max(cellCurrent.radius / 3, 12);
 
         graph.font = 'bold ' + fontSize + 'px sans-serif';
@@ -94,49 +91,12 @@ function drawPlayers(order) {
 
         if (typeof userCurrent.id == "undefined") {
             graph.drawImage(imageRepository.playerImg, circle.x, circle.y, playerImgWidth, playerImgHeight);
-            graph.fillText(nameCell, circle.x + playerImgWidth / 2, circle.y);
-        }
-        else if (!userCurrent.isInSuperVessel) {
-            graph.drawImage(imageRepository.otherPlayerImg, circle.x, circle.y, playerImgWidth, playerImgHeight);
-            graph.fillText(nameCell, circle.x + playerImgWidth / 2, circle.y);
         }
         else {
-
-            $('#panel-message').css('display', 'block');
-            if (userCurrent.isInSuperVessel && !userCurrent.isDisplayer) {
-
-                $('#message-info').text('You are now linked to a super vessel');
-
-                if (onSmartphone()) {
-                    $('#fire').addClass('regroup-sm');
-
-                    var miniM = $('#minimap');
-                    miniM.removeClass('navbar-collapse collapse');
-                    miniM.addClass('regroup-sm');
-                    $('#regroup').addClass('regroup-sm');
-                }
-
-                if (window.orientation === 90) {
-                    $('#fire').addClass('regroup-md');
-
-                    var miniM2 = $('#minimap');
-                    miniM2.removeClass('navbar-collapse collapse');
-                    miniM2.addClass('regroup-md');
-                    $('#regroup').addClass('regroup-md');
-                }
-            }
-
-            if (userCurrent.isDisplayer) {
-                $('#message-info').text('You are now linked to a super vessel that will be displayed here');
-                //if (screenWidth >= 1200) {
-                $('#minimap').addClass('regroup-ds');
-                //}
-                mySuperVessel.forEach(function (vessel) {
-                    graph.drawImage(imageRepository.otherPlayerImg, vessel.x * screenWidth / gameWidth, vessel.y * screenHeight / gameHeight, playerImgWidth, playerImgHeight);
-                    graph.fillText(vessel.name, vessel.x * screenWidth / gameWidth + playerImgWidth / 2, vessel.y * screenHeight / gameHeight);
-                });
-            }
+            graph.drawImage(imageRepository.otherPlayerImg, circle.x, circle.y, playerImgWidth, playerImgHeight);
         }
+        graph.fillText(nameCell, circle.x + playerImgWidth / 2, circle.y);
+
     }
 }
 
