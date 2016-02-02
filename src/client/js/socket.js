@@ -180,11 +180,12 @@ function setupSocket(socket) {
         updateLife();
     });
 
-    socket.on('proposeJoin', function (currentPlayer) {
+    socket.on('proposeJoin', function (askingPlayer) {
         if (!connectedToOthers) {
+            possibleAlly = askingPlayer;
             $('#regroup').css("visibility", "hidden");
             $('#joinDiv').css("visibility", "visible");
-            $('#joinText').html('Do you want to join <span class="label label-primary">' + currentPlayer.name + '\'s</span> team');
+            $('#joinText').html('Do you want to join <span class="label label-primary">' + askingPlayer.name + '\'s</span> team');
         }
     });
 

@@ -97,8 +97,10 @@ $("#regroup").click(function () {
     var regroupImg = $('#regroup');
     if (!connectedToOthers) {
         socket.emit('regroupPlayers');
+
         regroupImg.removeClass('fa-users');
         regroupImg.addClass("fa-spinner fa-spin");
+
         askingPlayer = true;
     }
 });
@@ -106,18 +108,20 @@ $("#regroup").click(function () {
 
 $("#acceptJoin").click(function () {
     var regroup = $('#regroup');
-    socket.emit('acceptJoin', player);
+
+    socket.emit('acceptJoin', possibleAlly);
     connectedToOthers = true;
+
     regroup.css('visibility', 'visible');
     regroup.css('color', '#00FF00');
     regroup.css('cursor', 'none');
     regroup.removeClass('fa-spinner fa-spin');
     regroup.addClass('fa-users');
+
     $('#joinDiv').css("visibility", "hidden");
 });
 
 $("#rejectJoin").click(function () {
-    socket.emit('rejectJoin');
     $('#regroup').css('visibility', 'visible');
     $('#joinDiv').css("visibility", "hidden");
 });

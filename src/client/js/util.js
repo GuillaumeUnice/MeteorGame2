@@ -26,6 +26,12 @@ var gameStart = false, disconnected = false, died = false, kicked = false;
 // TODO: Break out into GameControls.
 var continuity = false, backgroundColor = '#010117', lineColor = '#000000', borderColor = '#FFFFFF';
 
+/**
+ * When a player asks for regrouping, this represents the possible lead when the current player accepts
+ * @type {undefined}
+ */
+var possibleAlly = undefined;
+
 var playerConfig = {
     border: 6,
     textColor: '#FFFFFF',

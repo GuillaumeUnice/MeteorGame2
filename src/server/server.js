@@ -61,10 +61,12 @@ var endGame = false;
  * - keyboard action
  * - check latency
  **/
+var usersInRegroup = {};
 
 //This method is called when user is connected
 io.on('connection', function (socket) {
     console.log('A user connected is !', socket.handshake.query.type);
+
     //initialize a player
     var type = socket.handshake.query.type;
     var radius = util.massToRadius(gameSettings.defaultPlayerMass);
@@ -211,18 +213,11 @@ io.on('connection', function (socket) {
         }
     });
 
-    socket.on('regroupPlayers', function () {
-
-        if (users.length > 1) {
-            console.log(currentPlayer.name + ' asked for a super vessel');
-            superVessel.push(currentPlayer);
-            socket.broadcast.emit('proposeJoin', currentPlayer);
-
-        }
-    });
 
 // keyboard action, to change direction, see also client/delete.js
 // Heartbeat function, update everytime.
+    /*................................. to test the latency.................................*/
+
     socket.on('0', function (target) {
         currentPlayer.lastHeartbeat = new Date().getTime();
         if (target.x !== currentPlayer.x || target.y !== currentPlayer.y) {
@@ -230,51 +225,35 @@ io.on('connection', function (socket) {
         }
     });
 
-    /*................................. to test the latency.................................*/
 
-    socket.on('acceptJoin', function () {
-        if (superVessel.length < 4) {
+    socket.on('regroupPlayers', function () {
 
-            superVessel.push(currentPlayer);
+        if (users.length > 1) {
+            console.log(currentPlayer.name + ' asked for a super spaceship');
+            currentPlayer.isRegrouped = {value: true, lead: currentPlayer.id};
+            usersInRegroup[currentPlayer.id] = 1;
+            socket.broadcast.emit('proposeJoin', currentPlayer);
 
-            if (superVessel.length == 4) {
-
-                superVessel.forEach(function (vessel) {
-                    vessel.isInSuperVessel = true;
-                    vessel.isDisplayer = true;
-                });
-                var displayer = 0;
-                for (var i = 1; i < superVessel.length; i++) {
-                    if (superVessel[i].screenWidth >= superVessel[displayer].screenWidth) {
-                        superVessel[displayer].isDisplayer = false;
-                        superVessel[i].isDisplayer = true;
-                        displayer = i;
-
-                    }
-                }
-                //on affecte les nouvelles positions
-                superVessel[0].x = gameSettings.gameWidth / 2;
-                superVessel[0].y = gameSettings.gameHeight / 2;
+        }
+    });
 
 
-                superVessel[1].x = superVessel[0].x + 640;
-                superVessel[1].y = superVessel[0].y;
+    socket.on('acceptJoin', function (possibleAlly) {
+        console.log('Possible ally is ', possibleAlly.name);
+        console.log('Remaining seats');
+        console.log(usersInRegroup);
+        if (usersInRegroup[possibleAlly.id] < 4) {
+            console.log('The super spaceship lead by ', possibleAlly.name, 'is not full yet');
 
-                superVessel[2].x = superVessel[0].x + 320;
-                superVessel[2].y = superVessel[0].y - 320;
+            currentPlayer.isRegrouped = {value: true, lead: possibleAlly.id};
+            usersInRegroup[possibleAlly.id] += 1;
+            console.log(usersInRegroup[possibleAlly.id]);
+            if (usersInRegroup[possibleAlly.id] == 4) {
+                console.log('The super spaceship lead by ', possibleAlly.name, 'is now full');
 
-                superVessel[3].x = superVessel[2].x;
-                superVessel[3].y = superVessel[0].y + 320;
-
-                console.log("The super vessel members");
-                console.log(superVessel);
-
-                io.emit('teamFull', superVessel);
+              //  io.emit('teamFull');
 
             }
-        } else {
-            console.log('The team is complete');
-            //socket.emit('teamFull', superVessel);
         }
     });
 
