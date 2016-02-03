@@ -190,9 +190,11 @@ function setupSocket(socket) {
     });
 
     socket.on('teamFull', function (newLead) {
-        console.log('Go fuck yourself');
-        console.log(newLead);
-        console.log(player);
+        if (newLead.id === player.id) {
+            player.isRegrouped = newLead.isRegrouped;
+            player.life = newLead.life;
+            player.munitions = newLead.munitions;
+        }
     });
 
     socket.on('gameOver', function () {
