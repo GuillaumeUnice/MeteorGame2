@@ -267,6 +267,7 @@ io.on('connection', function (socket) {
             console.log('The super spaceship lead by ', possibleAlly.name, 'is not full yet');
             console.log(usersInRegroup[possibleAlly.id]);
             currentPlayer.isRegrouped = {value: true, lead: possibleAlly.id};
+            currentPlayer.target = {x: 2500, y: 2500};
             usersInRegroup[possibleAlly.id] += 1;
             socket.emit('regroupAccepted', currentPlayer);
             if (usersInRegroup[possibleAlly.id] == 4) {

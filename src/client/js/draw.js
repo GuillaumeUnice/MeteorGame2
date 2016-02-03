@@ -88,16 +88,17 @@ function drawPlayers(order) {
 
         graph.font = 'bold ' + fontSize + 'px sans-serif';
         graph.fillStyle = '#FF0000';
-        if (!userCurrent.isRegrouped.value) {
-            if (typeof userCurrent.id == "undefined") {
-                graph.drawImage(imageRepository.playerImg, circle.x, circle.y, playerImgWidth, playerImgHeight);
-            }
-            else {
-                graph.drawImage(imageRepository.otherPlayerImg, circle.x, circle.y, playerImgWidth, playerImgHeight);
-            }
-            graph.fillText(nameCell, circle.x + playerImgWidth / 2, circle.y);
-        }else {
-            $('#panel-message').css('display','block');
+        //if (!userCurrent.isRegrouped.value) {
+        if (typeof userCurrent.id == "undefined") {
+            graph.drawImage(imageRepository.playerImg, circle.x, circle.y, playerImgWidth, playerImgHeight);
+        }
+        else {
+            graph.drawImage(imageRepository.otherPlayerImg, circle.x, circle.y, playerImgWidth, playerImgHeight);
+        }
+        graph.fillText(nameCell, circle.x + playerImgWidth / 2, circle.y);
+        //}else {
+        if (userCurrent.isRegrouped.value) {
+            $('#panel-message').css('display', 'block');
             $('#message-info').text('You are now linked to a super spaceship');
         }
 
