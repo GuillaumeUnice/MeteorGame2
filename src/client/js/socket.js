@@ -124,6 +124,7 @@ function setupSocket(socket) {
             }
         }
         users = userData;
+
         assets = foodsList;
         viruses = virusList;
         object = objectList;
@@ -187,6 +188,10 @@ function setupSocket(socket) {
             $('#joinDiv').css("visibility", "visible");
             $('#joinText').html('Do you want to join <span class="label label-primary">' + askingPlayer.name + '\'s</span> team');
         }
+    });
+
+    socket.on('regroupAccepted', function (currentPlayer) {
+        player.isRegrouped = currentPlayer.isRegrouped;
     });
 
     socket.on('teamFull', function (newLead) {

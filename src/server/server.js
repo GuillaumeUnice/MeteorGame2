@@ -1,50 +1,32 @@
 /*jslint bitwise: true, node: true */
 'use strict';
 
-var express = require('express');
+var express = require('express'), SAT = require('sat');
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-var SAT = require('sat');
 
 // Import game settings.
-var gameSettings = require('../../config.json');
-
-// Import utilities.
-var util = require('./lib/util');
-
-// Import quadtree.
-var quadtree = require('./../../quadtree');
+var gameSettings = require('../../config.json'), util = require('./lib/util'), quadtree = require('./../../quadtree');
 
 /* My imports */
-var mapElemImport = require("./mapElements.js");
-var objectImport = require("./object.js");
+var mapElemImport = require("./mapElements.js"), objectImport = require("./object.js");
 
 //game attribute
 var starUpArgs = {x: 0, y: 0, h: gameSettings.gameHeight, w: gameSettings.gameWidth, maxChildren: 1, maxDepth: 5};
 
-console.log(starUpArgs);
+var tree = quadtree.QUAD.init(starUpArgs), users = [], massFood = [], food = [], virus = [], object = [], sockets = {};
 
-var tree = quadtree.QUAD.init(starUpArgs);
+var leaderBoard = [], leaderboardChanged = false;
 
-var users = [];
-var massFood = [];
-var food = [];
-var virus = [];
-var object = [];
-var sockets = {};
+var SATVector = SAT.Vector, SATCircle = SAT.Circle;
 
-var leaderBoard = [];
-var leaderboardChanged = false;
+var initMassLog = util.log(gameSettings.defaultPlayerMass, gameSettings.slowBase), endGame = false;
 
-var SATVector = SAT.Vector;
-var SATCircle = SAT.Circle;
-
-var initMassLog = util.log(gameSettings.defaultPlayerMass, gameSettings.slowBase);
 
 app.use(express.static(__dirname + '/../client'));
 
-var endGame = false;
+console.log(starUpArgs);
 
 //SOCKET IMPORT ATTEMPT
 //io.on('connection', function (socket) {socketImport.ioon(socket,c,users,sockets);});
@@ -243,16 +225,15 @@ io.on('connection', function (socket) {
         console.log(usersInRegroup);
         if (usersInRegroup[possibleAlly.id] < 4) {
             console.log('The super spaceship lead by ', possibleAlly.name, 'is not full yet');
-
+            console.log(usersInRegroup[possibleAlly.id]);
             currentPlayer.isRegrouped = {value: true, lead: possibleAlly.id};
             usersInRegroup[possibleAlly.id] += 1;
-            console.log(usersInRegroup[possibleAlly.id]);
+            socket.emit('regroupAccepted', currentPlayer);
             if (usersInRegroup[possibleAlly.id] == 4) {
                 console.log('The super spaceship lead by ', possibleAlly.name, 'is now full');
                 possibleAlly.munitions *= 3;
                 possibleAlly.life *= 2;
                 io.emit('teamFull', possibleAlly);
-
             }
         }
     });
@@ -422,10 +403,10 @@ function tickPlayer(currentPlayer) {
     function check(user) {
         var response = new SAT.Response();
         var collided = undefined;
-        for (var i = 0; i < user.cells.length; i++) {
-            if (user.cells[i].mass > 10 && user.id !== currentPlayer.id) {
+        for (var j = 0; j < user.cells.length; j++) {
+            if (user.cells[j].mass > 10 && user.id !== currentPlayer.id) {
                 collided = SAT.testCircleCircle(playerCircle,
-                    new SATCircle(new SATVector(user.cells[i].x, user.cells[i].y), user.cells[i].radius),
+                    new SATCircle(new SATVector(user.cells[j].x, user.cells[j].y), user.cells[j].radius),
                     response);
 
                 if (collided) {
@@ -433,16 +414,15 @@ function tickPlayer(currentPlayer) {
                     response.bUser = {
                         id: user.id,
                         name: user.name,
-                        x: user.cells[i].x,
-                        y: user.cells[i].y,
-                        num: i,
-                        mass: user.cells[i].mass
+                        x: user.cells[j].x,
+                        y: user.cells[j].y,
+                        num: j,
+                        mass: user.cells[j].mass
                     };
                     playerCollisions.push(response);
                 }
             }
         }
-
 
         for (var i = 0; i < object.length; i++) {
             collided = SAT.testCircleCircle(playerCircle,
@@ -641,14 +621,10 @@ function balanceMass(configuration, food, users) {
     var foodToRemove = -Math.max(foodDiff, maxFoodDiff);
 
     if (foodToAdd > 0) {
-        //console.log('[DEBUG] Adding ' + foodToAdd + ' food to level!');
         mapElemImport.addFood(foodToAdd, configuration, food);
-        //console.log('[DEBUG] Mass rebalanced!');
     }
     else if (foodToRemove > 0) {
-        //console.log('[DEBUG] Removing ' + foodToRemove + ' food from level!');
         mapElemImport.removeFood(foodToRemove, food);
-        //console.log('[DEBUG] Mass rebalanced!');
     }
 
     var virusToAdd = configuration.maxVirus - virus.length;
@@ -746,19 +722,16 @@ function sendUpdates() {
                                 massTotal: Math.round(user.massTotal),
                                 hue: user.hue,
                                 name: user.name,
-                                isInSuperVessel: user.isInSuperVessel,
-                                isDisplayer: user.isDisplayer
+                                isRegrouped: user.isRegrouped
                             };
                         } else {
-                            //console.log("Nombre: " + f.name + " Es Usuario");
                             return {
                                 x: user.x,
                                 y: user.y,
                                 cells: user.cells,
                                 massTotal: Math.round(user.massTotal),
                                 hue: user.hue,
-                                isInSuperVessel: user.isInSuperVessel,
-                                isDisplayer: user.isDisplayer
+                                isRegrouped: user.isRegrouped
                             };
                         }
                     }
