@@ -422,10 +422,10 @@ function tickPlayer(currentPlayer) {
     //Detecter the confilt
     function check(user) {
         var response = new SAT.Response();
-
+        var collided = undefined;
         for (var i = 0; i < user.cells.length; i++) {
             if (user.cells[i].mass > 10 && user.id !== currentPlayer.id) {
-                var collided = SAT.testCircleCircle(playerCircle,
+                collided = SAT.testCircleCircle(playerCircle,
                     new SATCircle(new SATVector(user.cells[i].x, user.cells[i].y), user.cells[i].radius),
                     response);
 
@@ -446,7 +446,7 @@ function tickPlayer(currentPlayer) {
 
 
         for (var i = 0; i < object.length; i++) {
-            var collided = SAT.testCircleCircle(playerCircle,
+            collided = SAT.testCircleCircle(playerCircle,
                 new SATCircle(new SATVector(object[i].x, object[i].y), 50),
                 response);
 
