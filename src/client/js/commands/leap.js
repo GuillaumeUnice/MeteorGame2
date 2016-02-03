@@ -28,3 +28,4 @@ var Cat = function () {
 };
 
 cats[0] = new Cat();
+

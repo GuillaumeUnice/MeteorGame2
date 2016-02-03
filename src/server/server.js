@@ -71,7 +71,7 @@ io.on('connection', function (socket) {
         munitions: gameSettings.munition,
         life: gameSettings.life,
         cells: cells,
-        isRegrouped: {value: false, lead: undefined},
+        isRegrouped: {value: false, lead: undefined, isLead: false},
         massTotal: massTotal,
         hue: Math.round(Math.random() * 360),
         type: type,
@@ -251,7 +251,7 @@ io.on('connection', function (socket) {
 
         if (users.length > 1) {
             console.log(currentPlayer.name + ' asked for a super spaceship');
-            currentPlayer.isRegrouped = {value: true, lead: currentPlayer.id};
+            currentPlayer.isRegrouped = {value: true, lead: currentPlayer.id, isLead: true};
             usersInRegroup[currentPlayer.id] = 1;
             socket.broadcast.emit('proposeJoin', currentPlayer);
 
@@ -604,8 +604,7 @@ function gameloop() {
                         name: users[i].name,
                         x: users[i].x,
                         y: users[i].y,
-                        isInSuperVessel: users[i].isInSuperVessel,
-                        isDisplayer: users[i].isDisplayer
+                        isRegrouped: users[i].isRegrouped
                     });
                 }
             }

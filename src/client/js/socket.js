@@ -91,8 +91,8 @@ function setupSocket(socket) {
                     status += (i + 1) + '. An unnamed cell';
             }
             //The point in miniMap that present the super spaceship
-            if (!leaderboard[i].isInSuperVessel || leaderboard[i].isDisplayer) {
-                if (leaderboard[i].isDisplayer)
+            if (!leaderboard[i].isRegrouped.value || leaderboard[i].isRegrouped.isLead) {
+                if (leaderboard[i].isRegrouped.isLead)
                     miniMapFrame.fillStyle = "#FFFFFF";
                 miniMapFrame.fillRect(0.98 * miniMap.width * leaderboard[i].x / gameWidth, 0.97 * miniMap.height * leaderboard[i].y / gameHeight, pictoWidth, pictoHeight);
             }
