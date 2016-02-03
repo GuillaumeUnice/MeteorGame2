@@ -147,16 +147,18 @@ function setupSocket(socket) {
     });
 
     //Bullet bar, lost bullet
-    socket.on('fire', function (player) {
+    socket.on('fire', function (currentPlayer) {
         soundRepository.bulletSound.play();
-        updatePoints();
+        player.munitions = currentPlayer.munitions;
+        updateMunition();
     });
 
     //Bullet bar, add bullet
-    socket.on('dropBullet', function (players) {
+    socket.on('dropBullet', function (currentPlayer) {
         //The munitionBar
         soundRepository.dropBulletSound.play();
-        updatePoints();
+        player.munitions = currentPlayer.munitions;
+        updateMunition();
     });
 
     //A DEPLACER
