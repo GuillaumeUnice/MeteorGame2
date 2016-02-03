@@ -61,7 +61,11 @@ var graph = gameCanvas.getContext('2d'), miniMapFrame = miniMap.getContext("2d")
  * Functions
  * ############
  */
-var updateLifeBar = function () {
+
+/**
+ *
+ */
+var updateLife = function () {
     var lifeBar = document.getElementById('lifeBar');
 
     if (onSmartphone() || onTablet()) {
@@ -75,10 +79,7 @@ var updateLifeBar = function () {
     document.getElementById('lifePoint').innerHTML = player.life;
 };
 
-/**
- *
- */
-var updateMunitionBar = function () {
+var updateMunition = function () {
     var munitionBar = document.getElementById('munitionBar');
 
     if (onSmartphone() || onTablet()) {
@@ -94,18 +95,9 @@ var updateMunitionBar = function () {
 
 };
 
-var updateLife = function () {
-    updateLifeBar();
-};
-
-var updateMunition = function () {
-    console.log('[UpdateMunition] I am called');
-    updateMunitionBar();
-};
-
 var updatePoints = function () {
-    updateLifeBar();
-    updateMunitionBar();
+    updateLife();
+    updateMunition();
 };
 
 

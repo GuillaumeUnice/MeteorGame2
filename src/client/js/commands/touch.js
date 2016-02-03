@@ -94,72 +94,76 @@ function givePointerType(event) {
 }
 
 function onPointerDown(e) {
-    e.preventDefault();
+    if (!player.isRegrouped.value) {
 
-    _pressed = true;
+        e.preventDefault();
 
-    var newPointer = {identifier: e.pointerId, x: e.clientX, y: e.clientY, type: givePointerType(e)};
-    if ((leftPointerID < 0) && (e.clientX < halfWidth)) {
-        leftPointerID = e.pointerId;
-        leftPointerStartPos.reset(e.clientX, e.clientY);
-        leftPointerPos.copyFrom(leftPointerStartPos);
-        leftVector.reset(0, 0);
-    }
+        _pressed = true;
 
-    if (_stationaryBase == false) {
-        _baseX = e.clientX;
-        _baseY = e.clientY;
-
-    }
-
-    _stickX = e.clientX;
-    _stickY = e.clientY;
-
-    pointers.add(e.pointerId, newPointer);
-
-}
-
-function onPointerMove(e) {
-
-
-    if (_pressed) {
-
-        if (leftPointerID == e.pointerId) {
-            leftPointerPos.reset(e.clientX, e.clientY);
-            leftVector.copyFrom(leftPointerPos);
-            leftVector.minusEq(leftPointerStartPos);
+        var newPointer = {identifier: e.pointerId, x: e.clientX, y: e.clientY, type: givePointerType(e)};
+        if ((leftPointerID < 0) && (e.clientX < halfWidth)) {
+            leftPointerID = e.pointerId;
+            leftPointerStartPos.reset(e.clientX, e.clientY);
+            leftPointerPos.copyFrom(leftPointerStartPos);
+            leftVector.reset(0, 0);
         }
-        else {
-            if (pointers.item(e.pointerId)) {
-                pointers.item(e.pointerId).x = e.clientX;
-                pointers.item(e.pointerId).y = e.clientY;
-            }
+
+        if (_stationaryBase == false) {
+            _baseX = e.clientX;
+            _baseY = e.clientY;
+
         }
 
         _stickX = e.clientX;
         _stickY = e.clientY;
 
-        if (right) {
-            imageRepository.playerImg.src = imageRepository.player_right;
-        }
-        if (left()) {
-            imageRepository.playerImg.src = imageRepository.player_left;
-        }
-        if (down()) {
-            imageRepository.playerImg.src = imageRepository.player_down;
-        }
-        if (up()) {
-            imageRepository.playerImg.src = imageRepository.player_up;
-        }
+        pointers.add(e.pointerId, newPointer);
+    }
+
+}
+
+function onPointerMove(e) {
+
+    if (!player.isRegrouped.value) {
+
+        if (_pressed) {
+
+            if (leftPointerID == e.pointerId) {
+                leftPointerPos.reset(e.clientX, e.clientY);
+                leftVector.copyFrom(leftPointerPos);
+                leftVector.minusEq(leftPointerStartPos);
+            }
+            else {
+                if (pointers.item(e.pointerId)) {
+                    pointers.item(e.pointerId).x = e.clientX;
+                    pointers.item(e.pointerId).y = e.clientY;
+                }
+            }
+
+            _stickX = e.clientX;
+            _stickY = e.clientY;
+
+            if (right) {
+                imageRepository.playerImg.src = imageRepository.player_right;
+            }
+            if (left()) {
+                imageRepository.playerImg.src = imageRepository.player_left;
+            }
+            if (down()) {
+                imageRepository.playerImg.src = imageRepository.player_down;
+            }
+            if (up()) {
+                imageRepository.playerImg.src = imageRepository.player_up;
+            }
 
 
-        target.x = e.clientX - screenWidth / 2;
-        target.y = e.clientY - screenHeight / 2;
+            target.x = e.clientX - screenWidth / 2;
+            target.y = e.clientY - screenHeight / 2;
 
+        }
     }
 }
 function onPointerUp(e) {
-
     if (!player.isRegrouped.value) {
 
         _pressed = false;

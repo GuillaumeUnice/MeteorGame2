@@ -197,29 +197,34 @@ io.on('connection', function (socket) {
             var attackingPlayerIndex = util.findIndex(users, currentPlayer.isRegrouped.lead);
             if (attackingPlayerIndex !== -1) {
                 var attackingPlayer = users[attackingPlayerIndex];
-                for (var i = 0; i < attackingPlayer.cells.length; i++) {
-                    var masa = 1;
-                    if (attackingPlayer.munitions > 0) {
+                if (currentPlayer.munitions > 0) {
 
-                        masa = attackingPlayer.cells[i].mass * 0.1;
+                    currentPlayer.munitions -= 1;
+                    socket.emit('fire', currentPlayer);
+                    for (var i = 0; i < attackingPlayer.cells.length; i++) {
+                        var masa = 1;
+                        if (attackingPlayer.munitions > 0) {
 
-                        attackingPlayer.munitions -= 1;
-                        attackingPlayerSocket.emit('fire', attackingPlayer);
-                        massFood.push({
-                            id: attackingPlayer.id,
-                            num: i,
-                            masa: masa,
-                            hue: attackingPlayer.hue,
-                            target: {
-                                x: attackingPlayer.x - attackingPlayer.cells[i].x + attackingPlayer.target.x + 200,
-                                y: attackingPlayer.y - attackingPlayer.cells[i].y + attackingPlayer.target.y + 200
-                            },
-                            x: attackingPlayer.cells[i].x,
-                            y: attackingPlayer.cells[i].y,
-                            radius: util.massToRadius(masa),
-                            speed: 50
-                        });
+                            masa = attackingPlayer.cells[i].mass * 0.1;
 
+                            attackingPlayer.munitions -= 1;
+                            attackingPlayerSocket.emit('fire', attackingPlayer);
+                            massFood.push({
+                                id: attackingPlayer.id,
+                                num: i,
+                                masa: masa,
+                                hue: attackingPlayer.hue,
+                                target: {
+                                    x: attackingPlayer.x - attackingPlayer.cells[i].x + attackingPlayer.target.x + 200,
+                                    y: attackingPlayer.y - attackingPlayer.cells[i].y + attackingPlayer.target.y + 200
+                                },
+                                x: attackingPlayer.cells[i].x,
+                                y: attackingPlayer.cells[i].y,
+                                radius: util.massToRadius(masa),
+                                speed: 50
+                            });
+
+                        }
                     }
                 }
             }
@@ -266,9 +271,10 @@ io.on('connection', function (socket) {
             socket.emit('regroupAccepted', currentPlayer);
             if (usersInRegroup[possibleAlly.id] == 4) {
                 console.log('The super spaceship lead by ', possibleAlly.name, 'is now full');
-                possibleAlly.munitions *= 3;
-                possibleAlly.life *= 2;
-                io.emit('teamFull', possibleAlly);
+                var leader = users[util.findIndex(users, possibleAlly.id)];
+                leader.munitions *= 3;
+                leader.life *= 3;
+                io.emit('teamFull', leader);
             }
         }
     });
