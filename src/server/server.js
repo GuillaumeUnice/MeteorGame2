@@ -28,7 +28,6 @@ console.log(starUpArgs);
 var tree = quadtree.QUAD.init(starUpArgs);
 
 var users = [];
-var superVessel = [];
 var massFood = [];
 var food = [];
 var virus = [];
@@ -547,7 +546,7 @@ function tickPlayer(currentPlayer) {
         var playerCollisions = [];
 
         //Get all the collision with other users
-        var otherUsers = tree.retrieve(currentPlayer, check);
+        tree.retrieve(currentPlayer, check);
         for (var i = 0; i < playerCollisions.length; i++) {
             collisionCheck(playerCollisions[i]);
         }
