@@ -200,6 +200,8 @@ function setupSocket(socket) {
             player.life = newLead.life;
             player.munitions = newLead.munitions;
         }
+
+        updatePoints();
     });
 
     socket.on('gameOver', function () {

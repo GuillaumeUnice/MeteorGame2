@@ -43,7 +43,6 @@ var playerConfig = {
     target: {x: screenWidth / 2, y: screenHeight / 2}
 };
 
-var mySuperVessel = [];
 var assets = [];
 var viruses = [];
 var fireFood = [];

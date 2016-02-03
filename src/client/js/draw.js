@@ -96,6 +96,9 @@ function drawPlayers(order) {
                 graph.drawImage(imageRepository.otherPlayerImg, circle.x, circle.y, playerImgWidth, playerImgHeight);
             }
             graph.fillText(nameCell, circle.x + playerImgWidth / 2, circle.y);
+        }else {
+            $('#panel-message').css('display','block');
+            $('#message-info').text('You are now linked to a super spaceship');
         }
 
     }
