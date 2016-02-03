@@ -149,14 +149,14 @@ function setupSocket(socket) {
     //Bullet bar, lost bullet
     socket.on('fire', function (player) {
         soundRepository.bulletSound.play();
-        updateMunition();
+        updatePoints();
     });
 
     //Bullet bar, add bullet
     socket.on('dropBullet', function (players) {
         //The munitionBar
         soundRepository.dropBulletSound.play();
-        updateMunition();
+        updatePoints();
     });
 
     //A DEPLACER

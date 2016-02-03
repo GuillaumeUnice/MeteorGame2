@@ -166,31 +166,66 @@ io.on('connection', function (socket) {
 
 //shoot, client call this in client/app.js
     socket.on('1', function () {
+        if (!currentPlayer.isRegrouped.value) {
+            for (var i = 0; i < currentPlayer.cells.length; i++) {
+                var masa = 1;
+                if (currentPlayer.munitions > 0) {
 
-        for (var i = 0; i < currentPlayer.cells.length; i++) {
-            var masa = 1;
-            if (currentPlayer.munitions > 0) {
+                    masa = currentPlayer.cells[i].mass * 0.1;
 
-                masa = currentPlayer.cells[i].mass * 0.1;
+                    currentPlayer.munitions -= 1;
+                    socket.emit('fire', currentPlayer);
+                    massFood.push({
+                        id: currentPlayer.id,
+                        num: i,
+                        masa: masa,
+                        hue: currentPlayer.hue,
+                        target: {
+                            x: currentPlayer.x - currentPlayer.cells[i].x + currentPlayer.target.x + 200,
+                            y: currentPlayer.y - currentPlayer.cells[i].y + currentPlayer.target.y + 200
+                        },
+                        x: currentPlayer.cells[i].x,
+                        y: currentPlayer.cells[i].y,
+                        radius: util.massToRadius(masa),
+                        speed: 50
+                    });
 
-                currentPlayer.munitions -= 1;
-                socket.emit('fire', currentPlayer);
-                massFood.push({
-                    id: currentPlayer.id,
-                    num: i,
-                    masa: masa,
-                    hue: currentPlayer.hue,
-                    target: {
-                        x: currentPlayer.x - currentPlayer.cells[i].x + currentPlayer.target.x + 200,
-                        y: currentPlayer.y - currentPlayer.cells[i].y + currentPlayer.target.y + 200
-                    },
-                    x: currentPlayer.cells[i].x,
-                    y: currentPlayer.cells[i].y,
-                    radius: util.massToRadius(masa),
-                    speed: 50
-                });
-
+                }
             }
+        } else {
+            var attackingPlayerSocket = sockets[currentPlayer.isRegrouped.lead];
+            var attackingPlayerIndex = util.findIndex(users, currentPlayer.isRegrouped.lead);
+            if (attackingPlayerIndex !== -1) {
+                var attackingPlayer = users[attackingPlayerIndex];
+                for (var i = 0; i < attackingPlayer.cells.length; i++) {
+                    var masa = 1;
+                    if (attackingPlayer.munitions > 0) {
+
+                        masa = attackingPlayer.cells[i].mass * 0.1;
+
+                        attackingPlayer.munitions -= 1;
+                        attackingPlayerSocket.emit('fire', attackingPlayer);
+                        massFood.push({
+                            id: attackingPlayer.id,
+                            num: i,
+                            masa: masa,
+                            hue: attackingPlayer.hue,
+                            target: {
+                                x: attackingPlayer.x - attackingPlayer.cells[i].x + attackingPlayer.target.x + 200,
+                                y: attackingPlayer.y - attackingPlayer.cells[i].y + attackingPlayer.target.y + 200
+                            },
+                            x: attackingPlayer.cells[i].x,
+                            y: attackingPlayer.cells[i].y,
+                            radius: util.massToRadius(masa),
+                            speed: 50
+                        });
+
+                    }
+                }
+            }
+
+
+            console.log(currentPlayer.name, ' is now part of a super space ship');
         }
     });
 
