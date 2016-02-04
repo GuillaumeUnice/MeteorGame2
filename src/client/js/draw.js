@@ -35,24 +35,21 @@ function drawObject(object) {
 
     graph.globalAlpha = 1;
 
-    graph.drawImage(imageRepository.objectImg, object.x - player.x + screenWidth / 2 + 100, object.y - player.y + screenHeight / 2 + 100, objectSize, objectSize);
+    graph.drawImage(imageRepository.objectImg, object.x - player.x + screenWidth / 2 + 100,
+        object.y - player.y + screenHeight / 2 + 100, objectSize, objectSize);
 
 }
-
+//draw the start position of bullet
 function drawBullet(mass) {
 
     var offset = 0, bulletWidth = 30, bulletHeight = 30;
-
     graph.globalAlpha = 1;
-
     if (onTablet()) {
         offset = -70;
     }
-
     if (onTablet() || onSmartphone()) {
         bulletHeight = bulletWidth = 15;
     }
-
     graph.drawImage(imageRepository.bulletImg, mass.x - player.x + 105 + screenWidth / 2 + offset, mass.y - player.y + 100 + screenHeight / 2 + offset, bulletWidth, bulletHeight);
 
 }
@@ -175,4 +172,87 @@ function drawBorder() {
         graph.lineTo(screenWidth / 2 - player.x, gameHeight + screenHeight / 2 - player.y);
         graph.stroke();
     }
+}
+
+function drawExplosion() {
+    console.log("explosion!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+    var explosion;
+    var explosionImage;
+
+    function gameLoop () {
+        window.requestAnimationFrame(gameLoop);
+        explosion.update();
+        explosion.render();
+    }
+
+    explosionImage = new Image();
+    explosionImage.src = "../img/explosion.png";
+    graph.globalAlpha = 1;
+    explosion = sprite({
+        context: graph,
+        width: 1024,
+        height: 64,
+        image: explosionImage,
+        numberOfFrames: 16,
+        ticksPerFrame: 2,
+        x:player.x,
+        y:player.y
+    });
+
+    explosionImage.addEventListener("load", gameLoop);
+
+
+
+}
+
+function sprite (options) {
+
+    var that = {};
+    var frameIndex = 0;
+    var tickCount = 0;
+    var ticksPerFrame = options.ticksPerFrame || 0;
+    var numberOfFrames = options.numberOfFrames || 1;
+    var xPosition = options.x;
+    var yPosition = options.y;
+
+    that.context = options.context;
+    that.width = options.width;
+    that.height = options.height;
+    that.image = options.image;
+    that.draw = true;
+
+    that.update = function () {
+
+        tickCount += 1;
+
+        if (tickCount > ticksPerFrame) {
+
+            tickCount = 0;
+
+            if (frameIndex < numberOfFrames - 1) {
+                frameIndex += 1;
+            } else {
+                that.draw = false;
+            }
+        }
+    };
+
+    that.render = function () {
+        if(that.draw){
+            that.context.clearRect(0, 0, that.width, that.height);
+            that.context.drawImage(
+                that.image,
+                frameIndex * that.width / numberOfFrames,
+                0,
+                that.width / numberOfFrames,
+                that.height,
+                32,
+               32,
+                that.width / numberOfFrames,
+                that.height);
+        }
+    };
+
+//	context.drawImage(img,sx,sy,swidth,sheight,x,y,width,height);
+    return that;
 }

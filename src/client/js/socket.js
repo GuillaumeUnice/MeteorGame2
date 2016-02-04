@@ -183,6 +183,10 @@ function setupSocket(socket) {
         updateLife();
     });
 
+    socket.on('explosion', function (currentPlayer) {
+        drawExplosion();
+    });
+
     socket.on('proposeJoin', function (askingPlayer) {
         if (!connectedToOthers) {
             possibleAlly = askingPlayer;
