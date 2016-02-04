@@ -194,10 +194,10 @@ function setupSocket(socket) {
 
     socket.on('regroupAccepted', function (currentPlayer) {
         player.isRegrouped = currentPlayer.isRegrouped;
-        target = currentPlayer.target;
-        console.log('New target');
-        console.log(target);
-        directionLock = false;
+        player.x = currentPlayer.x;
+        player.y = currentPlayer.y;
+        player.cells = currentPlayer.cells;
+        directionLock = true;
     });
 
     socket.on('teamFull', function (newLead) {
