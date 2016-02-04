@@ -268,9 +268,21 @@ io.on('connection', function (socket) {
             console.log(usersInRegroup[possibleAlly.id]);
             currentPlayer.isRegrouped = {value: true, lead: possibleAlly.id};
             usersInRegroup[possibleAlly.id] += 1;
+            switch (usersInRegroup[possibleAlly.id]) {
+                case  2 :
+                    currentPlayer.x = possibleAlly.x - 100;
+                    currentPlayer.y = possibleAlly.y + 100;
+                    break;
+                case  3 :
+                    currentPlayer.x = possibleAlly.x + 100;
+                    currentPlayer.y = possibleAlly.y + 100;
+                    break;
+                case  4 :
+                    currentPlayer.x = possibleAlly.x;
+                    currentPlayer.y = possibleAlly.y + 200;
+                    break;
+            }
 
-            currentPlayer.x = possibleAlly.x - 100 / usersInRegroup[possibleAlly.id];
-            currentPlayer.y = possibleAlly.y + 100 / usersInRegroup[possibleAlly.id];
             currentPlayer.cells = possibleAlly.cells;
             currentPlayer.cells[0].x = currentPlayer.x;
             currentPlayer.cells[0].y = currentPlayer.y;

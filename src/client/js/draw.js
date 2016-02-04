@@ -80,6 +80,7 @@ function drawPlayers(order) {
         var nameCell = "";
         if (typeof userCurrent.id == "undefined") {
             nameCell = player.name;
+
         } else {
             nameCell = userCurrent.name;
         }
@@ -88,20 +89,35 @@ function drawPlayers(order) {
 
         graph.font = 'bold ' + fontSize + 'px sans-serif';
         graph.fillStyle = '#FF0000';
-        //if (!userCurrent.isRegrouped.value) {
-        if (typeof userCurrent.id == "undefined") {
-            graph.drawImage(imageRepository.playerImg, circle.x, circle.y, playerImgWidth, playerImgHeight);
-        }
-        else {
-            graph.drawImage(imageRepository.otherPlayerImg, circle.x, circle.y, playerImgWidth, playerImgHeight);
-        }
-        graph.fillText(nameCell, circle.x + playerImgWidth / 2, circle.y);
-        //}else {
-        if (userCurrent.isRegrouped.value) {
+        if (!userCurrent.isRegrouped.value) {
+            if (typeof userCurrent.id == "undefined") {
+                graph.drawImage(imageRepository.playerImg, circle.x, circle.y, playerImgWidth, playerImgHeight);
+            }
+            else {
+                graph.drawImage(imageRepository.otherPlayerImg, circle.x, circle.y, playerImgWidth, playerImgHeight);
+            }
+            graph.fillText(nameCell, circle.x + playerImgWidth / 2, circle.y);
+
+        } else {
+            //Draw it only on the displayer screen
+            if ((userCurrent.isRegrouped.lead === player.id && !(typeof userCurrent.id == "undefined")) || userCurrent.isRegrouped.isLead) {
+
+                if (player.isRegrouped.isLead) {
+                    if (typeof userCurrent.id == "undefined") {
+                        graph.drawImage(imageRepository.playerImg, circle.x, circle.y, playerImgWidth, playerImgHeight);
+                    }
+                    else {
+                        graph.drawImage(imageRepository.otherPlayerImg, circle.x, circle.y, playerImgWidth, playerImgHeight);
+                    }
+                    graph.fillText(nameCell, circle.x + playerImgWidth / 2, circle.y);
+                }
+
+            }
+
             $('#panel-message').css('display', 'block');
             $('#message-info').text('You are now linked to a super spaceship');
-        }
 
+        }
     }
 }
 
