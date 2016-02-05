@@ -13,7 +13,11 @@ var soundRepository = new function () {
     this.dropBulletSound = new Audio('../sounds/dropBullet.mp3');
     this.lifeSound = new Audio('../sounds/life.mp3');
     this.loseLifeSound = new Audio('../sounds/looseLife.mp3');
+    this.intro = new Audio('../sounds/intro.mp3');
+    this.game_loop = new Audio('../sounds/game_sound.mp3');
+
 };
+
 
 /**
  * Handles the different exchange cases between client and server
@@ -51,6 +55,8 @@ function setupSocket(socket) {
 
         gameStart = true;
         gameCanvas.focus();
+
+        soundRepository.game_loop.play();
     });
 
     socket.on('gameSetup', function (data) {

@@ -45,6 +45,8 @@ function validNick() {
  */
 window.onload = function () {
 
+    soundRepository.intro.play();
+
     var btn = document.getElementById('startButton');
 
     var nickErrorText = document.querySelector('#startMenu .input-error');
@@ -62,11 +64,15 @@ window.onload = function () {
 
     btn.onclick = function () {
         setupGame();
+        soundRepository.intro.pause();
+
     };
 
     playerNameInput.addEventListener('keypress', function (e) {
         var key = e.which || e.keyCode;
         if (key === KEY_ENTER) {
+
+            soundRepository.intro.pause();
             setupGame();
         }
     });
