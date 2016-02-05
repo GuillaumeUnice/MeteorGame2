@@ -27,10 +27,10 @@ var imageRepository = new function () {
 };
 
 function drawObject(object) {
-    var objectSize = 80;
+    var objectSize = 120;
 
     if (onTablet()) {
-        objectSize = 30;
+        objectSize = 40;
     }
 
     imageRepository.objectImg.src = object.imageUrl;
@@ -147,8 +147,12 @@ function drawGrid() {
     graph.globalAlpha = 1;
 
     for (var i = 0; i <= 3; i++) {
-        graph.drawImage(imageRepository.starImg, Math.random() * screenWidth, Math.random() * screenHeight, Math.random() * 20, Math.random() * 20);
-        graph.globalAlpha = 0.1;
+        graph.beginPath();
+        graph.arc( Math.random() * screenWidth, Math.random() * screenHeight, Math.random() * 5, 0, 2 * Math.PI, false);
+        graph.fillStyle = '#FFFA76';
+        graph.fill();
+      //  graph.drawImage(imageRepository.starImg, Math.random() * screenWidth, Math.random() * screenHeight, Math.random() * 20, Math.random() * 20);
+        graph.globalAlpha = 0.7;
     }
 }
 

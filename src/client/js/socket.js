@@ -186,12 +186,12 @@ function setupSocket(socket) {
         }
         else if (currentPlayer.life < player.life) {
             soundRepository.loseLifeSound.play();
-         /*   document.getElementById('blood').className = "fadeIn";
+            document.getElementById('blood').className = "fadeIn";
             document.getElementById('blood').style.display = "block";
             setTimeout(function () {
                 document.getElementById('blood').style.display = "none";
                 document.getElementById('blood').className = "";
-            }, 500);*/
+            }, 500);
 
         }
 

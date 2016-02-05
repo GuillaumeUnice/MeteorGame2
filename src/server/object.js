@@ -23,7 +23,7 @@ exports.addObject = function (toAdd, configuration, object) {
                 stroke: configuration.object.mineType.stroke,
                 strokeWidth: configuration.object.strokeWidth,
                 type: configuration.object.mineType.name,
-                imageUrl: 'img/bomb.png'
+                imageUrl: 'img/_bomb.png'
             });
         } else if (random === 2) {
             object.push({
@@ -37,7 +37,7 @@ exports.addObject = function (toAdd, configuration, object) {
                 stroke: configuration.object.bulletType.stroke,
                 strokeWidth: configuration.object.strokeWidth,
                 type: configuration.object.bulletType.name,
-                imageUrl: 'img/treature.png'
+                imageUrl: 'img/munition.png'
             });
         } else {
             object.push({
