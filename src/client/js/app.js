@@ -76,10 +76,18 @@ window.onload = function () {
 /**
  * We will use this as gunshots
  */
-$("#fire").click(function () {
-    socket.emit('1');
+var refreshIntervalId = null;
+$("#fire").on("mousedown", function () {
+    refreshIntervalId = setInterval(function(){
+        socket.emit('1');    
+    }, 500);
     reSend = false;
 });
+
+$("#fire").on("mouseup", function () {
+    clearInterval(refreshIntervalId);
+});
+
 
 $("#regroup").click(function () {
     var regroupImg = $('#regroup');
