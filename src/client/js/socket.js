@@ -218,6 +218,14 @@ function setupSocket(socket) {
         player.y = currentPlayer.y;
         player.cells = currentPlayer.cells;
         directionLock = true;
+
+        if (onSmartphone()){
+         //   canvas.css('width','100%');
+            $("#minimap").addClass('regroup-sm');
+            $("#regroup").addClass('regroup-sm');
+            $("#munitionBar").addClass('regroup-sm');
+            $("#lifeBar").addClass('regroup-sm');
+        }
     });
 
     socket.on('teamFull', function (newLead) {
