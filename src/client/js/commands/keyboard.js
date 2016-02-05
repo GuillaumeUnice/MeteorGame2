@@ -8,8 +8,11 @@ gameCanvas.addEventListener('keyup', onKeyUp, false);
 gameCanvas.addEventListener('keypress', keyInput, false);
 gameCanvas.addEventListener('keydown', directionDown, false);
 
+/**
+ * Handles the events when we stop to press the keyboard
+ * @param event
+ */
 function onKeyUp(event) {
-
     if (!player.isRegrouped.value) {
         reSend = true;
         directionUp(event);
@@ -28,6 +31,10 @@ function keyInput(event) {
     }
 }
 
+/**
+ * Handles the events when we start to press the keyboard
+ * @param event
+ */
 function directionDown(event) {
     var key = event.which || event.keyCode;
 
@@ -56,9 +63,12 @@ function directionDown(event) {
                 socket.emit('0', target);
             }
         }
-
 }
-// Function called when a key is lifted, will change direction if arrow key.
+
+/**
+ * Function called when a key is lifted, will change direction if arrow key.
+ * @param event
+ */
 function directionUp(event) {
     var key = event.which || event.keyCode;
     if (directional(key)) {
@@ -70,7 +80,11 @@ function directionUp(event) {
     }
 }
 
-// Updates the direction array including information about the new direction.
+
+/**
+ * Updates the direction array including information about the new direction.
+ * @param event
+ */
 function newDirection(direction, list, isAddition) {
     var result = false;
     var found = false;
@@ -94,7 +108,10 @@ function newDirection(direction, list, isAddition) {
     return result;
 }
 
-// Updates the target according to the directions in the directions array.
+/**
+ * Updates the target according to the directions in the directions array.
+ * @param event
+ */
 function updateTarget(list) {
     var directionHorizontal = 0;
     var directionVertical = 0;
