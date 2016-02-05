@@ -8,7 +8,6 @@ var imageRepository = new function () {
     this.bulletImg = new Image();
     this.starImg = new Image();
     this.bombImg = new Image();
-    this.minimapImg = new Image();
     this.objectImg = new Image();
 
     this.player_up = "../img/ship_up.png";
@@ -21,7 +20,6 @@ var imageRepository = new function () {
     this.bulletImg.src = "../img/bullet.png";
     this.starImg.src = "../img/star.png";
     this.bombImg.src = "../img/bomb.png";
-    this.minimapImg.src = "../img/ship_up.svg";
     this.circle ={};
 
 };

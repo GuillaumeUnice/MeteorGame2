@@ -3,7 +3,6 @@
  * @param event
  */
 
-
 // Function called when a key is pressed, will change direction if arrow key.
 gameCanvas.addEventListener('keyup', onKeyUp, false);
 gameCanvas.addEventListener('keypress', keyInput, false);
@@ -31,7 +30,7 @@ function keyInput(event) {
 
 function directionDown(event) {
     var key = event.which || event.keyCode;
-    
+
     if (!player.isRegrouped.value)
         if (directional(key)) {
 
