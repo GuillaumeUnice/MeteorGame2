@@ -78,7 +78,6 @@ window.onload = function () {
     });
 };
 
-
 /**
  * We will use this as gunshots
  */

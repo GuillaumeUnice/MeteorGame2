@@ -268,7 +268,7 @@ io.on('connection', function (socket) {
             console.log(usersInRegroup[possibleAlly.id]);
             currentPlayer.isRegrouped = {value: true, lead: possibleAlly.id};
             usersInRegroup[possibleAlly.id] += 1;
-            switch (usersInRegroup[possibleAlly.id]) {
+            /*switch (usersInRegroup[possibleAlly.id]) {
                 case  2 :
                     currentPlayer.x = possibleAlly.x - 100;
                     currentPlayer.y = possibleAlly.y + 100;
@@ -285,7 +285,7 @@ io.on('connection', function (socket) {
 
             currentPlayer.cells = possibleAlly.cells;
             currentPlayer.cells[0].x = currentPlayer.x;
-            currentPlayer.cells[0].y = currentPlayer.y;
+            currentPlayer.cells[0].y = currentPlayer.y;*/
             console.log('Possible Ally');
             console.log(possibleAlly);
             socket.emit('regroupAccepted', currentPlayer);
