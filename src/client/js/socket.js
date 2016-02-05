@@ -154,7 +154,17 @@ function setupSocket(socket) {
 
     //Bullet bar, lost bullet
     socket.on('fire', function (currentPlayer) {
+
+        /*
+            play the sound :
+            - pause it (in case it was already playing
+            - set the sound time to 0.1 for a better sound ( useful when clicking very fast)
+            - play the sound
+         */
+        soundRepository.bulletSound.pause();
+        soundRepository.bulletSound.currentTime = 0.1;
         soundRepository.bulletSound.play();
+
         player.munitions = currentPlayer.munitions;
         updateMunition();
     });
