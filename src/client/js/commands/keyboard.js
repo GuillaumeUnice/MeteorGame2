@@ -30,7 +30,8 @@ function keyInput(event) {
 }
 
 function directionDown(event) {
-
+    var key = event.which || event.keyCode;
+    
     if (!player.isRegrouped.value)
         if (directional(key)) {
 
