@@ -2,12 +2,19 @@
  * Handles moves mainly via the keyboard
  * @param event
  */
+
+var refreshIntervalId = null;
+
 // Function called when a key is pressed, will change direction if arrow key.
 gameCanvas.addEventListener('keyup', onKeyUp, false);
-gameCanvas.addEventListener('keypress', keyInput, false);
+//gameCanvas.addEventListener('keypress', keyInput, false);
 gameCanvas.addEventListener('keydown', directionDown, false);
 
 function onKeyUp(event) {
+    var key = event.which || event.keyCode;
+
+    clearInterval(refreshIntervalId);
+
     if (!player.isRegrouped.value) {
         reSend = true;
         directionUp(event);
@@ -18,16 +25,24 @@ function onKeyUp(event) {
  * Handles the events when we press the keyboard
  * @param event
  */
-function keyInput(event) {
+/*function keyInput(event) {
     var key = event.which || event.keyCode;
     if (key === KEY_FIREFOOD && reSend) {
         socket.emit('1');
         reSend = false;
     }
-}
+}*/
 
 function directionDown(event) {
     var key = event.which || event.keyCode;
+
+    if (key === KEY_FIREFOOD && reSend) {
+        refreshIntervalId = setInterval(function(){
+         socket.emit('1');    
+        }, 500);
+        reSend = false;
+    }
+
     if (!player.isRegrouped.value)
         if (directional(key)) {
 

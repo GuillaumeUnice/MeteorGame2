@@ -154,7 +154,17 @@ function setupSocket(socket) {
 
     //Bullet bar, lost bullet
     socket.on('fire', function (currentPlayer) {
+
+        /*
+            play the sound :
+            - pause it (in case it was already playing
+            - set the sound time to 0.1 for a better sound ( useful when clicking very fast)
+            - play the sound
+         */
+        soundRepository.bulletSound.pause();
+        soundRepository.bulletSound.currentTime = 0.1;
         soundRepository.bulletSound.play();
+
         player.munitions = currentPlayer.munitions;
         updateMunition();
     });
@@ -176,12 +186,12 @@ function setupSocket(socket) {
         }
         else if (currentPlayer.life < player.life) {
             soundRepository.loseLifeSound.play();
-            document.getElementById('blood').className = "fadeIn";
+         /*   document.getElementById('blood').className = "fadeIn";
             document.getElementById('blood').style.display = "block";
             setTimeout(function () {
                 document.getElementById('blood').style.display = "none";
                 document.getElementById('blood').className = "";
-            }, 500);
+            }, 500);*/
 
         }
 
@@ -190,7 +200,7 @@ function setupSocket(socket) {
     });
 
     socket.on('explosion', function (currentPlayer) {
-        drawExplosion();
+        drawExplosion(currentPlayer);
     });
 
     socket.on('proposeJoin', function (askingPlayer) {
