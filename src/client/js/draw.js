@@ -22,6 +22,8 @@ var imageRepository = new function () {
     this.starImg.src = "../img/star.png";
     this.bombImg.src = "../img/bomb.png";
     this.minimapImg.src = "../img/ship_up.svg";
+    this.circle ={};
+
 };
 
 function drawObject(object) {
@@ -73,7 +75,7 @@ function drawPlayers(order) {
             x: cellCurrent.x - start.x,
             y: cellCurrent.y - start.y
         };
-
+        imageRepository.circle = circle;
         var nameCell = "";
         if (typeof userCurrent.id == "undefined") {
             nameCell = player.name;
@@ -93,7 +95,7 @@ function drawPlayers(order) {
             else {
                 graph.drawImage(imageRepository.otherPlayerImg, circle.x, circle.y, playerImgWidth, playerImgHeight);
             }
-            graph.fillText(nameCell, circle.x + playerImgWidth / 2, circle.y);
+            graph.fillText(nameCell, circle.x + playerImgWidth / 2,circle.y);
 
         } else {
             //Draw it only on the displayer screen
@@ -190,7 +192,7 @@ function drawBorder() {
     }
 }
 
-function drawExplosion() {
+function drawExplosion(currentPlayer) {
     console.log("explosion!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
     var explosion;
     var explosionImage;
@@ -202,22 +204,20 @@ function drawExplosion() {
     }
 
     explosionImage = new Image();
-    explosionImage.src = "../img/explosion.png";
+    explosionImage.src = "../img/explode.png";
     graph.globalAlpha = 1;
     explosion = sprite({
         context: graph,
-        width: 1024,
-        height: 64,
+        width: 2048,
+        height: 128,
         image: explosionImage,
         numberOfFrames: 16,
-        ticksPerFrame: 2,
-        x:player.x,
-        y:player.y
+        ticksPerFrame: 1,
+        x:currentPlayer.x,
+        y:currentPlayer.y
     });
 
     explosionImage.addEventListener("load", gameLoop);
-
-
 
 }
 
@@ -255,17 +255,18 @@ function sprite (options) {
 
     that.render = function () {
         if(that.draw){
-            that.context.clearRect(0, 0, that.width, that.height);
+         //   that.context.clearRect(0, 0, that.width, that.height);
             that.context.drawImage(
                 that.image,
                 frameIndex * that.width / numberOfFrames,
                 0,
                 that.width / numberOfFrames,
                 that.height,
-                32,
-               32,
+                imageRepository.circle.x,
+                imageRepository.circle.y,
                 that.width / numberOfFrames,
                 that.height);
+            console.log(xPosition+"-----------"+yPosition);
         }
     };
 
