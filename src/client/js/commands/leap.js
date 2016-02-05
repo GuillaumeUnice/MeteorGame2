@@ -7,7 +7,8 @@ var cats = {};
 
 function setLeap(frame) {
     frame.hands.forEach(function (hand, index) {
-
+        console.log(index);
+        console.log(hand);
         console.log(hand.screenPosition());
 
         if (hand.screenPosition()[0] >= 700) {

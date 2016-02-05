@@ -45,7 +45,7 @@ function gameLoop() {
                 }
             }
 
-            fireFood.forEach(drawBullet);
+            bulletsToDraw.forEach(drawBullet);
 
             if (borderDraw) {
                 drawBorder();

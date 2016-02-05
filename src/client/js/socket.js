@@ -13,7 +13,11 @@ var soundRepository = new function () {
     this.dropBulletSound = new Audio('../sounds/dropBullet.mp3');
     this.lifeSound = new Audio('../sounds/life.mp3');
     this.loseLifeSound = new Audio('../sounds/looseLife.mp3');
+    this.intro = new Audio('../sounds/intro.mp3');
+    this.game_loop = new Audio('../sounds/game_sound.mp3');
+
 };
+
 
 /**
  * Handles the different exchange cases between client and server
@@ -51,6 +55,8 @@ function setupSocket(socket) {
 
         gameStart = true;
         gameCanvas.focus();
+
+        soundRepository.game_loop.play();
     });
 
     socket.on('gameSetup', function (data) {
@@ -91,17 +97,17 @@ function setupSocket(socket) {
                     status += (i + 1) + '. An unnamed cell';
             }
             //The point in miniMap that present the super spaceship
-            //  if (!leaderboard[i].isRegrouped.value || leaderboard[i].isRegrouped.isLead) {
-            //    if (leaderboard[i].isRegrouped.isLead)
-            //      miniMapFrame.fillStyle = "#FFFFFF";
-            miniMapFrame.fillRect(0.98 * miniMap.width * leaderboard[i].x / gameWidth, 0.97 * miniMap.height * leaderboard[i].y / gameHeight, pictoWidth, pictoHeight);
-            //}
+            if (!leaderboard[i].isRegrouped.value || leaderboard[i].isRegrouped.isLead) {
+                if (leaderboard[i].isRegrouped.isLead)
+                    miniMapFrame.fillStyle = "#FFFFFF";
+                miniMapFrame.fillRect(0.98 * miniMap.width * leaderboard[i].x / gameWidth, 0.97 * miniMap.height * leaderboard[i].y / gameHeight, pictoWidth, pictoHeight);
+            }
         }
         document.getElementById('status').innerHTML = status;
     });
 
     // Handle movement.
-    socket.on('serverTellPlayerMove', function (userData, foodsList, massList, virusList, objectList) {
+    socket.on('serverTellPlayerMove', function (userData, assetsList, bulletsList, bombsList, objectList) {
         var playerData;
         for (var i = 0; i < userData.length; i++) {
             if (typeof(userData[i].id) == "undefined") {
@@ -125,10 +131,10 @@ function setupSocket(socket) {
         }
         users = userData;
 
-        assets = foodsList;
-        viruses = virusList;
+        assets = assetsList;
+        viruses = bombsList;
         object = objectList;
-        fireFood = massList;
+        bulletsToDraw = bulletsList;
     });
 
     // Death.
@@ -148,7 +154,17 @@ function setupSocket(socket) {
 
     //Bullet bar, lost bullet
     socket.on('fire', function (currentPlayer) {
+
+        /*
+            play the sound :
+            - pause it (in case it was already playing
+            - set the sound time to 0.1 for a better sound ( useful when clicking very fast)
+            - play the sound
+         */
+        soundRepository.bulletSound.pause();
+        soundRepository.bulletSound.currentTime = 0.1;
         soundRepository.bulletSound.play();
+
         player.munitions = currentPlayer.munitions;
         updateMunition();
     });
@@ -209,8 +225,16 @@ function setupSocket(socket) {
             player.isRegrouped = newLead.isRegrouped;
             player.life = newLead.life;
             player.munitions = newLead.munitions;
+
+            Leap.loop(setLeap).use('screenPosition', {scale: 0.25});
+            Leap.loopController.setBackground(true);
+
+            console.log('Superspace ship control activated');
         }
 
+        if (!player.isRegrouped.value) {
+            $('#joinDiv').css('visibility', 'hidden');
+        }
 
         updatePoints();
     });

@@ -45,7 +45,7 @@ var playerConfig = {
 
 var assets = [];
 var viruses = [];
-var fireFood = [];
+var bulletsToDraw = [];
 var users = [];
 var leaderboard = [];
 var target = {x: player.x, y: player.y};
