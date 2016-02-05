@@ -402,11 +402,11 @@ function movePlayer(player) {
         }
         if (player.cells.length > i) {
             var borderCalc = player.cells[i].radius / 3;
-            if (player.cells[i].x > gameSettings.gameWidth - borderCalc - 220) {
-                player.cells[i].x = gameSettings.gameWidth - borderCalc - 220;
+            if (player.cells[i].x > gameSettings.gameWidth - borderCalc - 210) {
+                player.cells[i].x = gameSettings.gameWidth - borderCalc - 210;
             }
-            if (player.cells[i].y > gameSettings.gameHeight - borderCalc - 250) {
-                player.cells[i].y = gameSettings.gameHeight - borderCalc - 250;
+            if (player.cells[i].y > gameSettings.gameHeight - borderCalc - 200) {
+                player.cells[i].y = gameSettings.gameHeight - borderCalc - 200;
             }
             if (player.cells[i].x < borderCalc) {
                 player.cells[i].x = borderCalc;
