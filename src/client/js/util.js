@@ -44,7 +44,7 @@ var playerConfig = {
 };
 
 var assets = [];
-var viruses = [];
+var bombs = [];
 var bulletsToDraw = [];
 var users = [];
 var leaderboard = [];
