@@ -76,7 +76,7 @@ function moveloop() {
     for (var i = 0; i < users.length; i++) {
         //console.log(object);
         if(object !== undefined) {
-            var res = collision.tickPlayer(users[i], users, massFood, food, virus, object, sockets, endGame);    
+            var res = collision.tickPlayer(users[i], users, massFood, food, virus, object, sockets, endGame, io);    
             if(res) {
                 console.log("fin de gameeeeeeeeeeeeeeeeeeeee");
                 endGame = true;

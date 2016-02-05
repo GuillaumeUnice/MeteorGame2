@@ -14,6 +14,10 @@ var SATVector = SAT.Vector,
 
 var initMassLog = util.log(gameSettings.defaultPlayerMass, gameSettings.slowBase);
 
+function first(obj) {
+    for (var a in obj) return a;
+}
+
 function movePlayer(player) {
     var x = 0, y = 0;
     for (var i = 0; i < player.cells.length; i++) {
@@ -94,7 +98,7 @@ function movePlayer(player) {
 
    
 
-exports.tickPlayer = function (currentPlayer, users, massFood, food, virus, object, sockets, endGame) {
+exports.tickPlayer = function (currentPlayer, users, massFood, food, virus, object, sockets, endGame, io) {
 
     movePlayer(currentPlayer);
 
@@ -114,7 +118,7 @@ exports.tickPlayer = function (currentPlayer, users, massFood, food, virus, obje
 
             if (m.id != currentPlayer.id) {
                 currentPlayer.life -= 10;
-                io.emit('explosion', currentPlayer);
+                sockets[currentPlayer.id].emit('explosion', currentPlayer);
                 if (currentPlayer.life < 1) {
                     sockets[currentPlayer.id].emit('RIP', currentPlayer);
                     users.splice(currentPlayer.id, 1);
@@ -208,7 +212,7 @@ exports.tickPlayer = function (currentPlayer, users, massFood, food, virus, obje
                     users[numUser].cells.splice(collision.bUser.num, 1);
                 } else {
                     users.splice(numUser, 1);
-                    io.emit('playerDied', {name: collision.bUser.name});
+                    sockets[currentPlayer.id]('playerDied', {name: collision.bUser.name});
                     sockets[collision.bUser.id].emit('RIP');
                 }
             }
