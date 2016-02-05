@@ -73,6 +73,16 @@ function drawTouch() {
             graph.arc(leftPointerPos.x, leftPointerPos.y, 40, 0, Math.PI * 2, true);
             graph.stroke();
 
+        } else {
+            graph.beginPath();
+            graph.fillStyle = "black";
+            // graph.fillText("type : " + pointer.type + " id : " + pointer.identifier + " x:" + pointer.x +
+            //   " y:" + pointer.y, pointer.x + 30, pointer.y - 30);
+            graph.beginPath();
+            graph.strokeStyle = "red";
+            graph.lineWidth = "6";
+            graph.arc(pointer.x, pointer.y, 40, 0, Math.PI * 2, true);
+            graph.stroke();
         }
     });
 
@@ -94,6 +104,9 @@ function givePointerType(event) {
 }
 
 function onPointerDown(e) {
+
+    console.log('Pointer id');
+    console.log(e.pointerId);
     if (!player.isRegrouped.value) {
 
         e.preventDefault();
