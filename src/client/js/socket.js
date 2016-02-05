@@ -132,7 +132,7 @@ function setupSocket(socket) {
         users = userData;
 
         assets = assetsList;
-        viruses = bombsList;
+        bombs = bombsList;
         object = objectList;
         bulletsToDraw = bulletsList;
     });

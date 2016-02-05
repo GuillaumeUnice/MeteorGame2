@@ -5,7 +5,6 @@
 
 var io = require('socket.io-client');
 
-
 /**
  * Called when all the settings are checked
  * @param type
@@ -82,17 +81,16 @@ window.onload = function () {
  * We will use this as gunshots
  */
 var refreshIntervalId = null;
-$("#fire").on("mousedown", function () {
+$('#fire').on("mousedown", function () {
     refreshIntervalId = setInterval(function(){
         socket.emit('1');    
     }, 500);
     reSend = false;
 });
 
-$("#fire").on("mouseup", function () {
+$('#fire').on("mouseup", function () {
     clearInterval(refreshIntervalId);
 });
-
 
 $("#regroup").click(function () {
     var regroupImg = $('#regroup');
