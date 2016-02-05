@@ -443,7 +443,7 @@ function tickPlayer(currentPlayer) {
 
             if (m.id != currentPlayer.id) {
                 currentPlayer.life -= 10;
-                sockets[currentPlayer.id].emit('explosion', currentPlayer);
+                io.emit('explosion', currentPlayer);
                 if (currentPlayer.life < 1) {
                     sockets[currentPlayer.id].emit('RIP', currentPlayer);
                     users.splice(currentPlayer.id, 1);
