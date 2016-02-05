@@ -246,16 +246,18 @@ io.on('connection', function (socket) {
         }
     });
 
-
     socket.on('regroupPlayers', function () {
 
         if (users.length > 1) {
             console.log(currentPlayer.name + ' asked for a super spaceship');
             currentPlayer.isRegrouped = {value: true, lead: currentPlayer.id, isLead: true};
+            currentPlayer.x = 2500;
+            currentPlayer.y = 2500;
             usersInRegroup[currentPlayer.id] = 1;
             socket.broadcast.emit('proposeJoin', currentPlayer);
 
         }
+
     });
 
 
