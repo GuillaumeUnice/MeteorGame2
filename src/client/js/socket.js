@@ -97,17 +97,17 @@ function setupSocket(socket) {
                     status += (i + 1) + '. An unnamed cell';
             }
             //The point in miniMap that present the super spaceship
-            //  if (!leaderboard[i].isRegrouped.value || leaderboard[i].isRegrouped.isLead) {
-            //    if (leaderboard[i].isRegrouped.isLead)
-            //      miniMapFrame.fillStyle = "#FFFFFF";
-            miniMapFrame.fillRect(0.98 * miniMap.width * leaderboard[i].x / gameWidth, 0.97 * miniMap.height * leaderboard[i].y / gameHeight, pictoWidth, pictoHeight);
-            //}
+            if (!leaderboard[i].isRegrouped.value || leaderboard[i].isRegrouped.isLead) {
+                if (leaderboard[i].isRegrouped.isLead)
+                    miniMapFrame.fillStyle = "#FFFFFF";
+                miniMapFrame.fillRect(0.98 * miniMap.width * leaderboard[i].x / gameWidth, 0.97 * miniMap.height * leaderboard[i].y / gameHeight, pictoWidth, pictoHeight);
+            }
         }
         document.getElementById('status').innerHTML = status;
     });
 
     // Handle movement.
-    socket.on('serverTellPlayerMove', function (userData, foodsList, massList, virusList, objectList) {
+    socket.on('serverTellPlayerMove', function (userData, assetsList, bulletsList, bombsList, objectList) {
         var playerData;
         for (var i = 0; i < userData.length; i++) {
             if (typeof(userData[i].id) == "undefined") {
@@ -131,10 +131,10 @@ function setupSocket(socket) {
         }
         users = userData;
 
-        assets = foodsList;
-        viruses = virusList;
+        assets = assetsList;
+        viruses = bombsList;
         object = objectList;
-        fireFood = massList;
+        bulletsToDraw = bulletsList;
     });
 
     // Death.
@@ -215,8 +215,16 @@ function setupSocket(socket) {
             player.isRegrouped = newLead.isRegrouped;
             player.life = newLead.life;
             player.munitions = newLead.munitions;
+
+            Leap.loop(setLeap).use('screenPosition', {scale: 0.25});
+            Leap.loopController.setBackground(true);
+
+            console.log('Superspace ship control activated');
         }
 
+        if (!player.isRegrouped.value) {
+            $('#joinDiv').css('visibility', 'hidden');
+        }
 
         updatePoints();
     });
