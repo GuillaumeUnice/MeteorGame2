@@ -23,18 +23,13 @@ var xoffset = -gameWidth, yoffset = -gameHeight;
 
 var gameStart = false, disconnected = false, died = false, kicked = false;
 
-// TODO: Break out into GameControls.
 var continuity = false, backgroundColor = '#010117', lineColor = '#000000', borderColor = '#FFFFFF';
 
 /**
  * When a player asks for regrouping, this represents the possible lead when the current player accepts
  * @type {undefined}
  */
-var possibleAlly = undefined;
-
-var playerConfig = {
-    borderColor: '#000000'
-}, player = {
+var possibleAlly = undefined, player = {
     id: -1,
     x: screenWidth / 2,
     y: screenHeight / 2,
@@ -43,14 +38,8 @@ var playerConfig = {
     target: {x: screenWidth / 2, y: screenHeight / 2}
 };
 
-var assets = [];
-var bombs = [];
-var bulletsToDraw = [];
-var users = [];
-var leaderboard = [];
-var target = {x: player.x, y: player.y};
-var directionLock = true;
-var directions = [];
+var assets = [], bombs = [], bulletsToDraw = [], users = [], connectedPlayers = [];
+var target = {x: player.x, y: player.y}, directionLock = true, directions = [];
 
 var gameCanvas = document.getElementById('gameArea'), miniMap = document.getElementById("minimap");
 
@@ -111,10 +100,6 @@ var onTablet = function () {
 
 var onDesktop = function () {
     return screenWidth >= MIN_MD_WIDTH;
-};
-
-var onProjector = function () {
-    return screenWidth >= 1200;
 };
 
 var printMessage = function (message) {

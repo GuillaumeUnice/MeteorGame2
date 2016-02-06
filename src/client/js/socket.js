@@ -70,18 +70,18 @@ function setupSocket(socket) {
         var status = '<span class="title">Connected</span>';
         var pictoWidth = 16, pictoHeight = 16;
 
-        leaderboard = data.leaderboard;
+        connectedPlayers = data.leaderboard;
         miniMapFrame.clearRect(0, 0, gameWidth, gameHeight);
 
         if (onSmartphone()) {
             pictoWidth = pictoHeight = 30;
         }
-        for (var i = 0; i < leaderboard.length; i++) {
+        for (var i = 0; i < connectedPlayers.length; i++) {
             status += '<br />';
             //The point in miniMap that present me
-            if (leaderboard[i].id == player.id) {
-                if (leaderboard[i].name.length !== 0) {
-                    status += '<span class="me">' + (i + 1) + '. ' + leaderboard[i].name + "</span>";
+            if (connectedPlayers[i].id == player.id) {
+                if (connectedPlayers[i].name.length !== 0) {
+                    status += '<span class="me">' + (i + 1) + '. ' + connectedPlayers[i].name + "</span>";
                     miniMapFrame.fillStyle = "#00FF00";
                 } else {
                     status += '<span class="me">' + (i + 1) + ". An unnamed cell</span>";
@@ -89,18 +89,18 @@ function setupSocket(socket) {
             }
             //The point in miniMap that represents the other players
             else {
-                if (leaderboard[i].name.length !== 0) {
-                    status += (i + 1) + '. ' + leaderboard[i].name;
+                if (connectedPlayers[i].name.length !== 0) {
+                    status += (i + 1) + '. ' + connectedPlayers[i].name;
                     miniMapFrame.fillStyle = "#FF0000";
 
                 } else
                     status += (i + 1) + '. An unnamed cell';
             }
             //The point in miniMap that present the super spaceship
-            if (!leaderboard[i].isRegrouped.value || leaderboard[i].isRegrouped.isLead) {
-                if (leaderboard[i].isRegrouped.isLead)
+            if (!connectedPlayers[i].isRegrouped.value || connectedPlayers[i].isRegrouped.isLead) {
+                if (connectedPlayers[i].isRegrouped.isLead)
                     miniMapFrame.fillStyle = "#FFFFFF";
-                miniMapFrame.fillRect(0.98 * miniMap.width * leaderboard[i].x / gameWidth, 0.97 * miniMap.height * leaderboard[i].y / gameHeight, pictoWidth, pictoHeight);
+                miniMapFrame.fillRect(0.98 * miniMap.width * connectedPlayers[i].x / gameWidth, 0.97 * miniMap.height * connectedPlayers[i].y / gameHeight, pictoWidth, pictoHeight);
             }
         }
         document.getElementById('status').innerHTML = status;
@@ -218,6 +218,14 @@ function setupSocket(socket) {
         player.y = currentPlayer.y;
         player.cells = currentPlayer.cells;
         directionLock = true;
+
+        if (onSmartphone()) {
+            //   canvas.css('width','100%');
+            $("#minimap").addClass('regroup-sm');
+            $("#regroup").addClass('regroup-sm');
+            $("#munitionBar").addClass('regroup-sm');
+            $("#lifeBar").addClass('regroup-sm');
+        }
     });
 
     socket.on('teamFull', function (newLead) {

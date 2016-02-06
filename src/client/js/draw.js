@@ -24,6 +24,10 @@ var imageRepository = new function () {
 
 };
 
+/**
+ * Draws all the objects appearing on the arena; namely bombs, bullets and life points
+ * @param object
+ */
 function drawObject(object) {
     var objectSize = 120;
 
@@ -40,7 +44,7 @@ function drawObject(object) {
 
 }
 //draw the start position of bullet
-function drawBullet(mass) {
+function drawBullet(bullet) {
 
     var offset = 0, bulletWidth = 30, bulletHeight = 30;
     graph.globalAlpha = 1;
@@ -50,7 +54,7 @@ function drawBullet(mass) {
     if (onTablet() || onSmartphone()) {
         bulletHeight = bulletWidth = 15;
     }
-    graph.drawImage(imageRepository.bulletImg, mass.x - player.x + 105 + screenWidth / 2 + offset, mass.y - player.y + 100 + screenHeight / 2 + offset, bulletWidth, bulletHeight);
+    graph.drawImage(imageRepository.bulletImg, bullet.x - player.x + 105 + screenWidth / 2 + offset, bullet.y - player.y + 100 + screenHeight / 2 + offset, bulletWidth, bulletHeight);
 
 }
 
@@ -100,7 +104,6 @@ function drawPlayers(order) {
             if ((userCurrent.isRegrouped.lead === player.id && !(typeof userCurrent.id == "undefined")) || userCurrent.isRegrouped.isLead) {
 
                 if (player.isRegrouped.isLead) {
-                    // if (onProjector()) {
                     if (typeof userCurrent.id == "undefined") {
                         graph.drawImage(imageRepository.playerImg, circle.x, circle.y, playerImgWidth, playerImgHeight);
                         graph.drawImage(imageRepository.playerImg, circle.x - 100, circle.y + 100, playerImgWidth, playerImgHeight);
@@ -111,11 +114,7 @@ function drawPlayers(order) {
                         graph.drawImage(imageRepository.otherPlayerImg, circle.x, circle.y, playerImgWidth, playerImgHeight);
                     }
                     graph.fillText(nameCell, circle.x + playerImgWidth / 2, circle.y);
-                    /*} else {
 
-                     $('#panel-message').css('display', 'block');
-                     $('#message-info').text('You are now linked to a super spaceship + Please use a projector');
-                     }*/
                 }
 
             }
@@ -157,6 +156,7 @@ function drawGrid() {
         graph.beginPath();
         graph.arc(Math.random() * screenWidth, Math.random() * screenHeight, Math.random() * 5, 0, 2 * Math.PI, false);
         graph.fillStyle = '#FFFA76';
+
         graph.fill();
         //  graph.drawImage(imageRepository.starImg, Math.random() * screenWidth, Math.random() * screenHeight, Math.random() * 20, Math.random() * 20);
         graph.globalAlpha = 0.7;
@@ -266,7 +266,6 @@ function sprite(options) {
 
     that.render = function () {
         if (that.draw) {
-            //   that.context.clearRect(0, 0, that.width, that.height);
             that.context.drawImage(
                 that.image,
                 frameIndex * that.width / numberOfFrames,
@@ -281,6 +280,5 @@ function sprite(options) {
         }
     };
 
-//	context.drawImage(img,sx,sy,swidth,sheight,x,y,width,height);
     return that;
 }
