@@ -113,6 +113,10 @@ var onDesktop = function () {
     return screenWidth >= MIN_MD_WIDTH;
 };
 
+var onProjector = function () {
+    return screenWidth >= 1200;
+};
+
 var printMessage = function (message) {
     graph.fillStyle = '#333333';
     graph.fillRect(0, 0, screenWidth, screenHeight);

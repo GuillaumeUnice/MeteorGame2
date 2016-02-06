@@ -82,8 +82,10 @@ window.onload = function () {
  */
 var refreshIntervalId = null;
 $('#fire').on("mousedown", function () {
-    refreshIntervalId = setInterval(function(){
-        socket.emit('1');    
+    refreshIntervalId = setInterval(function () {
+        console.log('Player');
+        console.log(player);
+        socket.emit('1', player);
     }, 500);
     reSend = false;
 });

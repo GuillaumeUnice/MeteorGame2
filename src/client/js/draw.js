@@ -20,7 +20,7 @@ var imageRepository = new function () {
     this.bulletImg.src = "../img/bullet.png";
     this.starImg.src = "../img/star.png";
     this.bombImg.src = "../img/bomb.png";
-    this.circle ={};
+    this.circle = {};
 
 };
 
@@ -93,20 +93,29 @@ function drawPlayers(order) {
             else {
                 graph.drawImage(imageRepository.otherPlayerImg, circle.x, circle.y, playerImgWidth, playerImgHeight);
             }
-            graph.fillText(nameCell, circle.x + playerImgWidth / 2,circle.y);
+            graph.fillText(nameCell, circle.x + playerImgWidth / 2, circle.y);
 
         } else {
             //Draw it only on the displayer screen
             if ((userCurrent.isRegrouped.lead === player.id && !(typeof userCurrent.id == "undefined")) || userCurrent.isRegrouped.isLead) {
 
                 if (player.isRegrouped.isLead) {
+                    // if (onProjector()) {
                     if (typeof userCurrent.id == "undefined") {
                         graph.drawImage(imageRepository.playerImg, circle.x, circle.y, playerImgWidth, playerImgHeight);
+                        graph.drawImage(imageRepository.playerImg, circle.x - 100, circle.y + 100, playerImgWidth, playerImgHeight);
+                        graph.drawImage(imageRepository.playerImg, circle.x + 100, circle.y + 100, playerImgWidth, playerImgHeight);
+                        graph.drawImage(imageRepository.playerImg, circle.x, circle.y + 200, playerImgWidth, playerImgHeight);
                     }
                     else {
                         graph.drawImage(imageRepository.otherPlayerImg, circle.x, circle.y, playerImgWidth, playerImgHeight);
                     }
                     graph.fillText(nameCell, circle.x + playerImgWidth / 2, circle.y);
+                    /*} else {
+
+                     $('#panel-message').css('display', 'block');
+                     $('#message-info').text('You are now linked to a super spaceship + Please use a projector');
+                     }*/
                 }
 
             }
@@ -146,10 +155,10 @@ function drawGrid() {
 
     for (var i = 0; i <= 3; i++) {
         graph.beginPath();
-        graph.arc( Math.random() * screenWidth, Math.random() * screenHeight, Math.random() * 5, 0, 2 * Math.PI, false);
+        graph.arc(Math.random() * screenWidth, Math.random() * screenHeight, Math.random() * 5, 0, 2 * Math.PI, false);
         graph.fillStyle = '#FFFA76';
         graph.fill();
-      //  graph.drawImage(imageRepository.starImg, Math.random() * screenWidth, Math.random() * screenHeight, Math.random() * 20, Math.random() * 20);
+        //  graph.drawImage(imageRepository.starImg, Math.random() * screenWidth, Math.random() * screenHeight, Math.random() * 20, Math.random() * 20);
         graph.globalAlpha = 0.7;
     }
 }
@@ -199,7 +208,7 @@ function drawExplosion(currentPlayer) {
     var explosion;
     var explosionImage;
 
-    function gameLoop () {
+    function gameLoop() {
         window.requestAnimationFrame(gameLoop);
         explosion.update();
         explosion.render();
@@ -215,15 +224,15 @@ function drawExplosion(currentPlayer) {
         image: explosionImage,
         numberOfFrames: 16,
         ticksPerFrame: 1,
-        x:currentPlayer.x,
-        y:currentPlayer.y
+        x: currentPlayer.x,
+        y: currentPlayer.y
     });
 
     explosionImage.addEventListener("load", gameLoop);
 
 }
 
-function sprite (options) {
+function sprite(options) {
 
     var that = {};
     var frameIndex = 0;
@@ -256,8 +265,8 @@ function sprite (options) {
     };
 
     that.render = function () {
-        if(that.draw){
-         //   that.context.clearRect(0, 0, that.width, that.height);
+        if (that.draw) {
+            //   that.context.clearRect(0, 0, that.width, that.height);
             that.context.drawImage(
                 that.image,
                 frameIndex * that.width / numberOfFrames,
@@ -268,7 +277,7 @@ function sprite (options) {
                 imageRepository.circle.y,
                 that.width / numberOfFrames,
                 that.height);
-            console.log(xPosition+"-----------"+yPosition);
+            console.log(xPosition + "-----------" + yPosition);
         }
     };
 

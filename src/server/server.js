@@ -15,7 +15,7 @@ var mapElemImport = require("./mapElements.js"), objectImport = require("./objec
 //game attribute
 var starUpArgs = {x: 0, y: 0, h: gameSettings.gameHeight, w: gameSettings.gameWidth, maxChildren: 1, maxDepth: 5};
 
-var tree = quadtree.QUAD.init(starUpArgs), users = [], massFood = [], food = [], virus = [], object = [], sockets = {};
+var tree = quadtree.QUAD.init(starUpArgs), users = [], bulletsToShoot = [], food = [], virus = [], object = [], sockets = {};
 
 var leaderBoard = [], leaderboardChanged = false;
 
@@ -23,9 +23,7 @@ var SATVector = SAT.Vector, SATCircle = SAT.Circle;
 
 var initMassLog = util.log(gameSettings.defaultPlayerMass, gameSettings.slowBase), endGame = false;
 
-
 app.use(express.static(__dirname + '/../client'));
-
 console.log(starUpArgs);
 
 //SOCKET IMPORT ATTEMPT
@@ -81,7 +79,6 @@ io.on('connection', function (socket) {
             y: 0
         }
     };
-
 
     /*..........................................game global.................................................*/
 //if client start game
@@ -165,7 +162,7 @@ io.on('connection', function (socket) {
     /*................................. yeah! let's play together!.................................*/
 
 //shoot, client call this in client/app.js
-    socket.on('1', function () {
+    socket.on('1', function (player) {
         if (!currentPlayer.isRegrouped.value) {
             for (var i = 0; i < currentPlayer.cells.length; i++) {
                 var masa = 1;
@@ -175,7 +172,7 @@ io.on('connection', function (socket) {
 
                     currentPlayer.munitions -= 1;
                     socket.emit('fire', currentPlayer);
-                    massFood.push({
+                    bulletsToShoot.push({
                         id: currentPlayer.id,
                         num: i,
                         masa: masa,
@@ -197,8 +194,10 @@ io.on('connection', function (socket) {
             var attackingPlayerIndex = util.findIndex(users, currentPlayer.isRegrouped.lead);
             if (attackingPlayerIndex !== -1) {
                 var attackingPlayer = users[attackingPlayerIndex];
+                currentPlayer.isRegrouped = player.isRegrouped;
                 if (currentPlayer.munitions > 0) {
-
+                    console.log('Blallalala');
+                    console.log(currentPlayer);
                     currentPlayer.munitions -= 1;
                     socket.emit('fire', currentPlayer);
                     for (var i = 0; i < attackingPlayer.cells.length; i++) {
@@ -209,14 +208,14 @@ io.on('connection', function (socket) {
 
                             attackingPlayer.munitions -= 1;
                             attackingPlayerSocket.emit('fire', attackingPlayer);
-                            massFood.push({
+                            bulletsToShoot.push({
                                 id: attackingPlayer.id,
                                 num: i,
                                 masa: masa,
                                 hue: attackingPlayer.hue,
                                 target: {
-                                    x: attackingPlayer.x - attackingPlayer.cells[i].x + attackingPlayer.target.x + 200,
-                                    y: attackingPlayer.y - attackingPlayer.cells[i].y + attackingPlayer.target.y + 200
+                                    x: attackingPlayer.x - attackingPlayer.cells[i].x + (currentPlayer.isRegrouped.pointer_left ? -550 : -550),
+                                    y: 0
                                 },
                                 x: attackingPlayer.cells[i].x,
                                 y: attackingPlayer.cells[i].y,
@@ -268,26 +267,8 @@ io.on('connection', function (socket) {
         if (usersInRegroup[possibleAlly.id] < 4) {
             console.log('The super spaceship lead by ', possibleAlly.name, 'is not full yet');
             console.log(usersInRegroup[possibleAlly.id]);
-            currentPlayer.isRegrouped = {value: true, lead: possibleAlly.id};
+            currentPlayer.isRegrouped = {value: true, lead: possibleAlly.id, pointer_left: false, pointer_right: false};
             usersInRegroup[possibleAlly.id] += 1;
-            /*switch (usersInRegroup[possibleAlly.id]) {
-                case  2 :
-                    currentPlayer.x = possibleAlly.x - 100;
-                    currentPlayer.y = possibleAlly.y + 100;
-                    break;
-                case  3 :
-                    currentPlayer.x = possibleAlly.x + 100;
-                    currentPlayer.y = possibleAlly.y + 100;
-                    break;
-                case  4 :
-                    currentPlayer.x = possibleAlly.x;
-                    currentPlayer.y = possibleAlly.y + 200;
-                    break;
-            }
-
-            currentPlayer.cells = possibleAlly.cells;
-            currentPlayer.cells[0].x = currentPlayer.x;
-            currentPlayer.cells[0].y = currentPlayer.y;*/
             console.log('Possible Ally');
             console.log(possibleAlly);
             socket.emit('regroupAccepted', currentPlayer);
@@ -310,31 +291,31 @@ io.on('connection', function (socket) {
 
 function moveMass() {
     var i;
-    for (i = 0; i < massFood.length; i++) {
-        if (massFood[i].speed > 0) {
+    for (i = 0; i < bulletsToShoot.length; i++) {
+        if (bulletsToShoot[i].speed > 0) {
 
-            var mass = massFood[i];
+            var bullet = bulletsToShoot[i];
 
-            var deg = Math.atan2(mass.target.y, mass.target.x);
-            var deltaY = mass.speed * Math.sin(deg);
-            var deltaX = mass.speed * Math.cos(deg);
+            var deg = Math.atan2(bullet.target.y, bullet.target.x);
+            var deltaY = bullet.speed * Math.sin(deg);
+            var deltaX = bullet.speed * Math.cos(deg);
 
-            //mass.speed -= 0.5;
-            if (mass.speed < 0) {
-                mass.speed = 0;
+            //bullet.speed -= 0.5;
+            if (bullet.speed < 0) {
+                bullet.speed = 0;
             }
             if (!isNaN(deltaY)) {
-                mass.y += deltaY;
+                bullet.y += deltaY;
             }
             if (!isNaN(deltaX)) {
-                mass.x += deltaX;
+                bullet.x += deltaX;
             }
 
-            var borderCalc = mass.radius + 5;
+            var borderCalc = bullet.radius + 5;
 
 
-            if (mass.x > gameSettings.gameWidth - borderCalc || mass.y > gameSettings.gameHeight - borderCalc || mass.x < borderCalc || mass.y < borderCalc) {
-                massFood.splice(i, 1);
+            if (bullet.x > gameSettings.gameWidth - borderCalc || bullet.y > gameSettings.gameHeight - borderCalc || bullet.x < borderCalc || bullet.y < borderCalc) {
+                bulletsToShoot.splice(i, 1);
             }
 
         }
@@ -560,16 +541,16 @@ function tickPlayer(currentPlayer) {
 
         foodEaten.forEach(deleteFood);
 
-        var massEaten = massFood.map(eatMass)
+        var massEaten = bulletsToShoot.map(eatMass)
             .reduce(function (a, b, c) {
                 return b ? a.concat(c) : a;
             }, []);
 
         var masaGanada = 0;
         for (var m = 0; m < massEaten.length; m++) {
-            masaGanada += massFood[massEaten[m]].masa;
-            massFood[massEaten[m]] = {};
-            massFood.splice(massEaten[m], 1);
+            masaGanada += bulletsToShoot[massEaten[m]].masa;
+            bulletsToShoot[massEaten[m]] = {};
+            bulletsToShoot.splice(massEaten[m], 1);
             for (var n = 0; n < massEaten.length; n++) {
                 if (massEaten[m] < massEaten[n]) {
                     massEaten[n]--;
@@ -755,7 +736,7 @@ function sendUpdates() {
             });
 
 
-        var visibleMass = massFood
+        var visibleMass = bulletsToShoot
             .map(function (visMass) {
                 if (visMass.x > userToUpdate.x - userToUpdate.screenWidth / 2 - 20 &&
                     visMass.x < userToUpdate.x + userToUpdate.screenWidth / 2 + 20 &&

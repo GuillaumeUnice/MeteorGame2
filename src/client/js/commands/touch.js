@@ -13,6 +13,8 @@ var gameCanvas,
 
 var pointers, _baseX = 0, _stickX = 0, _baseY = 0, _stickY = 0, _pressed = false, _stationaryBase = false;
 
+var pointer_x = 0, previous_pointer_x = 0, pointer_y, previous_pointer_y, pointer_left = false, pointer_right = false, pointer_up = false, pointer_down = false;
+
 // shim layer with setTimeout fallback
 window.requestAnimFrame = (function () {
     return window.requestAnimationFrame ||
@@ -104,14 +106,12 @@ function givePointerType(event) {
 }
 
 function onPointerDown(e) {
+    e.preventDefault();
+    console.log('Pointer');
+    console.log(e);
+    _pressed = true;
 
-    console.log('Pointer id');
-    console.log(e.pointerId);
     if (!player.isRegrouped.value) {
-
-        e.preventDefault();
-
-        _pressed = true;
 
         var newPointer = {identifier: e.pointerId, x: e.clientX, y: e.clientY, type: givePointerType(e)};
         if ((leftPointerID < 0) && (e.clientX < halfWidth)) {
@@ -131,6 +131,32 @@ function onPointerDown(e) {
         _stickY = e.clientY;
 
         pointers.add(e.pointerId, newPointer);
+    } else {
+        pointer_x = e.clientX;
+        pointer_y = e.clientY;
+
+
+        player.isRegrouped.pointer_left = (pointer_x < screenWidth / 2);
+        player.isRegrouped.pointer_right = (pointer_x > screenWidth / 2);
+        player.isRegrouped.pointer_up = (pointer_y < screenHeight / 2);
+        player.isRegrouped.pointer_down = (pointer_y > screenHeight / 2);
+
+        if (pointer_x > screenWidth / 2)
+            console.log('Right');
+
+        if (pointer_x < screenWidth / 2)
+            console.log('Left');
+
+        if (pointer_y < screenHeight / 2)
+            console.log('Up');
+
+        if (pointer_y > screenHeight / 2)
+            console.log('Down');
+
+
+        previous_pointer_x = pointer_x;
+        previous_pointer_y = pointer_y;
+
     }
 
 }

@@ -56,7 +56,7 @@ function setupSocket(socket) {
         gameStart = true;
         gameCanvas.focus();
 
-        soundRepository.game_loop.play();
+        // soundRepository.game_loop.play();
     });
 
     socket.on('gameSetup', function (data) {
@@ -156,10 +156,10 @@ function setupSocket(socket) {
     socket.on('fire', function (currentPlayer) {
 
         /*
-            play the sound :
-            - pause it (in case it was already playing
-            - set the sound time to 0.1 for a better sound ( useful when clicking very fast)
-            - play the sound
+         play the sound :
+         - pause it (in case it was already playing
+         - set the sound time to 0.1 for a better sound ( useful when clicking very fast)
+         - play the sound
          */
         soundRepository.bulletSound.pause();
         soundRepository.bulletSound.currentTime = 0.1;
