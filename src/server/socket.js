@@ -6,7 +6,7 @@ var io = require('socket.io');
 var gameSettings = require('../../config.json'), util = require('./lib/util'), quadtree = require('./../../quadtree');
 
 
-function Socket(httpServer, users, massFood, food, virus, object, sockets) {
+function Socket(httpServer, users, bullets, food, virus, object, sockets) {
     this.mySocket = io(httpServer);
 
     //This method is called when user is connected
@@ -140,7 +140,7 @@ function Socket(httpServer, users, massFood, food, virus, object, sockets) {
 
                         currentPlayer.munitions -= 1;
                         socket.emit('fire', currentPlayer);
-                        massFood.push({
+                        bullets.push({
                             id: currentPlayer.id,
                             num: i,
                             masa: masa,
@@ -174,7 +174,7 @@ function Socket(httpServer, users, massFood, food, virus, object, sockets) {
 
                                 attackingPlayer.munitions -= 1;
                                 attackingPlayerSocket.emit('fire', attackingPlayer);
-                                massFood.push({
+                                bullets.push({
                                     id: attackingPlayer.id,
                                     num: i,
                                     masa: masa,

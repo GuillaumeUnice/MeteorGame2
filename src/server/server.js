@@ -18,7 +18,7 @@ var mapElemImport = require("./mapElements.js"), objectImport = require("./objec
 //game attribute
 var starUpArgs = {x: 0, y: 0, h: gameSettings.gameHeight, w: gameSettings.gameWidth, maxChildren: 1, maxDepth: 5};
 
-var tree = quadtree.QUAD.init(starUpArgs), users = [], massFood = [], food = [], virus = [], object = [], sockets = {};
+var tree = quadtree.QUAD.init(starUpArgs), users = [], bullets = [], food = [], virus = [], object = [], sockets = {};
 
 var leaderBoard = [], leaderboardChanged = false;
 
@@ -33,14 +33,14 @@ app.use(express.static(__dirname + '/../client'));
 
 var test = require('./socket.js');
 
-var io = new test.Socket(http, users, massFood, food, virus, object, sockets);
+var io = new test.Socket(http, users, bullets, food, virus, object, sockets);
 
 function moveMass() {
     var i;
-    for (i = 0; i < massFood.length; i++) {
-        if (massFood[i].speed > 0) {
+    for (i = 0; i < bullets.length; i++) {
+        if (bullets[i].speed > 0) {
 
-            var mass = massFood[i];
+            var mass = bullets[i];
 
             var deg = Math.atan2(mass.target.y, mass.target.x);
             var deltaY = mass.speed * Math.sin(deg);
@@ -60,7 +60,7 @@ function moveMass() {
 
 
             if (mass.x > gameSettings.gameWidth - borderCalc || mass.y > gameSettings.gameHeight - borderCalc || mass.x < borderCalc || mass.y < borderCalc) {
-                massFood.splice(i, 1);
+                bullets.splice(i, 1);
             }
 
         }
@@ -74,7 +74,7 @@ function moveloop() {
     for (var i = 0; i < users.length; i++) {
         //console.log(object);
         if (object !== undefined) {
-            var res = collision.tickPlayer(users[i], users, massFood, food, virus, object, sockets, endGame, io);
+            var res = collision.tickPlayer(users[i], users, bullets, food, virus, object, sockets, endGame, io);
             if (res) {
                 console.log("fin de gameeeeeeeeeeeeeeeeeeeee");
                 endGame = true;
@@ -231,7 +231,7 @@ function sendUpdates() {
             });
 
 
-        var visibleMass = massFood
+        var visibleMass = bullets
             .map(function (visMass) {
                 if (visMass.x > userToUpdate.x - userToUpdate.screenWidth / 2 - 20 &&
                     visMass.x < userToUpdate.x + userToUpdate.screenWidth / 2 + 20 &&
