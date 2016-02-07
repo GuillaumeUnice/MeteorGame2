@@ -156,15 +156,19 @@ function onPointerMove(e) {
 
         if (right) {
             imageRepository.playerImg.src = imageRepository.player_right;
+            player.orientation = "right";
         }
         if (left()) {
             imageRepository.playerImg.src = imageRepository.player_left;
+            player.orientation = "left";
         }
         if (down()) {
             imageRepository.playerImg.src = imageRepository.player_down;
+            player.orientation = "down";
         }
         if (up()) {
             imageRepository.playerImg.src = imageRepository.player_up;
+            player.orientation = "up";
         }
 
 

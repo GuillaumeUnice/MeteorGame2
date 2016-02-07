@@ -227,17 +227,18 @@ function sendUpdates() {
                 }
             })
             .filter(function (element) {
+
                 return element;
             });
 
 
-        var visibleMass = bullets
-            .map(function (visMass) {
-                if (visMass.x > userToUpdate.x - userToUpdate.screenWidth / 2 - 20 &&
-                    visMass.x < userToUpdate.x + userToUpdate.screenWidth / 2 + 20 &&
-                    visMass.y > userToUpdate.y - userToUpdate.screenHeight / 2 - 20 &&
-                    visMass.y < userToUpdate.y + userToUpdate.screenHeight / 2 + 20) {
-                    return visMass;
+        var visibleBullets = bullets
+            .map(function (visibleBullet) {
+                if (visibleBullet.x > userToUpdate.x - userToUpdate.screenWidth / 2 - 20 &&
+                    visibleBullet.x < userToUpdate.x + userToUpdate.screenWidth / 2 + 20 &&
+                    visibleBullet.y > userToUpdate.y - userToUpdate.screenHeight / 2 - 20 &&
+                    visibleBullet.y < userToUpdate.y + userToUpdate.screenHeight / 2 + 20) {
+                    return visibleBullet;
                 }
             })
             .filter(function (element) {
@@ -280,7 +281,7 @@ function sendUpdates() {
                 return element;
             });
 
-        sockets[userToUpdate.id].emit('serverTellPlayerMove', visibleCells, visibleFood, visibleMass, visibleVirus, visibleObject);
+        sockets[userToUpdate.id].emit('serverTellPlayerMove', visibleCells, visibleFood, visibleBullets, visibleVirus, visibleObject);
         if (leaderboardChanged) {
             sockets[userToUpdate.id].emit('leaderboard', {
                 players: users.length,

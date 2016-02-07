@@ -14,7 +14,6 @@ gameCanvas.addEventListener('keydown', directionDown, false);
  */
 function onKeyUp(event) {
     if (!player.isRegrouped.value) {
-        reSend = true;
         directionUp(event);
     }
 }
@@ -25,9 +24,8 @@ function onKeyUp(event) {
  */
 function keyInput(event) {
     var key = event.which || event.keyCode;
-    if (key === KEY_FIREFOOD && reSend) {
-        socket.emit('1');
-        reSend = false;
+    if (key === KEY_FIREFOOD) {
+        socket.emit('1', player);
     }
 }
 
@@ -36,6 +34,7 @@ function keyInput(event) {
  * @param event
  */
 function directionDown(event) {
+
     var key = event.which || event.keyCode;
 
     if (!player.isRegrouped.value)
@@ -44,16 +43,20 @@ function directionDown(event) {
             switch (key) {
                 case KEY_DOWN:
                     imageRepository.playerImg.src = imageRepository.player_down;
+                    player.orientation = "down";
                     break;
                 case KEY_LEFT:
                     imageRepository.playerImg.src = imageRepository.player_left;
+                    player.orientation = "left";
                     break;
                 case KEY_RIGHT:
                     imageRepository.playerImg.src = imageRepository.player_right;
+                    player.orientation = "right";
                     break;
                 case KEY_UP:
                 default:
                     imageRepository.playerImg.src = imageRepository.player_up;
+                    player.orientation = "up";
                     break;
             }
 

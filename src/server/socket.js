@@ -130,28 +130,43 @@ function Socket(httpServer, users, bullets, food, virus, object, sockets) {
         /*................................. yeah! let's play together!.................................*/
 
         //shoot, client call this in client/app.js
-        socket.on('1', function () {
+        socket.on('1', function (player) {
             if (!currentPlayer.isRegrouped.value) {
                 for (var i = 0; i < currentPlayer.cells.length; i++) {
-                    var masa = 1;
                     if (currentPlayer.munitions > 0) {
 
-                        masa = currentPlayer.cells[i].mass * 0.1;
 
                         currentPlayer.munitions -= 1;
+                        var bulletTarget = {
+                            x: currentPlayer.x - currentPlayer.cells[i].x,
+                            y: currentPlayer.y - currentPlayer.cells[i].y
+                        };
+
+                        switch (player.orientation) {
+                            case 'right' :
+                                bulletTarget.x += 500;
+                                break;
+                            case 'left' :
+                                bulletTarget.x -= 500;
+                                break;
+                            case 'down' :
+                                bulletTarget.y += 500;
+                                break;
+                            case 'up' :
+                            default :
+                                bulletTarget.y -= 500;
+                                break;
+                        }
+
+                        console.log('Bullet orientation ', player.orientation);
+
                         socket.emit('fire', currentPlayer);
                         bullets.push({
                             id: currentPlayer.id,
                             num: i,
-                            masa: masa,
-                            hue: currentPlayer.hue,
-                            target: {
-                                x: currentPlayer.x - currentPlayer.cells[i].x + currentPlayer.target.x + 200,
-                                y: currentPlayer.y - currentPlayer.cells[i].y + currentPlayer.target.y + 200
-                            },
+                            target: bulletTarget,
                             x: currentPlayer.cells[i].x,
                             y: currentPlayer.cells[i].y,
-                            radius: util.massToRadius(masa),
                             speed: 50
                         });
 
