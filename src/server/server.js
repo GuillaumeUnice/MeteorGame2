@@ -35,31 +35,31 @@ var test = require('./socket.js');
 
 var io = new test.Socket(http, users, bullets, food, virus, object, sockets);
 
-function moveMass() {
+function moveBullet() {
     var i;
     for (i = 0; i < bullets.length; i++) {
         if (bullets[i].speed > 0) {
 
-            var mass = bullets[i];
+            var bullet = bullets[i];
 
-            var deg = Math.atan2(mass.target.y, mass.target.x);
-            var deltaY = mass.speed * Math.sin(deg);
-            var deltaX = mass.speed * Math.cos(deg);
+            var deg = Math.atan2(bullet.target.y, bullet.target.x);
+            var deltaY = bullet.speed * Math.sin(deg);
+            var deltaX = bullet.speed * Math.cos(deg);
 
-            if (mass.speed < 0) {
-                mass.speed = 0;
+            if (bullet.speed < 0) {
+                bullet.speed = 0;
             }
             if (!isNaN(deltaY)) {
-                mass.y += deltaY;
+                bullet.y += deltaY;
             }
             if (!isNaN(deltaX)) {
-                mass.x += deltaX;
+                bullet.x += deltaX;
             }
 
-            var borderCalc = mass.radius + 5;
+            var borderCalc = bullet.radius + 5;
 
 
-            if (mass.x > gameSettings.gameWidth - borderCalc || mass.y > gameSettings.gameHeight - borderCalc || mass.x < borderCalc || mass.y < borderCalc) {
+            if (bullet.x > gameSettings.gameWidth - borderCalc || bullet.y > gameSettings.gameHeight - borderCalc || bullet.x < borderCalc || bullet.y < borderCalc) {
                 bullets.splice(i, 1);
             }
 
@@ -82,7 +82,7 @@ function moveloop() {
         }
 
     }
-    moveMass();
+    moveBullet();
 
 }
 
