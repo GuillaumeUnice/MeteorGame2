@@ -31,9 +31,9 @@ app.use(express.static(__dirname + '/../client'));
 
 //console.log(starUpArgs);
 
-var test = require('./socket.js');
+var socket = require('./socket.js');
 
-var io = new test.Socket(http, users, bullets, food, virus, object, sockets);
+var io = new socket.Socket(http, users, bullets, food, virus, object, sockets);
 
 function moveBullet() {
     var i;
