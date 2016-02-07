@@ -1,3 +1,7 @@
+/**
+ * @author Falou & Guillaume
+ */
+
 /***********
  *#################
  *  Variables

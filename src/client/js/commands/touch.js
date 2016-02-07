@@ -51,6 +51,14 @@ function resetCanvas() {
     window.scrollTo(0, 0);
 }
 
+var drawPointer = function (x, y, radius, strokeStyle, lineWidth) {
+    graph.beginPath();
+    graph.strokeStyle = strokeStyle;
+    graph.lineWidth = lineWidth;
+    graph.arc(x, y, radius, 0, Math.PI * 2, true);
+    graph.stroke();
+};
+
 function drawTouch() {
     graph.clearRect(0, 0, screenWidth, screenHeight);
     graph.fillStyle = "#000000";
@@ -60,31 +68,12 @@ function drawTouch() {
         graph.globalAlpha = 0.7;
 
         if (pointer.identifier == leftPointerID) {
-            graph.beginPath();
-            graph.strokeStyle = "white";
-            graph.lineWidth = 6;
-            graph.arc(leftPointerStartPos.x, leftPointerStartPos.y, 40, 0, Math.PI * 2, true);
-            graph.stroke();
-            graph.beginPath();
-            graph.strokeStyle = "white";
-            graph.lineWidth = 2;
-            graph.arc(leftPointerStartPos.x, leftPointerStartPos.y, 60, 0, Math.PI * 2, true);
-            graph.stroke();
-            graph.beginPath();
-            graph.strokeStyle = "white";
-            graph.arc(leftPointerPos.x, leftPointerPos.y, 40, 0, Math.PI * 2, true);
-            graph.stroke();
+            drawPointer(leftPointerStartPos.x, leftPointerStartPos.y, 40, "white", 6);
+            drawPointer(leftPointerStartPos.x, leftPointerStartPos.y, 60, "white", 2);
+            drawPointer(leftPointerPos.x, leftPointerPos.y, 40, "white", 2);
 
         } else {
-            graph.beginPath();
-            graph.fillStyle = "black";
-            // graph.fillText("type : " + pointer.type + " id : " + pointer.identifier + " x:" + pointer.x +
-            //   " y:" + pointer.y, pointer.x + 30, pointer.y - 30);
-            graph.beginPath();
-            graph.strokeStyle = "red";
-            graph.lineWidth = "6";
-            graph.arc(pointer.x, pointer.y, 40, 0, Math.PI * 2, true);
-            graph.stroke();
+            drawPointer(pointer.x, pointer.y, 40, "red", 2);
         }
     });
 

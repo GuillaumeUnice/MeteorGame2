@@ -44,7 +44,7 @@ function validNick() {
  */
 window.onload = function () {
 
-    soundRepository.intro.play();
+    // soundRepository.intro.play();
 
     var btn = document.getElementById('startButton');
 
@@ -63,7 +63,7 @@ window.onload = function () {
 
     btn.onclick = function () {
         setupGame();
-        soundRepository.intro.pause();
+        //  soundRepository.intro.pause();
 
     };
 
@@ -71,7 +71,7 @@ window.onload = function () {
         var key = e.which || e.keyCode;
         if (key === KEY_ENTER) {
 
-            soundRepository.intro.pause();
+            //    soundRepository.intro.pause();
             setupGame();
         }
     });

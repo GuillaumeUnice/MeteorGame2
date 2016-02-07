@@ -13,9 +13,7 @@ var soundRepository = new function () {
     this.dropBulletSound = new Audio('../sounds/dropBullet.mp3');
     this.lifeSound = new Audio('../sounds/life.mp3');
     this.loseLifeSound = new Audio('../sounds/looseLife.mp3');
-    this.intro = new Audio('../sounds/intro.mp3');
-    this.game_loop = new Audio('../sounds/game_sound.mp3');
-
+    //this.intro = new Audio('../sounds/intro.mp3');
 };
 
 
@@ -25,7 +23,7 @@ var soundRepository = new function () {
  */
 function setupSocket(socket) {
 
-    window.onresize = function (currentPlayer) {
+    window.onresize = function () {
         updatePoints();
     };
 

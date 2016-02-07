@@ -30,7 +30,7 @@
   "newPlayerInitialPosition": "farthest",
   "massLossRate": 1,
   "mergeTimer": 15,
-  "objectMax": 50,
+  "objectMax": 100,
   "object": {
     "strokeWidth": 20,
     "objectRadius": 20,

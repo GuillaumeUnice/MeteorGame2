@@ -32,7 +32,7 @@ function gameLoop() {
         printMessage('You died!');
     }
     else if (!disconnected) {
-        var orderMass = [];
+        var playersOrder = [];
         /**
          * When the game has started
          */
@@ -51,20 +51,19 @@ function gameLoop() {
                 drawBorder();
             }
 
-
             for (var i = 0; i < users.length; i++) {
                 for (var j = 0; j < users[i].cells.length; j++) {
-                    orderMass.push({
+                    playersOrder.push({
                         nCell: i,
                         nDiv: j,
                         mass: users[i].cells[j].mass
                     });
                 }
             }
-            orderMass.sort(function (object1, object2) {
-                return object1.mass - object2.mass;
+            playersOrder.sort(function (player1, player2) {
+                return player1.mass - player2.mass;
             });
-            drawPlayers(orderMass);
+            drawPlayers(playersOrder);
             socket.emit('0', target); // playerSendTarget "Heartbeat".
         }
     } else {
