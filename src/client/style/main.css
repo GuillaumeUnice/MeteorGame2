@@ -526,12 +526,10 @@ Media queries for desktop
         right: 10px;
         width: 40px;
         height: 40px;
-        /*padding: 5px;*/
     }
 
     #lifeIcon {
         bottom: 7%;
-
     }
 
     #lifeBar {

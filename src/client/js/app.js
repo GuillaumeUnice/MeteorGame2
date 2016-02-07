@@ -55,6 +55,7 @@ window.onload = function () {
         if (validNick()) {
             nickErrorText.style.opacity = 0;
             startGame('player');
+            //  soundRepository.intro.pause();
 
         } else {
             nickErrorText.style.opacity = 1;
@@ -63,15 +64,11 @@ window.onload = function () {
 
     btn.onclick = function () {
         setupGame();
-        //  soundRepository.intro.pause();
-
     };
 
     playerNameInput.addEventListener('keypress', function (e) {
         var key = e.which || e.keyCode;
         if (key === KEY_ENTER) {
-
-            //    soundRepository.intro.pause();
             setupGame();
         }
     });

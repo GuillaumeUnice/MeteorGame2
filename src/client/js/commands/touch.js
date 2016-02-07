@@ -1,19 +1,12 @@
 /**
- * Created by Falou on 29/01/2016. based on Seb's joystick for Ipad. It handles the moves on digital devices mainly phones or tablets
+ * Created by Falou on 29/01/2016.
+ * Based on Seb's joystick for Ipad. It handles the moves on digital devices mainly phones or tablets
  */
-var gameCanvas,
-    graph, // c is the canvas' context 2D
-    container,
-    halfWidth,
-    halfHeight,
-    leftPointerID = -1,
-    leftPointerPos = new Vector2(0, 0),
-    leftPointerStartPos = new Vector2(0, 0),
-    leftVector = new Vector2(0, 0);
+var halfWidth, leftPointerID = -1, leftPointerPos = new Vector2(0, 0), leftPointerStartPos = new Vector2(0, 0), leftVector = new Vector2(0, 0);
 
 var pointers, _baseX = 0, _stickX = 0, _baseY = 0, _stickY = 0, _pressed = false, _stationaryBase = false;
 
-var pointer_x = 0, previous_pointer_x = 0, pointer_y, previous_pointer_y, pointer_left = false, pointer_right = false, pointer_up = false, pointer_down = false;
+var pointer_x = 0, previous_pointer_x = 0, pointer_y, previous_pointer_y;
 
 // shim layer with setTimeout fallback
 window.requestAnimFrame = (function () {
@@ -43,10 +36,7 @@ function init() {
 }
 
 function resetCanvas() {
-
     halfWidth = gameCanvas.width / 2;
-    halfHeight = gameCanvas.height / 2;
-
     //make sure we scroll to the top left.
     window.scrollTo(0, 0);
 }
@@ -67,14 +57,14 @@ function drawTouch() {
     pointers.forEach(function (pointer) {
         graph.globalAlpha = 0.7;
 
-        if (pointer.identifier == leftPointerID) {
-            drawPointer(leftPointerStartPos.x, leftPointerStartPos.y, 40, "white", 6);
-            drawPointer(leftPointerStartPos.x, leftPointerStartPos.y, 60, "white", 2);
-            drawPointer(leftPointerPos.x, leftPointerPos.y, 40, "white", 2);
+        //       if (pointer.identifier == leftPointerID) {
+        //         drawPointer(leftPointerStartPos.x, leftPointerStartPos.y, 40, "white", 6);
+        //       drawPointer(leftPointerStartPos.x, leftPointerStartPos.y, 60, "white", 2);
+        //     drawPointer(leftPointerPos.x, leftPointerPos.y, 40, "white", 2);
 
-        } else {
-            drawPointer(pointer.x, pointer.y, 40, "red", 2);
-        }
+        //} else {
+        drawPointer(pointer.x, pointer.y, 40, "red", 2);
+        //}
     });
 
     requestAnimFrame(drawTouch);
@@ -96,31 +86,27 @@ function givePointerType(event) {
 
 function onPointerDown(e) {
     e.preventDefault();
-    console.log('Pointer');
-    console.log(e);
     _pressed = true;
 
+
+    var newPointer = {identifier: e.pointerId, x: e.clientX, y: e.clientY, type: givePointerType(e)};
+    if ((leftPointerID < 0) && (e.clientX < halfWidth)) {
+        leftPointerID = e.pointerId;
+        leftPointerStartPos.reset(e.clientX, e.clientY);
+        leftPointerPos.copyFrom(leftPointerStartPos);
+        leftVector.reset(0, 0);
+    }
+
+    if (_stationaryBase == false) {
+        _baseX = e.clientX;
+        _baseY = e.clientY;
+    }
+
+    _stickX = e.clientX;
+    _stickY = e.clientY;
+
+    pointers.add(e.pointerId, newPointer);
     if (!player.isRegrouped.value) {
-
-        var newPointer = {identifier: e.pointerId, x: e.clientX, y: e.clientY, type: givePointerType(e)};
-        if ((leftPointerID < 0) && (e.clientX < halfWidth)) {
-            leftPointerID = e.pointerId;
-            leftPointerStartPos.reset(e.clientX, e.clientY);
-            leftPointerPos.copyFrom(leftPointerStartPos);
-            leftVector.reset(0, 0);
-        }
-
-        if (_stationaryBase == false) {
-            _baseX = e.clientX;
-            _baseY = e.clientY;
-
-        }
-
-        _stickX = e.clientX;
-        _stickY = e.clientY;
-
-        pointers.add(e.pointerId, newPointer);
-    } else {
         pointer_x = e.clientX;
         pointer_y = e.clientY;
 
@@ -145,71 +131,70 @@ function onPointerDown(e) {
 
         previous_pointer_x = pointer_x;
         previous_pointer_y = pointer_y;
-
     }
 
 }
 
 function onPointerMove(e) {
 
-    if (!player.isRegrouped.value) {
+    if (_pressed) {
 
-        if (_pressed) {
-
-            if (leftPointerID == e.pointerId) {
-                leftPointerPos.reset(e.clientX, e.clientY);
-                leftVector.copyFrom(leftPointerPos);
-                leftVector.minusEq(leftPointerStartPos);
-            }
-            else {
-                if (pointers.item(e.pointerId)) {
-                    pointers.item(e.pointerId).x = e.clientX;
-                    pointers.item(e.pointerId).y = e.clientY;
-                }
-            }
-
-            _stickX = e.clientX;
-            _stickY = e.clientY;
-
-            if (right) {
-                imageRepository.playerImg.src = imageRepository.player_right;
-            }
-            if (left()) {
-                imageRepository.playerImg.src = imageRepository.player_left;
-            }
-            if (down()) {
-                imageRepository.playerImg.src = imageRepository.player_down;
-            }
-            if (up()) {
-                imageRepository.playerImg.src = imageRepository.player_up;
-            }
-
-
-            target.x = e.clientX - screenWidth / 2;
-            target.y = e.clientY - screenHeight / 2;
-
+        if (leftPointerID == e.pointerId) {
+            leftPointerPos.reset(e.clientX, e.clientY);
+            leftVector.copyFrom(leftPointerPos);
+            leftVector.minusEq(leftPointerStartPos);
         }
+        else {
+            if (pointers.item(e.pointerId)) {
+                pointers.item(e.pointerId).x = e.clientX;
+                pointers.item(e.pointerId).y = e.clientY;
+            }
+        }
+
+        _stickX = e.clientX;
+        _stickY = e.clientY;
+
+        if (right) {
+            imageRepository.playerImg.src = imageRepository.player_right;
+        }
+        if (left()) {
+            imageRepository.playerImg.src = imageRepository.player_left;
+        }
+        if (down()) {
+            imageRepository.playerImg.src = imageRepository.player_down;
+        }
+        if (up()) {
+            imageRepository.playerImg.src = imageRepository.player_up;
+        }
+
+
+        target.x = e.clientX - screenWidth / 2;
+        target.y = e.clientY - screenHeight / 2;
+
+        console.log('Target changed again');
     }
 }
 function onPointerUp(e) {
-    if (!player.isRegrouped.value) {
 
-        _pressed = false;
 
-        if (leftPointerID == e.pointerId) {
-            leftPointerID = -1;
-            leftVector.reset(0, 0);
+    console.log('Your finger just got up');
+    _pressed = false;
+    target.x = 0;
+    target.y = 0;
 
-        }
-
+    if (leftPointerID == e.pointerId) {
+        leftPointerID = -1;
         leftVector.reset(0, 0);
-        if (!_stationaryBase) {
-            this._baseX = this._baseY = 0;
-            this._stickX = this._stickY = 0;
-        }
-        pointers.remove(e.pointerId);
-        directionLock = true;
+
     }
+
+    leftVector.reset(0, 0);
+    if (!_stationaryBase) {
+        this._baseX = this._baseY = 0;
+        this._stickX = this._stickY = 0;
+    }
+    pointers.remove(e.pointerId);
+    directionLock = true;
 }
 
 function __deltaX() {
@@ -237,6 +222,7 @@ var up = function () {
     return Math.abs(deltaX) <= 2 * Math.abs(deltaY);
 
 };
+
 var down = function () {
     if (_pressed === false)    return false;
     var deltaX = __deltaX();

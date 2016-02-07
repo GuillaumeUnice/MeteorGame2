@@ -204,7 +204,6 @@ function drawBorder() {
 }
 
 function drawExplosion(currentPlayer) {
-    console.log("explosion!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
     var explosion;
     var explosionImage;
 

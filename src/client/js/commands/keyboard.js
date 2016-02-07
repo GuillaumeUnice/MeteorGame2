@@ -112,7 +112,7 @@ function newDirection(direction, list, isAddition) {
 
 /**
  * Updates the target according to the directions in the directions array.
- * @param event
+ * @param list
  */
 function updateTarget(list) {
     var directionHorizontal = 0;
