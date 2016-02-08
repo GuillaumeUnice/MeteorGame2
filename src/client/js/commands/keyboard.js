@@ -61,6 +61,7 @@ function directionDown(event) {
             }
 
             directionLock = true;
+
             if (newDirection(key, directions, true)) {
                 updateTarget(directions);
                 socket.emit('0', target);
@@ -91,9 +92,9 @@ function directionUp(event) {
  * @param isAddition
  */
 function newDirection(direction, list, isAddition) {
-    var result = false;
-    var found = false;
-    for (var i = 0, len = list.length; i < len; i++) {
+    var result = false, found = false;
+    for (var i = 0; i < list.length; i++) {
+        console.log('In new Direction function');
         if (list[i] == direction) {
             found = true;
             if (!isAddition) {
@@ -123,7 +124,7 @@ function updateTarget(list) {
 
     target = {x: 0, y: 0};
 
-    for (var i = 0, len = list.length; i < len; i++) {
+    for (var i = 0; i < list.length; i++) {
         if (directionHorizontal === 0) {
             if (list[i] == KEY_LEFT) directionHorizontal -= Number.MAX_VALUE;
             else if (list[i] == KEY_RIGHT) directionHorizontal += Number.MAX_VALUE;

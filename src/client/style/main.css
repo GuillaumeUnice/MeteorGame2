@@ -166,6 +166,10 @@ div {
 
 }
 
+#fire {
+    color: red;
+}
+
 .fadeIn {
 
     animation: damage_taken 1s infinite;
@@ -293,7 +297,7 @@ Media queries for tablets
     }
 
     #minimap.regroup-sm {
-        margin-left:20%;
+        margin-left: 20%;
         width: 80%;
         height: 60%;
         top: 70px;
@@ -312,7 +316,7 @@ Media queries for tablets
 
     #lifeBar.regroup-sm {
         position: absolute;
-        margin-left:-4px;
+        margin-left: -4px;
         background-color: #00FF00;
         border: 1px solid #000000;
     }

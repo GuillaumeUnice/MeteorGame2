@@ -136,7 +136,7 @@ function onPointerDown(e) {
 }
 
 function onPointerMove(e) {
-
+    var possibleX = 0, possibleY = 0;
     if (_pressed) {
 
         if (leftPointerID == e.pointerId) {
@@ -161,6 +161,7 @@ function onPointerMove(e) {
         if (left()) {
             imageRepository.playerImg.src = imageRepository.player_left;
             player.orientation = "left";
+
         }
         if (down()) {
             imageRepository.playerImg.src = imageRepository.player_down;
@@ -170,11 +171,16 @@ function onPointerMove(e) {
             imageRepository.playerImg.src = imageRepository.player_up;
             player.orientation = "up";
         }
+        if (newDirection(key, directions, true)) {
+            updateTarget(directions);
+            socket.emit('0', target);
+        }
 
 
         target.x = e.clientX - screenWidth / 2;
         target.y = e.clientY - screenHeight / 2;
 
+        console.log(e);
         console.log('Target changed again');
     }
 }
