@@ -131,7 +131,7 @@ function drawPlayers(order) {
  * Draws the grid representing the game are
  */
 function drawGrid() {
-    graph.fillStyle = '#000000';
+    graph.fillStyle = '#333333';
     graph.fillRect(0, 0, screenWidth, screenHeight);
     graph.strokeStyle = '#FFFFFF';
     graph.globalAlpha = 0.08;

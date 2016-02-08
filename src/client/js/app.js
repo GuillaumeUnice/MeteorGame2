@@ -78,17 +78,21 @@ window.onload = function () {
  * We will use this as gunshots
  */
 var refreshIntervalId = null;
-$('#fire').on("mousedown", function () {
-    refreshIntervalId = setInterval(function () {
-        console.log('Player');
-        console.log(player);
-        socket.emit('1', player);
-    }, 500);
-    reSend = false;
-});
+/*$('#fire').on("mousedown", function () {
+ refreshIntervalId = setInterval(function () {
+ console.log('Player');
+ console.log(player);
+ socket.emit('1', player);
+ }, 500);
+ reSend = false;
+ });
 
-$('#fire').on("mouseup", function () {
-    clearInterval(refreshIntervalId);
+ $('#fire').on("mouseup", function () {
+ clearInterval(refreshIntervalId);
+ });*/
+
+$("#fire").click(function () {
+    socket.emit('1', player);
 });
 
 $("#regroup").click(function () {
