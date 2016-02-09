@@ -204,6 +204,11 @@ function drawBorder() {
     }
 }
 
+
+/**
+ * Called to draw explosion image when a space ship is touched
+ * @param currentPlayer
+ */
 function drawExplosion(currentPlayer) {
     var explosion;
     var explosionImage;
