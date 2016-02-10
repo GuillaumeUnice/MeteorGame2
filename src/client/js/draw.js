@@ -29,9 +29,9 @@ var imageRepository = new function () {
  * @param object
  */
 function drawObject(object) {
-    var objectSize = 100;
+    var objectSize = 90;
 
-    if (onTablet()) {
+    if (onTablet() || onSmartphone()) {
         objectSize = 30;
     }
 
@@ -47,7 +47,6 @@ function drawObject(object) {
 function drawBullet(bullet) {
 
     var offset = 0, bulletWidth = 30, bulletHeight = 30;
-    graph.globalAlpha = 1;
     if (onTablet()) {
         offset = -70;
     }
@@ -55,8 +54,9 @@ function drawBullet(bullet) {
         bulletHeight = bulletWidth = 15;
         window.navigator.vibrate(200);
     }
-    graph.drawImage(imageRepository.bulletImg, bullet.x - player.x + 105 + screenWidth / 2 + offset, bullet.y - player.y + 100 + screenHeight / 2 + offset, bulletWidth, bulletHeight);
 
+    graph.globalAlpha = 1;
+    graph.drawImage(imageRepository.bulletImg, bullet.x - player.x + 105 + screenWidth / 2 + offset, bullet.y - player.y + 100 + screenHeight / 2 + offset, bulletWidth, bulletHeight);
 }
 
 function drawPlayers(order) {
@@ -65,11 +65,12 @@ function drawPlayers(order) {
         y: player.y - (screenHeight / 2)
     }, playerImgWidth = 200, playerImgHeight = 200;
 
-    graph.globalAlpha = 1;
 
     if (onTablet()) {
         playerImgWidth = playerImgHeight = 75;
     }
+
+    graph.globalAlpha = 1;
 
     for (var z = 0; z < order.length; z++) {
         var userCurrent = users[order[z].nCell];
@@ -133,8 +134,11 @@ function drawPlayers(order) {
  */
 function drawGrid() {
     graph.fillStyle = '#333333';
+    graph.globalAlpha = 0.7;
+
     graph.fillRect(0, 0, screenWidth, screenHeight);
     graph.strokeStyle = '#FFFFFF';
+    graph.lineWidth = 2;
     graph.globalAlpha = 0.08;
 
     graph.beginPath();
