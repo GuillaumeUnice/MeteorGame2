@@ -8,40 +8,27 @@ var util = require('./lib/util');
 exports.addObject = function (toAdd, configuration, object) {
     var radius = configuration.object.objectRadius;
     while (toAdd--) {
-
+        
         var position = configuration.foodUniformDisposition ? util.uniformPosition(object, radius) : util.randomPosition(radius);
         var random = Math.floor(Math.random() * 3) + 1;
+        var objectToAdd = {
+            // Make IDs unique.
+            id: ((new Date()).getTime() + '' + object.length) >>> 0,
+            x: position.x,
+            y: position.y,
+            radius: configuration.object.objectRadius
+        };
         if (random === 1) {
-            object.push({
-                // Make IDs unique.
-                id: ((new Date()).getTime() + '' + object.length) >>> 0,
-                x: position.x,
-                y: position.y,
-                radius: configuration.object.objectRadius,
-                type: configuration.object.mineType.name,
-                imageUrl: 'img/_bomb.png'
-            });
+            objectToAdd.type = configuration.object.mineType.name;
+            objectToAdd.imageUrl = 'img/_bomb.png';
         } else if (random === 2) {
-            object.push({
-                // Make IDs unique.
-                id: ((new Date()).getTime() + '' + object.length) >>> 0,
-                x: position.x,
-                y: position.y,
-                radius: configuration.object.objectRadius,
-                type: configuration.object.bulletType.name,
-                imageUrl: 'img/munition.png'
-            });
+            objectToAdd.type = configuration.object.bulletType.name;
+            objectToAdd.imageUrl = 'img/munition.png';
         } else {
-            object.push({
-                // Make IDs unique.
-                id: ((new Date()).getTime() + '' + object.length) >>> 0,
-                x: position.x,
-                y: position.y,
-                radius: configuration.object.objectRadius,
-                type: configuration.object.lifeType.name,
-                imageUrl: 'img/life.png'
-            });
+            objectToAdd.type = configuration.object.lifeType.name;
+            objectToAdd.imageUrl = 'img/life.png'
         }
+        object.push(objectToAdd);
 
     }
 
