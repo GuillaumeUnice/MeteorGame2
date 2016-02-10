@@ -56,6 +56,44 @@ var graph = gameCanvas.getContext('2d'), miniMapFrame = miniMap.getContext("2d")
  */
 
 /**
+ * instantiates once for all the different sounds that will be used throughout the game.
+ *  @author Falou
+ * @type {soundRepository}
+ */
+var soundRepository = new function () {
+    this.bulletSound = new Audio('../sounds/bullet.mp3');
+    this.dropBulletSound = new Audio('../sounds/dropBullet.mp3');
+    this.lifeSound = new Audio('../sounds/life.mp3');
+    this.loseLifeSound = new Audio('../sounds/looseLife.mp3');
+    //this.intro = new Audio('../sounds/intro.mp3');
+};
+
+/**
+ *  @author Falou
+ * @type {imageRepository}
+ */
+var imageRepository = new function () {
+    this.playerImg = new Image();
+    this.otherPlayerImg = new Image();
+    this.bulletImg = new Image();
+    this.starImg = new Image();
+    this.bombImg = new Image();
+    this.objectImg = new Image();
+
+    this.player_up = "../img/ship_up.png";
+    this.player_down = "../img/ship_down.png";
+    this.player_left = "../img/ship_left.png";
+    this.player_right = "../img/ship_right.png";
+
+    this.playerImg.src = this.player_up;
+    this.otherPlayerImg.src = this.player_up;
+    this.bulletImg.src = "../img/bullet.png";
+    this.starImg.src = "../img/star.png";
+    this.bombImg.src = "../img/bomb.png";
+    this.circle = {};
+};
+
+/**
  *
  */
 var updateLife = function () {

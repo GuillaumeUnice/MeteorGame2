@@ -2,34 +2,14 @@
  * In this file, there are all the functions made for drawing the different elements displayed in  the arena
  * Created by Ying on 29/01/2016.
  */
-var imageRepository = new function () {
-    this.playerImg = new Image();
-    this.otherPlayerImg = new Image();
-    this.bulletImg = new Image();
-    this.starImg = new Image();
-    this.bombImg = new Image();
-    this.objectImg = new Image();
 
-    this.player_up = "../img/ship_up.png";
-    this.player_down = "../img/ship_down.png";
-    this.player_left = "../img/ship_left.png";
-    this.player_right = "../img/ship_right.png";
-
-    this.playerImg.src = this.player_up;
-    this.otherPlayerImg.src = this.player_up;
-    this.bulletImg.src = "../img/bullet.png";
-    this.starImg.src = "../img/star.png";
-    this.bombImg.src = "../img/bomb.png";
-    this.circle = {};
-
-};
 
 /**
  * Draws all the objects appearing on the arena; namely bombs, bullets and life points
  * @param object
  */
 function drawObject(object) {
-    var objectSize = 90;
+    var objectSize = 60;
 
     if (onTablet() || onSmartphone()) {
         objectSize = 30;

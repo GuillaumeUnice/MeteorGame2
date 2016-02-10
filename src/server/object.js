@@ -18,10 +18,6 @@ exports.addObject = function (toAdd, configuration, object) {
                 x: position.x,
                 y: position.y,
                 radius: configuration.object.objectRadius,
-                hue: configuration.object.mineType.fill,
-                fill: configuration.object.mineType.fill,
-                stroke: configuration.object.mineType.stroke,
-                strokeWidth: configuration.object.strokeWidth,
                 type: configuration.object.mineType.name,
                 imageUrl: 'img/_bomb.png'
             });
@@ -32,10 +28,6 @@ exports.addObject = function (toAdd, configuration, object) {
                 x: position.x,
                 y: position.y,
                 radius: configuration.object.objectRadius,
-                hue: configuration.object.bulletType.fill,
-                fill: configuration.object.bulletType.fill,
-                stroke: configuration.object.bulletType.stroke,
-                strokeWidth: configuration.object.strokeWidth,
                 type: configuration.object.bulletType.name,
                 imageUrl: 'img/munition.png'
             });
@@ -46,10 +38,6 @@ exports.addObject = function (toAdd, configuration, object) {
                 x: position.x,
                 y: position.y,
                 radius: configuration.object.objectRadius,
-                hue: configuration.object.lifeType.fill,
-                fill: configuration.object.lifeType.fill,
-                stroke: configuration.object.lifeType.stroke,
-                strokeWidth: configuration.object.strokeWidth,
                 type: configuration.object.lifeType.name,
                 imageUrl: 'img/life.png'
             });

@@ -3,18 +3,7 @@
  * @param socket
  */
 
-/**
- * instantiates once for all the different sounds that will be used throughout the game.
- *  @author Falou
- * @type {soundRepository}
- */
-var soundRepository = new function () {
-    this.bulletSound = new Audio('../sounds/bullet.mp3');
-    this.dropBulletSound = new Audio('../sounds/dropBullet.mp3');
-    this.lifeSound = new Audio('../sounds/life.mp3');
-    this.loseLifeSound = new Audio('../sounds/looseLife.mp3');
-    //this.intro = new Audio('../sounds/intro.mp3');
-};
+
 
 
 /**
