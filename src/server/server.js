@@ -1,11 +1,9 @@
 /*jslint bitwise: true, node: true */
 'use strict';
 
-var express = require('express'), SAT = require('sat');
+var express = require('express');
 var app = express();
 var http = require('http').Server(app);
-//var io = require('socket.io')(http);
-
 
 var collision = require('./collision.js');
 
@@ -15,23 +13,19 @@ var gameSettings = require('../../config.json'), util = require('./lib/util'), q
 /* My imports */
 var mapElemImport = require("./mapElements.js"), objectImport = require("./object.js");
 
-//game attribute
-var starUpArgs = {x: 0, y: 0, h: gameSettings.gameHeight, w: gameSettings.gameWidth, maxChildren: 1, maxDepth: 5};
-
-var tree = quadtree.QUAD.init(starUpArgs), users = [], bullets = [], food = [], virus = [], object = [], sockets = {};
+var users = [], bullets = [], food = [], virus = [], object = [], sockets = {};
 
 var leaderBoard = [], leaderboardChanged = false;
 
-var initMassLog = util.log(gameSettings.defaultPlayerMass, gameSettings.slowBase), endGame = false;
-
-
-app.use(express.static(__dirname + '/../client'));
-
-//console.log(starUpArgs);
+var endGame = false;
 
 var socket = require('./socket.js');
 
 var io = new socket.Socket(http, users, bullets, food, virus, object, sockets);
+
+
+app.use(express.static(__dirname + '/../client'));
+
 
 function moveBullet() {
     var i;
@@ -138,8 +132,6 @@ function gameloop() {
     balanceMass(gameSettings, food, users);
 }
 
-
-/* TODO : exporter cette fonction dans un autre fichier, mais pas dans mapElements car cela ferair une "dépendance circulaire"*/
 /*.................................................balanceMass,called in gameloop......................................................*/
 function balanceMass(configuration, food, users) {
     var totalMass = food.length * configuration.foodMass +
@@ -250,7 +242,7 @@ function sendUpdates() {
                         user.cells[z].x < userToUpdate.x + userToUpdate.screenWidth / 2 + 20 &&
                         user.cells[z].y > userToUpdate.y - userToUpdate.screenHeight / 2 - 20 &&
                         user.cells[z].y < userToUpdate.y + userToUpdate.screenHeight / 2 + 20) {
-                        z = user.cells.lenth;
+                        z = user.cells.length;
                         if (user.id !== userToUpdate.id) {
                             return {
                                 id: user.id,
