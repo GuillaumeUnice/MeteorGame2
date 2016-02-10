@@ -29,18 +29,18 @@ var imageRepository = new function () {
  * @param object
  */
 function drawObject(object) {
-    var objectSize = 120;
+    var objectSize = 100;
 
     if (onTablet()) {
-        objectSize = 40;
+        objectSize = 30;
     }
 
     imageRepository.objectImg.src = object.imageUrl;
 
     graph.globalAlpha = 1;
 
-    graph.drawImage(imageRepository.objectImg, object.x - player.x + screenWidth / 2 + 100,
-        object.y - player.y + screenHeight / 2 + 100, objectSize, objectSize);
+    graph.drawImage(imageRepository.objectImg, object.x - player.x + screenWidth / 2,
+        object.y - player.y + screenHeight / 2, objectSize, objectSize);
 
 }
 //draw the start position of bullet
