@@ -22,8 +22,6 @@ var tree = quadtree.QUAD.init(starUpArgs), users = [], bullets = [], food = [], 
 
 var leaderBoard = [], leaderboardChanged = false;
 
-var SATVector = SAT.Vector, SATCircle = SAT.Circle;
-
 var initMassLog = util.log(gameSettings.defaultPlayerMass, gameSettings.slowBase), endGame = false;
 
 
@@ -70,7 +68,7 @@ function moveBullet() {
 
 
 /*......................loopS.......................................................*/
-function moveloop() {
+function moveLoop() {
     for (var i = 0; i < users.length; i++) {
         //console.log(object);
         if (object !== undefined) {
@@ -293,7 +291,7 @@ function sendUpdates() {
 }
 
 /*.........................HERE WE CALL ALL THE FUNCTION ABOVE...........................................................................................*/
-setInterval(moveloop, 1000 / 60);
+setInterval(moveLoop, 1000 / 60);
 setInterval(gameloop, 1000);
 setInterval(sendUpdates, 1000 / gameSettings.networkUpdateFactor);
 

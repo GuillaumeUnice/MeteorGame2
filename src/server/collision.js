@@ -20,22 +20,21 @@ function movePlayer(player) {
     var x = 0, y = 0;
     for (var i = 0; i < player.cells.length; i++) {
         var target = {
-            x: player.x - player.cells[i].x + player.target.x,
-            y: player.y - player.cells[i].y + player.target.y
-        };
-        var dist = Math.sqrt(Math.pow(target.y, 2) + Math.pow(target.x, 2));
-        var deg = Math.atan2(target.y, target.x);
-        var slowDown = 1;
+                x: player.x - player.cells[i].x + player.target.x,
+                y: player.y - player.cells[i].y + player.target.y
+            }, dist = Math.sqrt(Math.pow(target.y, 2) + Math.pow(target.x, 2)), deg = Math.atan2(target.y, target.x),
+            slowDown = 1, deltaY = player.cells[i].speed * Math.sin(deg) / slowDown,
+            deltaX = player.cells[i].speed * Math.cos(deg) / slowDown;
+
         if (player.cells[i].speed <= 6.25) {
             slowDown = util.log(player.cells[i].mass, gameSettings.slowBase) - initMassLog + 1;
         }
 
-        var deltaY = player.cells[i].speed * Math.sin(deg) / slowDown;
-        var deltaX = player.cells[i].speed * Math.cos(deg) / slowDown;
 
         if (player.cells[i].speed > 6.25) {
             player.cells[i].speed -= 0.5;
         }
+
         if (dist < (50 + player.cells[i].radius)) {
             deltaY *= dist / (50 + player.cells[i].radius);
             deltaX *= dist / (50 + player.cells[i].radius);

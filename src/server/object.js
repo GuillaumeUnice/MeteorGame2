@@ -1,14 +1,13 @@
 'use strict';
 var util = require('./lib/util');
 
-
 /**
  Fonction permettant d'ajouter un objet : position, taille et couleur
  **/
 exports.addObject = function (toAdd, configuration, object) {
     var radius = configuration.object.objectRadius;
     while (toAdd--) {
-        
+
         var position = configuration.foodUniformDisposition ? util.uniformPosition(object, radius) : util.randomPosition(radius);
         var random = Math.floor(Math.random() * 3) + 1;
         var objectToAdd = {
