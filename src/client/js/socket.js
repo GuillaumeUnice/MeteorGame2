@@ -4,8 +4,6 @@
  */
 
 
-
-
 /**
  * Handles the different exchange cases between client and server
  * @param socket
@@ -137,6 +135,7 @@ function setupSocket(socket) {
                 animLoopHandle = undefined;
             }
         }, 2500);
+        printMessage('Game Over. Retry');
     });
 
     //Bullet bar, lost bullet
@@ -161,6 +160,7 @@ function setupSocket(socket) {
         //The munitionBar
         soundRepository.dropBulletSound.play();
         player.munitions = currentPlayer.munitions;
+        vibrate();
         updateMunition();
     });
 
@@ -183,11 +183,13 @@ function setupSocket(socket) {
         }
 
         player.life = currentPlayer.life;
+        vibrate();
         updateLife();
     });
 
     socket.on('explosion', function (currentPlayer) {
         drawExplosion(currentPlayer);
+        vibrate();
     });
 
     socket.on('proposeJoin', function (askingPlayer) {
@@ -196,6 +198,7 @@ function setupSocket(socket) {
             $('#regroup').css("visibility", "hidden");
             $('#joinDiv').css("visibility", "visible");
             $('#joinText').html('Do you want to join <span class="label label-primary">' + askingPlayer.name + '\'s</span> team');
+            vibrate();
         }
     });
 
@@ -205,7 +208,7 @@ function setupSocket(socket) {
         player.y = currentPlayer.y;
         player.cells = currentPlayer.cells;
         directionLock = true;
-
+        vibrate();
         if (onSmartphone()) {
             //   canvas.css('width','100%');
             $("#minimap").addClass('regroup-sm');
