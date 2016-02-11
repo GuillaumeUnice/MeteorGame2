@@ -152,3 +152,8 @@ var printMessage = function (message) {
     graph.font = 'bold 30px sans-serif';
     graph.fillText(message, screenWidth / 2, screenHeight / 2);
 };
+
+var vibrate = function () {
+    if (onSmartphone() || onTablet())
+        window.navigator.vibrate(200);
+};

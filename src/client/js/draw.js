@@ -32,8 +32,9 @@ function drawBullet(bullet) {
     }
     if (onTablet() || onSmartphone()) {
         bulletHeight = bulletWidth = 15;
-        window.navigator.vibrate(200);
     }
+
+    vibrate();
 
     graph.globalAlpha = 1;
     graph.drawImage(imageRepository.bulletImg, bullet.x - player.x + 105 + screenWidth / 2 + offset, bullet.y - player.y + 100 + screenHeight / 2 + offset, bulletWidth, bulletHeight);
