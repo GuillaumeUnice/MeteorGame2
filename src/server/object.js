@@ -14,8 +14,7 @@ exports.addObject = function (toAdd, configuration, object) {
             // Make IDs unique.
             id: ((new Date()).getTime() + '' + object.length) >>> 0,
             x: position.x,
-            y: position.y,
-            radius: configuration.object.objectRadius
+            y: position.y
         };
         if (random === 1) {
             objectToAdd.type = configuration.object.mineType.name;

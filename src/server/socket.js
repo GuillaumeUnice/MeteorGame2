@@ -132,14 +132,14 @@ function Socket(httpServer, users, bullets, food, virus, object, sockets) {
         //shoot, client call this in client/app.js
         socket.on('1', function (player) {
             if (!currentPlayer.isRegrouped.value) {
-                for (var i = 0; i < currentPlayer.cells.length; i++) {
+                for (var j = 0; j < currentPlayer.cells.length; j++) {
                     if (currentPlayer.munitions > 0) {
 
-
                         currentPlayer.munitions -= 1;
+
                         var bulletTarget = {
-                            x: currentPlayer.x - currentPlayer.cells[i].x,
-                            y: currentPlayer.y - currentPlayer.cells[i].y
+                            x: currentPlayer.x - currentPlayer.cells[j].x,
+                            y: currentPlayer.y - currentPlayer.cells[j].y
                         };
 
                         switch (player.orientation) {
@@ -163,10 +163,10 @@ function Socket(httpServer, users, bullets, food, virus, object, sockets) {
                         socket.emit('fire', currentPlayer);
                         bullets.push({
                             id: currentPlayer.id,
-                            num: i,
+                            num: j,
                             target: bulletTarget,
-                            x: currentPlayer.cells[i].x,
-                            y: currentPlayer.cells[i].y,
+                            x: currentPlayer.cells[j].x,
+                            y: currentPlayer.cells[j].y,
                             speed: 50
                         });
 

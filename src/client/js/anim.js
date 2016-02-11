@@ -42,6 +42,8 @@ function gameLoop() {
             if (object !== 'undefined') {
                 for (var x = 0; x < object.length; x++) {
                     drawObject(object[x]);
+                    console.log('Object : ');
+                    console.log(object[x]);
                 }
             }
 
