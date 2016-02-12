@@ -28,7 +28,12 @@ function drawCircle(centerX, centerY, radius, sides) {
  */
 function drawObject(object) {
 
-console.log(object);
+
+    var objectSize = 30;
+
+    if (onTablet() || onSmartphone()) {
+        objectSize = 15;
+    }
 
     graph.strokeStyle = object.stroke;
     if(object.type == "life") {
@@ -41,7 +46,7 @@ console.log(object);
         
     graph.lineWidth = object.strokeWidth;
 
-    drawCircle(object.x - player.x + screenWidth / 2 + 100, object.y - player.y + screenHeight / 2 + 100, 20, 30);
+    drawCircle(object.x - player.x + screenWidth / 2 + 100, object.y - player.y + screenHeight / 2 + 100, objectSize, objectSize);
   
    /* var objectSize = 60;
 
