@@ -42,7 +42,7 @@
     },
     "mineType": {
       "name" : "mine",
-      "point" : 30,
+      "point" : 20,
       "fill": "#FF3030",
       "stroke": "#FFA9A9"
     },
@@ -54,5 +54,5 @@
     }
   },
   "barRatioSmall":200,
-  "barRatioBig":150  
+  "barRatioBig":150
 }

@@ -9,7 +9,7 @@
  */
 var KEY_ENTER = 13, KEY_FIREFOOD = 32, KEY_LEFT = 37, KEY_UP = 38, KEY_RIGHT = 39, KEY_DOWN = 40;
 
-var MIN_SM_WIDTH = 320, MAX_SM_WIDTH = 767, MIN_MD_WIDTH = 768, MAX_MD_WIDTH = 1024;
+var MIN_SM_WIDTH = 320, MAX_SM_WIDTH = 767, MIN_MD_WIDTH = 768, MAX_MD_WIDTH = 1024, PROJECTOR_WIDTH = 1024;
 
 var MAX_ASSET = 100, BAR_WIDTH = 500, BAR_HEIGHT = 150;
 
@@ -142,6 +142,10 @@ var onTablet = function () {
 
 var onDesktop = function () {
     return screenWidth >= MIN_MD_WIDTH;
+};
+
+var onProjector = function () {
+    return screenWidth >= PROJECTOR_WIDTH;
 };
 
 var printMessage = function (message) {

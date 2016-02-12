@@ -220,6 +220,8 @@ function setupSocket(socket) {
 
     socket.on('teamFull', function (newLead) {
         if (newLead.id === player.id) {
+
+            console.log('You are the leader now');
             player.isRegrouped = newLead.isRegrouped;
             player.life = newLead.life;
             player.munitions = newLead.munitions;

@@ -34,10 +34,9 @@ function drawBullet(bullet) {
         bulletHeight = bulletWidth = 15;
     }
 
-    vibrate();
-
     graph.globalAlpha = 1;
     graph.drawImage(imageRepository.bulletImg, bullet.x - player.x + 105 + screenWidth / 2 + offset, bullet.y - player.y + 100 + screenHeight / 2 + offset, bulletWidth, bulletHeight);
+    vibrate();
 }
 
 function drawPlayers(order) {
@@ -83,27 +82,37 @@ function drawPlayers(order) {
             graph.fillText(nameCell, circle.x + playerImgWidth / 2, circle.y);
 
         } else {
+            var messageInfo = $('#message-info');
+            $('#panel-message').css('display', 'block');
+            messageInfo.text('You are now linked to a super spaceship');
             //Draw it only on the displayer screen
             if ((userCurrent.isRegrouped.lead === player.id && !(typeof userCurrent.id == "undefined")) || userCurrent.isRegrouped.isLead) {
 
                 if (player.isRegrouped.isLead) {
-                    if (typeof userCurrent.id == "undefined") {
-                        graph.drawImage(imageRepository.playerImg, circle.x, circle.y, playerImgWidth, playerImgHeight);
-                        graph.drawImage(imageRepository.playerImg, circle.x - 100, circle.y + 100, playerImgWidth, playerImgHeight);
-                        graph.drawImage(imageRepository.playerImg, circle.x + 100, circle.y + 100, playerImgWidth, playerImgHeight);
-                        graph.drawImage(imageRepository.playerImg, circle.x, circle.y + 200, playerImgWidth, playerImgHeight);
+                    /***
+                     * In case the projector works
+                     */
+                    // if (window.matchMedia("projector").matches || window.matchMedia("tv").matches) {
+                    if (onProjector()) {
+                        messageInfo.text('You are using a projector or a tv');
+
+                        if (typeof userCurrent.id == "undefined") {
+                            graph.drawImage(imageRepository.playerImg, circle.x, circle.y, playerImgWidth, playerImgHeight);
+                            graph.drawImage(imageRepository.playerImg, circle.x - 100, circle.y + 100, playerImgWidth, playerImgHeight);
+                            graph.drawImage(imageRepository.playerImg, circle.x + 100, circle.y + 100, playerImgWidth, playerImgHeight);
+                            graph.drawImage(imageRepository.playerImg, circle.x, circle.y + 200, playerImgWidth, playerImgHeight);
+                        }
+
+                        graph.fillText(nameCell, circle.x + playerImgWidth / 2, circle.y);
+                    } else {
+                        messageInfo.text('Please, use a projector');
+
                     }
-                    else {
-                        graph.drawImage(imageRepository.otherPlayerImg, circle.x, circle.y, playerImgWidth, playerImgHeight);
-                    }
-                    graph.fillText(nameCell, circle.x + playerImgWidth / 2, circle.y);
 
                 }
 
             }
 
-            $('#panel-message').css('display', 'block');
-            $('#message-info').text('You are now linked to a super spaceship');
 
         }
     }

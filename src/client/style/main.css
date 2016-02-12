@@ -189,7 +189,7 @@ div {
 }
 
 /**
-Media queries for tablets
+Media queries smartphones
 **/
 @media only screen  and (min-width: 320px) and (max-width: 767px) {
     #regroup {
@@ -244,7 +244,7 @@ Media queries for tablets
 
     #lifeBar {
         position: absolute;
-        left: 60px;
+        left: 50px;
         top: 150px;
         width: 5px;
         height: 150px;
@@ -261,13 +261,13 @@ Media queries for tablets
     #munitionPoint {
         position: absolute;
         top: 305px;
-        left: 10px;
+        left: 0;
     }
 
     #lifePoint {
         position: absolute;
         top: 305px;
-        left: 50px;
+        left: 40px;
     }
 
     #joinDiv {
@@ -279,7 +279,7 @@ Media queries for tablets
 
     #lifeIcon {
         position: absolute;
-        left: 50px;
+        left: 40px;
         top: 130px;
     }
 
@@ -319,99 +319,6 @@ Media queries for tablets
         margin-left: -4px;
         background-color: #00FF00;
         border: 1px solid #000000;
-    }
-}
-
-/**
-When we use the video projector
-**/
-
-@media projection {
-    #minimap {
-        position: fixed;
-        left: 0;
-        top: 0;
-        width: 15%;
-        height: 25%;
-    }
-
-    #status .title {
-        font-size: 25px;
-    }
-
-    #status {
-        position: absolute;
-        padding: 10px;
-        background: rgba(0, 0, 0, 0.4);
-        color: #FFF;
-        font-size: 16px;
-        top: 10px;
-        right: 10px;
-        font-weight: bold;
-        text-align: center;
-    }
-
-    #lifeBar {
-        position: absolute;
-        left: 20%;
-        right: 20%;
-        width: 500px;
-        bottom: 23px;
-        border: 1px solid #00FF00;
-        background-color: #000000;
-    }
-
-    #munitionBar {
-        position: absolute;
-        left: 20%;
-        right: 20%;
-        bottom: 10px;
-        width: 500px;
-        border: 1px solid #000000;
-    }
-
-    #lifeIcon {
-        position: absolute;
-        left: 17%;
-        bottom: 22px;
-    }
-
-    #lifePoint {
-        position: absolute;
-        right: 10%;
-        bottom: 23px;
-    }
-
-    #munitionPoint {
-        position: absolute;
-        right: 10%;
-        bottom: 10px;
-    }
-
-    #munitionIcon {
-        position: absolute;
-        left: 17%;
-        bottom: 10px;
-    }
-
-    #joinDiv {
-        position: fixed;
-        visibility: hidden;
-        top: 35%;
-        right: 2%;
-    }
-
-    #message-info {
-        position: fixed;
-        top: 0;
-        left: 25%;
-        right: 25%;
-    }
-
-    #minimap.regroup-ds {
-        opacity: 0;
-        width: 0;
-
     }
 }
 
@@ -522,6 +429,9 @@ Media queries for desktop
 
 }
 
+/**
+@media queries for tablets
+**/
 @media only screen  and (min-width: 768px) and (orientation: landscape) {
 
     #fire {
@@ -575,4 +485,184 @@ Media queries for desktop
         height: 50%;
     }
 
+}
+
+/**
+When we use the video projector
+**/
+
+@media projection and (min-width: 1024px) {
+    #minimap {
+        display: none;
+    }
+
+    #status .title {
+        font-size: 25px;
+    }
+
+    #status {
+        position: absolute;
+        padding: 10px;
+        background: rgba(0, 0, 0, 0.4);
+        color: #FFF;
+        font-size: 16px;
+        top: 10px;
+        right: 10px;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    #lifeBar {
+        position: absolute;
+        left: 20%;
+        right: 20%;
+        width: 500px;
+        bottom: 23px;
+        border: 1px solid #00FF00;
+        background-color: #000000;
+    }
+
+    #munitionBar {
+        position: absolute;
+        left: 20%;
+        right: 20%;
+        bottom: 10px;
+        width: 500px;
+        border: 1px solid #000000;
+    }
+
+    #lifeIcon {
+        position: absolute;
+        left: 17%;
+        bottom: 22px;
+    }
+
+    #lifePoint {
+        position: absolute;
+        right: 10%;
+        bottom: 23px;
+    }
+
+    #munitionPoint {
+        position: absolute;
+        right: 10%;
+        bottom: 10px;
+    }
+
+    #munitionIcon {
+        position: absolute;
+        left: 17%;
+        bottom: 10px;
+    }
+
+    #joinDiv {
+        position: fixed;
+        visibility: hidden;
+        top: 35%;
+        right: 2%;
+    }
+
+    #message-info {
+        position: fixed;
+        top: 0;
+        left: 25%;
+        right: 25%;
+    }
+
+    #minimap.regroup-ds {
+        opacity: 0;
+        width: 0;
+    }
+
+    #fire {
+        display: none;
+    }
+}
+
+@media tv and (min-width: 1024px) {
+    #minimap {
+        display: none;
+    }
+
+    #status .title {
+        font-size: 25px;
+    }
+
+    #status {
+        position: absolute;
+        padding: 10px;
+        background: rgba(0, 0, 0, 0.4);
+        color: #FFF;
+        font-size: 16px;
+        top: 10px;
+        right: 10px;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    #lifeBar {
+        position: absolute;
+        left: 20%;
+        right: 20%;
+        width: 500px;
+        bottom: 23px;
+        border: 1px solid #00FF00;
+        background-color: #000000;
+    }
+
+    #munitionBar {
+        position: absolute;
+        left: 20%;
+        right: 20%;
+        bottom: 10px;
+        width: 500px;
+        border: 1px solid #000000;
+    }
+
+    #lifeIcon {
+        position: absolute;
+        left: 17%;
+        bottom: 22px;
+    }
+
+    #lifePoint {
+        position: absolute;
+        right: 10%;
+        bottom: 23px;
+    }
+
+    #munitionPoint {
+        position: absolute;
+        right: 10%;
+        bottom: 10px;
+    }
+
+    #munitionIcon {
+        position: absolute;
+        left: 17%;
+        bottom: 10px;
+    }
+
+    #joinDiv {
+        position: fixed;
+        visibility: hidden;
+        top: 35%;
+        right: 2%;
+    }
+
+    #message-info {
+        position: fixed;
+        top: 0;
+        left: 25%;
+        right: 25%;
+    }
+
+    #minimap.regroup-ds {
+        opacity: 0;
+        width: 0;
+    }
+
+    #fire {
+        display: none;
+    }
 }

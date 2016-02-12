@@ -4,10 +4,11 @@ var io = require('socket.io');
 
 // Import game settings.
 var gameSettings = require('../../config.json'), util = require('./lib/util'), quadtree = require('./../../quadtree');
+var usersInRegroup = [];
 
 
 function Socket(httpServer, users, bullets, food, virus, object, sockets) {
-    this.mySocket = io(httpServer);
+    var globalSocket = this.mySocket = io(httpServer);
 
     //This method is called when user is connected
     this.mySocket.of("/").on('connection', function (socket) {
@@ -251,16 +252,16 @@ function Socket(httpServer, users, bullets, food, virus, object, sockets) {
 
                 if (usersInRegroup[possibleAlly.id] == 4) {
                     console.log('The super spaceship lead by ', possibleAlly.name, 'is now full');
-                    var leader = users[util.findIndex(users, possibleAlly.id)];
+                    var leader = possibleAlly;
                     leader.munitions *= 3;
                     leader.life *= 3;
-                    socket.emit('teamFull', leader);
+                    globalSocket.emit('teamFull', leader);
                 }
             }
         });
 
 
     });
-};
+}
 
 exports.Socket = Socket;
