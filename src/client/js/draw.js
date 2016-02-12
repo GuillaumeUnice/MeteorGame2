@@ -3,13 +3,47 @@
  * Created by Ying on 29/01/2016.
  */
 
+function drawCircle(centerX, centerY, radius, sides) {
+    var theta = 0;
+    var x = 0;
+    var y = 0;
+
+    graph.beginPath();
+
+    for (var i = 0; i < sides; i++) {
+        theta = (i / sides) * 2 * Math.PI;
+        x = centerX + radius * Math.sin(theta);
+        y = centerY + radius * Math.cos(theta);
+        graph.lineTo(x, y);
+    }
+
+    graph.closePath();
+    graph.stroke();
+    graph.fill();
+}
 
 /**
  * Draws all the objects appearing on the arena; namely bombs, bullets and life points
  * @param object
  */
 function drawObject(object) {
-    var objectSize = 60;
+
+console.log(object);
+
+    graph.strokeStyle = object.stroke;
+    if(object.type == "life") {
+        graph.fillStyle = "#33ff33";
+    } else if(object.type == "mine") {
+        graph.fillStyle = "#FF3030";
+    } else {
+        graph.fillStyle = "#060202";
+    }
+        
+    graph.lineWidth = object.strokeWidth;
+
+    drawCircle(object.x - player.x + screenWidth / 2 + 100, object.y - player.y + screenHeight / 2 + 100, 20, 30);
+  
+   /* var objectSize = 60;
 
     if (onTablet() || onSmartphone()) {
         objectSize = 30;
@@ -20,7 +54,7 @@ function drawObject(object) {
     graph.globalAlpha = 1;
 
     graph.drawImage(imageRepository.objectImg, object.x - player.x + screenWidth / 2,
-        object.y - player.y + screenHeight / 2, objectSize, objectSize);
+        object.y - player.y + screenHeight / 2, objectSize, objectSize);*/
 
 }
 //draw the start position of bullet

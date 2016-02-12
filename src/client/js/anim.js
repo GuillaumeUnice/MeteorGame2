@@ -39,11 +39,11 @@ function gameLoop() {
         if (gameStart) {
 
             drawGrid();
-            if (object !== 'undefined') {
+            //if (object !== 'undefined') {
                 for (var x = 0; x < object.length; x++) {
                     drawObject(object[x]);
                 }
-            }
+            //}
 
             bulletsToDraw.forEach(drawBullet);
 
