@@ -314,7 +314,6 @@ function sprite(options) {
                 imageRepository.circle.y,
                 that.width / numberOfFrames,
                 that.height);
-            console.log(xPosition + "-----------" + yPosition);
         }
     };
 

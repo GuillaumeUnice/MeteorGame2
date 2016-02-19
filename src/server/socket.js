@@ -159,8 +159,6 @@ function Socket(httpServer, users, bullets, food, virus, object, sockets) {
                                 break;
                         }
 
-                        console.log('Bullet orientation ', player.orientation);
-
                         socket.emit('fire', currentPlayer);
                         bullets.push({
                             id: currentPlayer.id,

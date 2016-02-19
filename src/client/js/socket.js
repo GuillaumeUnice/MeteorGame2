@@ -168,7 +168,6 @@ function setupSocket(socket) {
     //Gestion of the lift barre
     socket.on('wound', function (currentPlayer) {
         if (currentPlayer.life > player.life) {
-            console.log("Animation gain de vie");
             soundRepository.lifeSound.play();
         }
         else if (currentPlayer.life < player.life) {
@@ -221,7 +220,6 @@ function setupSocket(socket) {
     socket.on('teamFull', function (newLead) {
         if (newLead.id === player.id) {
 
-            console.log('You are the leader now');
             player.isRegrouped = newLead.isRegrouped;
             player.life = newLead.life;
             player.munitions = newLead.munitions;
@@ -229,7 +227,6 @@ function setupSocket(socket) {
             Leap.loop(setLeap).use('screenPosition', {scale: 0.25});
             Leap.loopController.setBackground(true);
 
-            console.log('Superspace ship control activated');
         }
 
         if (!player.isRegrouped.value) {

@@ -94,7 +94,7 @@ function directionUp(event) {
 function newDirection(direction, list, isAddition) {
     var result = false, found = false;
     for (var i = 0; i < list.length; i++) {
-        console.log('In new Direction function');
+
         if (list[i] == direction) {
             found = true;
             if (!isAddition) {

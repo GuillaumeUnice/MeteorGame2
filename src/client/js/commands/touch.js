@@ -180,14 +180,11 @@ function onPointerMove(e) {
         target.x = e.clientX - screenWidth / 2;
         target.y = e.clientY - screenHeight / 2;
 
-        console.log(e);
-        console.log('Target changed again');
     }
 }
 function onPointerUp(e) {
 
 
-    console.log('Your finger just got up');
     _pressed = false;
     target.x = 0;
     target.y = 0;
